@@ -1,0 +1,25 @@
+{
+  "name": "com.i5.toolkit.mixedreality",
+  "version": "0.1.0",
+  "displayName": "i5 Toolkit for Mixed Reality",
+  "description": "This package contains a collection of tools, features and assets for the development of mixed reality Unity projects",
+  "unity": "2018.4",
+  "unityRelease": "15f1",
+  "dependencies": {
+    "com.unity.textmeshpro": "1.5.1"
+  },
+  "keywords": [
+    "Unity",
+    "Toolkit",
+    "rwth-acis",
+    "i5",
+    "RWTH",
+    "Mixed Reality"
+  ],
+  "author": {
+    "name": "Benedikt Hensen\nAdvanced Community Information Systems\nInformatik 5, RWTH Aachen University",
+    "url": "http://dbis.rwth-aachen.de/cms"
+  },
+  "samples": [
+  ]
+}
