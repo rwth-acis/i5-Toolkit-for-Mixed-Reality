@@ -1,5 +1,26 @@
 {
+  "scopedRegistries": [
+    {
+      "name": "com.i5.toolkit.core",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.i5.toolkit.core"
+      ]
+    },
+    {
+      "name": "Microsoft Mixed Reality",
+      "url": "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/",
+      "scopes": [
+        "com.microsoft.mixedreality",
+        "com.microsoft.spatialaudio"
+      ]
+    }
+  ],
   "dependencies": {
+    "com.i5.toolkit.core": "1.2.1",
+    "com.microsoft.mixedreality.toolkit.foundation": "2.5.1",
+    "com.microsoft.mixedreality.toolkit.tools": "2.5.1",
+    "com.microsoft.mixedreality.toolkit.examples": "2.5.1",
     "com.unity.ads": "2.0.8",
     "com.unity.analytics": "3.2.2",
     "com.unity.collab-proxy": "1.2.15",
