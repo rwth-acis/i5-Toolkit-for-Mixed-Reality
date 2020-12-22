@@ -1,6 +1,6 @@
 # i5 Toolkit for Mixed Reality
 
-![i5 Toolkit for Mixed Reality](https://raw.githubusercontent.com/rwth-acis/i5-Toolkit-for-Unity/develop/Logos/Logo%20wide.svg)
+![i5 Toolkit for Mixed Reality](https://raw.githubusercontent.com/rwth-acis/i5-Toolkit-for-Mixed-Reality/master/Logos/Logo%20wide.svg)
 
 This toolkit contains a collection of features for mixed reality development which can be reused in Unity projects.
 It is a foundation for new projects, kickstarting the development with already completed tools and modules.
