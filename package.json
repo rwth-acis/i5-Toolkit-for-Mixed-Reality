@@ -7,10 +7,10 @@
   "unityRelease": "15f1",
   "scopedRegistries": [
     {
-      "name": "com.i5.toolkit.core",
+      "name": "i5 Toolkit",
       "url": "https://package.openupm.com",
       "scopes": [
-        "com.i5.toolkit.core"
+        "com.i5.toolkit"
       ]
     },
     {
@@ -41,6 +41,5 @@
     "name": "Benedikt Hensen\nAdvanced Community Information Systems\nInformatik 5, RWTH Aachen University",
     "url": "http://dbis.rwth-aachen.de/cms"
   },
-  "samples": [
-  ]
+  "samples": []
 }
