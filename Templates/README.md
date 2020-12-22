@@ -77,6 +77,7 @@ It can be included in new projects by referencing the git-repository on GitHub i
     "dependencies": {
       "com.i5.toolkit.mixedreality": "https://github.com/rwth-acis/i5-Toolkit-for-Mixed-Reality.git#v${version}",
       ...some other dependencies of your project
+    }
     ```
 
 After that, Unity will automatically download and import the package.
