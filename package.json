@@ -5,23 +5,6 @@
   "description": "This package contains a collection of tools, features and assets for the development of mixed reality Unity projects",
   "unity": "2018.4",
   "unityRelease": "15f1",
-  "scopedRegistries": [
-    {
-      "name": "i5 Toolkit",
-      "url": "https://package.openupm.com",
-      "scopes": [
-        "com.i5.toolkit"
-      ]
-    },
-    {
-      "name": "Microsoft Mixed Reality",
-      "url": "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/",
-      "scopes": [
-        "com.microsoft.mixedreality",
-        "com.microsoft.spatialaudio"
-      ]
-    }
-  ],
   "dependencies": {
     "com.i5.toolkit.core": "1.2.1",
     "com.microsoft.mixedreality.toolkit.foundation": "2.5.1",
