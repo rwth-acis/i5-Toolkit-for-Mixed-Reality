@@ -56,27 +56,27 @@ It can be included in new projects by referencing the git-repository on GitHub i
     Overall, your manifest.json should now look like this:
     ```
     {
-  "scopedRegistries": [
-    {
-      "name": "i5 Toolkit",
-      "url": "https://package.openupm.com",
-      "scopes": [
-        "com.i5.toolkit"
-      ]
-    },
-    {
-      "name": "Microsoft Mixed Reality",
-      "url": "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/",
-      "scopes": [
-        "com.microsoft.mixedreality",
-        "com.microsoft.spatialaudio"
-      ]
-    },
-    ...some other scoped registries of your project
-  ],
-  "dependencies": {
-    "com.i5.toolkit.mixedreality": "https://github.com/rwth-acis/i5-Toolkit-for-Mixed-Reality.git#v${version}",
-    ...some other dependencies of your project
+    "scopedRegistries": [
+      {
+        "name": "i5 Toolkit",
+        "url": "https://package.openupm.com",
+        "scopes": [
+          "com.i5.toolkit"
+        ]
+      },
+      {
+        "name": "Microsoft Mixed Reality",
+        "url": "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/",
+        "scopes": [
+          "com.microsoft.mixedreality",
+          "com.microsoft.spatialaudio"
+        ]
+      },
+      ...some other scoped registries of your project
+    ],
+    "dependencies": {
+      "com.i5.toolkit.mixedreality": "https://github.com/rwth-acis/i5-Toolkit-for-Mixed-Reality.git#v${version}",
+      ...some other dependencies of your project
     ```
 
 After that, Unity will automatically download and import the package.
