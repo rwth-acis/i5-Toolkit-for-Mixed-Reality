@@ -1,6 +1,6 @@
 {
   "name": "com.i5.toolkit.mixedreality",
-  "version": "0.1.0",
+  "version": "${version}",
   "displayName": "i5 Toolkit for Mixed Reality",
   "description": "This package contains a collection of tools, features and assets for the development of mixed reality Unity projects",
   "unity": "2018.4",
