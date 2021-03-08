@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Microsoft.MixedReality.Toolkit.Input;
 using i5.Toolkit.Core.ServiceCore;
+using Microsoft.MixedReality.Toolkit;
 
 /// <summary>
 /// Manages the input events to open and close the pie menu
 /// </summary>
-public class PieMenuManager : MonoBehaviour
+public class PieMenuManager : MonoBehaviour, IMixedRealityInputActionHandler
 {
     [SerializeField]
     GameObject pieMenuPrefab;
@@ -20,6 +21,37 @@ public class PieMenuManager : MonoBehaviour
     IMixedRealityInputSource invokingSource;
 
 
+    void IMixedRealityInputActionHandler.OnActionStarted(BaseInputEventData eventData)
+    {
+        if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.menuAction)
+        {
+            MenuOpen(eventData);
+        }
+    }
+
+    void IMixedRealityInputActionHandler.OnActionEnded(BaseInputEventData eventData)
+    {
+        if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.menuAction)
+        {
+            MenuClose(eventData);
+        }
+    }
+
+    /// <summary>
+    /// Registers the handlers in the input system. Otherwise, they will recive events only when a pointer has this object in focus.
+    /// </summary>
+    private void OnEnable()
+    {
+        CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputActionHandler>(this);
+    }
+
+    /// <summary>
+    /// Deregisters all handlers, otherwise it will recive events even after deactivcation.
+    /// </summary>
+    private void OnDisable()
+    {
+        CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputActionHandler>(this);
+    }
 
     /// <summary>
     /// Opens the PieMenu and sets it at the tip of the tool
