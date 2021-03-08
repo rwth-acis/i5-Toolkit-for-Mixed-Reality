@@ -2,18 +2,11 @@
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Timers;
-using System.Collections;
+using i5.Toolkit.Core.ServiceCore;
 //using TMPro;
 
 public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IMixedRealityInputHandler<Vector2>, IMixedRealityInputHandler<float>
 {
-    //Events and action for the thrigger
-    public MixedRealityInputAction triggerInputAction;
-    public MixedRealityInputAction touchpadTouchActionAction;
-    public MixedRealityInputAction touchpadPressAction;
-    public MixedRealityInputAction gripPressAction;
 
     [SerializeField]
     MenuEntry defaultEntry;
@@ -154,7 +147,7 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
     /// </summary>
     void IMixedRealityInputActionHandler.OnActionStarted(BaseInputEventData eventData)
     {
-        if (eventData.MixedRealityInputAction == triggerInputAction && IsInputSourceThis(eventData.InputSource) && !eventData.used)
+        if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.triggerInputAction && IsInputSourceThis(eventData.InputSource) && !eventData.used)
         {
             //On Trigger event
             currentEntry.OnInputActionStartedTrigger?.Invoke(eventData);
@@ -168,11 +161,11 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
     {
         if (IsInputSourceThis(eventData.InputSource))
         {
-            if (eventData.MixedRealityInputAction == triggerInputAction)
+            if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.triggerInputAction)
             {
                     currentEntry.OnInputActionEndedTrigger?.Invoke(eventData);
             }
-            else if (eventData.MixedRealityInputAction == touchpadPressAction)
+            else if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.touchpadPressAction)
             {
                 //Touchad
                 float angle = Vector2.SignedAngle(Vector2.right, thumbPosition);
@@ -233,7 +226,7 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
     /// </summary>
     void IMixedRealityInputHandler<Vector2>.OnInputChanged(InputEventData<Vector2> eventData)
     {
-        if (eventData.MixedRealityInputAction == touchpadTouchActionAction)
+        if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.touchpadTouchActionAction)
         {
             thumbPosition = eventData.InputData;
         }
@@ -245,7 +238,7 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
     /// <param name="eventData"></param>
     void IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)
     {
-        if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == gripPressAction)
+        if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.gripPressAction)
         {
             if (eventData.InputData > 0.5)
             {

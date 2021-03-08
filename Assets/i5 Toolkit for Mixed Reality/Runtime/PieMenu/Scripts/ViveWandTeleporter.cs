@@ -2,14 +2,12 @@
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections;
+using i5.Toolkit.Core.ServiceCore;
 //using TMPro;
 
 public class ViveWandTeleporter : ViveWand, IMixedRealityInputHandler<float>
 {
-    //Events and action for the thrigger
-    public MixedRealityInputAction gripPressAction;
+    //Events and action for the trigger
 
     public string textGrip;
     public InputActionUnityEvent OnInputActionStartedGrip;
@@ -56,7 +54,7 @@ public class ViveWandTeleporter : ViveWand, IMixedRealityInputHandler<float>
     /// <param name="eventData"></param>
     void IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)
     {
-        if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == gripPressAction)
+        if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.gripPressAction)
         {
             if (eventData.InputData > 0.5)
             {

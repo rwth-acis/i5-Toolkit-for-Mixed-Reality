@@ -22,16 +22,3 @@ public class ToolSetupService : IService
     {
     }
 }
-
-public struct ToolSetup
-{
-    //Events and action for the thrigger
-    public MixedRealityInputAction triggerInputAction;
-    public MixedRealityInputAction touchpadTouchActionAction;
-    public MixedRealityInputAction touchpadPressAction;
-    public MixedRealityInputAction gripPressAction;
-
-    public List<MenuEntry> menuEntries;
-
-    public MenuEntry defaultEntry;
-}

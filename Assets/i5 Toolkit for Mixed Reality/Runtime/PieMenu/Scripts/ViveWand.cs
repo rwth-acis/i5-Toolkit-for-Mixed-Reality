@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
+using i5.Toolkit.Core.ServiceCore;
 //using TMPro;
 
 public abstract class ViveWand : MonoBehaviour
 {
-    public float descriptionShowTime = 3;
     protected IMixedRealityInputSource ownSource;
 
     /// <summary>
@@ -16,7 +16,7 @@ public abstract class ViveWand : MonoBehaviour
     /// <returns></returns>
     protected IEnumerator DisableDescriptions()
     {
-        yield return new WaitForSeconds(descriptionShowTime);
+        yield return new WaitForSeconds(ServiceManager.GetService<ToolSetupService>().toolSetup.descriptionShowTime);
         GameObject menuButton = transform.Find("ButtonDescriptions").gameObject;
         menuButton.SetActive(false);
     }
