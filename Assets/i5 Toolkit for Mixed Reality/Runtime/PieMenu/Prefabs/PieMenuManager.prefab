@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5643c82239e15444581a119ff8448259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieMenuPrefab: {fileID: 0}
-  menuEntries: []
+  pieMenuPrefab: {fileID: 7545145203548608985, guid: b7e4659a8535b6b47a2ce302473d5c95,
+    type: 3}
 --- !u!114 &1511928166512116513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,3 +58,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57c1bd2430a5d84f884fe659586905f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toolSetup:
+    triggerInputAction:
+      id: 0
+      description: 
+      axisConstraint: 0
+    touchpadTouchActionAction:
+      id: 0
+      description: 
+      axisConstraint: 0
+    touchpadPressAction:
+      id: 0
+      description: 
+      axisConstraint: 0
+    gripPressAction:
+      id: 0
+      description: 
+      axisConstraint: 0
+    menuAction:
+      id: 0
+      description: 
+      axisConstraint: 0
+    descriptionShowTime: 0
+    menuEntries: []
+    defaultEntry:
+      iconTool: {fileID: 0}
+      toolName: 
+      textTrigger: 
+      OnInputActionStartedTrigger:
+        m_PersistentCalls:
+          m_Calls: []
+      OnInputActionEndedTrigger:
+        m_PersistentCalls:
+          m_Calls: []
+      textGrip: 
+      OnInputActionStartedGrip:
+        m_PersistentCalls:
+          m_Calls: []
+      OnInputActionEndedGrip:
+        m_PersistentCalls:
+          m_Calls: []
+      textTouchpadRight: 
+      iconTouchpadRight: {fileID: 0}
+      OnInputActionEndedTouchpadRight:
+        m_PersistentCalls:
+          m_Calls: []
+      textTouchpadLeft: 
+      iconTouchpadLeft: {fileID: 0}
+      OnInputActionEndedTouchpadLeft:
+        m_PersistentCalls:
+          m_Calls: []
+      textTouchpadUp: 
+      iconTouchpadUp: {fileID: 0}
+      OnInputActionEndedTouchpadUp:
+        m_PersistentCalls:
+          m_Calls: []
+      textTouchpadDown: 
+      iconTouchpadDown: {fileID: 0}
+      OnInputActionEndedTouchpadDown:
+        m_PersistentCalls:
+          m_Calls: []
+      OnToolCreated:
+        m_PersistentCalls:
+          m_Calls: []
+      OnToolDestroyed:
+        m_PersistentCalls:
+          m_Calls: []
+      OnHoverOverTargetStart:
+        m_PersistentCalls:
+          m_Calls: []
+      OnHoverOverTargetActive:
+        m_PersistentCalls:
+          m_Calls: []
+      OnHoverOverTargetStop:
+        m_PersistentCalls:
+          m_Calls: []

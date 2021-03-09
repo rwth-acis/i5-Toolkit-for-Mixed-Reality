@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7545145203548608985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6870217252328093829}
+  - component: {fileID: 7049306491588177930}
+  m_Layer: 0
+  m_Name: Pie Menu Renderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6870217252328093829
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7545145203548608985}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.1790195, y: -0.14599642, z: 0.0844537}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7049306491588177930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7545145203548608985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bd2f74b4442179419b87e41960bda3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  piemenuPiecePrefab: {fileID: 7962698475298995039, guid: 616b1cac3fc144c47a7ab6f0cafe1ec7,
+    type: 3}
+  normalColor: {r: 0.06759523, g: 0.18903549, b: 0.46226418, a: 0}
+  highlightColor: {r: 0.19166788, g: 0.7075472, b: 0.09678713, a: 0}
+  menuCursor: {fileID: 38618175467975363, guid: 5bea653f15e324b4dbc2bb27ac80bf3c,
+    type: 3}
