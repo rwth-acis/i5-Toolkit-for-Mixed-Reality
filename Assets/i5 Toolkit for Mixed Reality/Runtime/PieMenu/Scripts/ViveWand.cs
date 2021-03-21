@@ -4,7 +4,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
 using i5.Toolkit.Core.ServiceCore;
-//using TMPro;
+using TMPro;
 
 public abstract class ViveWand : MonoBehaviour
 {
@@ -36,24 +36,24 @@ public abstract class ViveWand : MonoBehaviour
     /// <param name="gameobjectName"></param> The name of the object, the TMP is attached to
     /// <param name="text"></param> The text to be set
     /// <param name="defaulText"></param> The default trext, that is used, if text is "".
-    //protected void SetText(string gameobjectName, string text, string defaulText)
-    //{
-    //    GameObject textGameobject = transform.Find("ButtonDescriptions/" + gameobjectName).gameObject;
-    //    TMP_Text textMesh = textGameobject.GetComponentInChildren<TMP_Text>();
-    //    textGameobject.SetActive(true);
-    //    if (text != "")
-    //    {
-    //        textMesh.text = text;
-    //    }
-    //    else if (defaulText != "")
-    //    {
-    //        textMesh.text = defaulText;
-    //    }
-    //    else
-    //    {
-    //        textGameobject.SetActive(false);
-    //    }
-    //}
+    protected void SetText(string gameobjectName, string text, string defaulText)
+    {
+        GameObject textGameobject = transform.Find("ButtonDescriptions/" + gameobjectName).gameObject;
+        TMP_Text textMesh = textGameobject.GetComponentInChildren<TMP_Text>();
+        textGameobject.SetActive(true);
+        if (text != "")
+        {
+            textMesh.text = text;
+        }
+        else if (defaulText != "")
+        {
+            textMesh.text = defaulText;
+        }
+        else
+        {
+            textGameobject.SetActive(false);
+        }
+    }
 
     /// <summary>
     /// Is the provided input source the same as the object this belongs to?

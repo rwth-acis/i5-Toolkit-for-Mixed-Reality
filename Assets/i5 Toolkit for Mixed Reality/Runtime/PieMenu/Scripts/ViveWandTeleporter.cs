@@ -9,9 +9,9 @@ public class ViveWandTeleporter : ViveWand, IMixedRealityInputHandler<float>
 {
     //Events and action for the trigger
 
-    public string textGrip;
-    public InputActionUnityEvent OnInputActionStartedGrip;
-    public InputActionUnityEvent OnInputActionEndedGrip;
+    //public string textGrip;
+    //public InputActionUnityEvent OnInputActionStartedGrip;
+    //public InputActionUnityEvent OnInputActionEndedGrip;
 
     /// <summary>
     /// Activates the description texts for descriptionShowTime seconds.
@@ -22,7 +22,7 @@ public class ViveWandTeleporter : ViveWand, IMixedRealityInputHandler<float>
         GameObject menuButton = transform.Find("ButtonDescriptions").gameObject;
         menuButton.SetActive(true);
 
-        //SetText("GripText", "", textGrip);
+        SetText("GripText", "", ServiceManager.GetService<ToolSetupService>().toolSetup.textGrip);
 
         StopCoroutine("DisableDescriptions");
         //Waits descriptionShowTime befor disabling the descriptions
@@ -58,11 +58,11 @@ public class ViveWandTeleporter : ViveWand, IMixedRealityInputHandler<float>
         {
             if (eventData.InputData > 0.5)
             {
-                OnInputActionStartedGrip.Invoke(eventData);
+                ServiceManager.GetService<ToolSetupService>().toolSetup.OnInputActionStartedGrip.Invoke(eventData);
             }
             else
             {
-                OnInputActionEndedGrip.Invoke(eventData);
+                ServiceManager.GetService<ToolSetupService>().toolSetup.OnInputActionEndedGrip.Invoke(eventData);
             }
         }
     }

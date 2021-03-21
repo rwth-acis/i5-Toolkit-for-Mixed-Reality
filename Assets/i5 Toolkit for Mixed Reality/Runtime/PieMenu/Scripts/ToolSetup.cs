@@ -23,6 +23,11 @@ public struct ToolSetup
     //The menu entries for the virtual tool controller
     public List<MenuEntry> menuEntries;
 
-    //The default Entry for the virtual tool controller
+    //The default entry for the virtual tool controller
     public MenuEntry defaultEntry;
+
+    //The grip actions and text for the teleporter
+    public string textGrip;
+    public InputActionUnityEvent OnInputActionStartedGrip;
+    public InputActionUnityEvent OnInputActionEndedGrip;
 }

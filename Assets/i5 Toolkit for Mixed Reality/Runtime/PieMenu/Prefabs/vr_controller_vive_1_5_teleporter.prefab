@@ -415,6 +415,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1090043531796964651}
   - component: {fileID: 114149108256739128}
+  - component: {fileID: 3992503123602197808}
   m_Layer: 0
   m_Name: vr_controller_vive_1_5_teleporter
   m_TagString: Untagged
@@ -462,6 +463,25 @@ MonoBehaviour:
     description: None
     axisConstraint: 0
   handedness: 1
+--- !u!114 &3992503123602197808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090043531797461259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca448d545a0a74341b2bc3426bb51900, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textGrip: 
+  OnInputActionStartedGrip:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInputActionEndedGrip:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1117109457780552177
 GameObject:
   m_ObjectHideFlags: 0

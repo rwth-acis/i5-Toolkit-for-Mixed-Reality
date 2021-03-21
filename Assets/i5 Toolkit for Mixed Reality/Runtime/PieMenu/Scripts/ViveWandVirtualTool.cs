@@ -7,8 +7,6 @@ using i5.Toolkit.Core.ServiceCore;
 
 public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IMixedRealityInputHandler<Vector2>, IMixedRealityInputHandler<float>
 {
-
-    [SerializeField]
     MenuEntry defaultEntry;
 
     //The last recorded position on the touchpad
@@ -30,6 +28,8 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
             currentEntry.OnToolDestroyed.Invoke(null);
         }
 
+        defaultEntry = ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry;
+
         //set the new icons
         SetIcon("ToolIconCanvas", newEntry.iconTool, defaultEntry.iconTool);
         SetIcon("TouchpadRightIcon", newEntry.iconTouchpadRight, defaultEntry.iconTouchpadRight);
@@ -46,12 +46,12 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
         GameObject menuButton = transform.Find("ButtonDescriptions").gameObject;
         menuButton.SetActive(true);
 
-        //SetText("TouchpadRightText", newEntry.textTouchpadRight, defaultEntry.textTouchpadRight);
-        //SetText("TouchpadDownText", newEntry.textTouchpadDown, defaultEntry.textTouchpadDown);
-        //SetText("TouchpadLeftText", newEntry.textTouchpadLeft, defaultEntry.textTouchpadLeft);
-        //SetText("TouchpadUpText", newEntry.textTouchpadUp, defaultEntry.textTouchpadUp);
-        //SetText("TriggerText", newEntry.textTrigger, defaultEntry.textTrigger);
-        //SetText("GripText", newEntry.textGrip, defaultEntry.textGrip);
+        SetText("TouchpadRightText", newEntry.textTouchpadRight, defaultEntry.textTouchpadRight);
+        SetText("TouchpadDownText", newEntry.textTouchpadDown, defaultEntry.textTouchpadDown);
+        SetText("TouchpadLeftText", newEntry.textTouchpadLeft, defaultEntry.textTouchpadLeft);
+        SetText("TouchpadUpText", newEntry.textTouchpadUp, defaultEntry.textTouchpadUp);
+        SetText("TriggerText", newEntry.textTrigger, defaultEntry.textTrigger);
+        SetText("GripText", newEntry.textGrip, defaultEntry.textGrip);
 
         StopCoroutine("DisableDescriptions");
         //Waits descriptionShowTime befor disabling the descriptions
@@ -129,7 +129,7 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
         CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputActionHandler>(this);
         CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<Vector2>>(this);
         CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<float>>(this);
-        SetupTool(defaultEntry);
+        SetupTool(ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry);
     }
 
     /// <summary>

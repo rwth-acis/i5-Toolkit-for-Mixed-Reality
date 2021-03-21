@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6642489127180809174}
   - component: {fileID: 1388338223322846379}
   - component: {fileID: 1511928166512116513}
+  - component: {fileID: 8821610706099530504}
   m_Layer: 0
   m_Name: PieMenuManager
   m_TagString: Untagged
@@ -79,6 +80,8 @@ MonoBehaviour:
       id: 0
       description: 
       axisConstraint: 0
+    pieMenuPieceNormalColor: {r: 0, g: 0, b: 0, a: 0}
+    pieMenuPieceHighlighColor: {r: 0, g: 0, b: 0, a: 0}
     descriptionShowTime: 0
     menuEntries: []
     defaultEntry:
@@ -91,13 +94,35 @@ MonoBehaviour:
       OnInputActionEndedTrigger:
         m_PersistentCalls:
           m_Calls: []
-      textGrip: 
+      textGrip: Show Descriptions
       OnInputActionStartedGrip:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 8821610706099530504}
+            m_MethodName: ActivateDesciptionTexts
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       OnInputActionEndedGrip:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 8821610706099530504}
+            m_MethodName: DeactivateDesciptionTexts
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       textTouchpadRight: 
       iconTouchpadRight: {fileID: 0}
       OnInputActionEndedTouchpadRight:
@@ -133,3 +158,17 @@ MonoBehaviour:
       OnHoverOverTargetStop:
         m_PersistentCalls:
           m_Calls: []
+--- !u!114 &8821610706099530504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2627656606189857573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d06fffcae02927244b989639db4a97a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightSprite: {fileID: 0}
+  objectTransformer: {fileID: 0}
