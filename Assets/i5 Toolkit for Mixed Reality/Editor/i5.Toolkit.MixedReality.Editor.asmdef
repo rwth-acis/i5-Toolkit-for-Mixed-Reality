@@ -1,6 +1,9 @@
 {
     "name": "i5.Toolkit.MixedReality.Editor",
-    "references": [],
+    "references": [
+        "i5.Toolkit.MixedReality.Runtime",
+        "i5.Toolkit.Core.Runtime"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
