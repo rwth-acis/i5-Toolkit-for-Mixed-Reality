@@ -7,12 +7,6 @@ using i5.Toolkit.Core.ServiceCore;
 
 public class ViveWandTeleporter : ViveWand, IMixedRealityInputHandler<float>
 {
-    //Events and action for the trigger
-
-    //public string textGrip;
-    //public InputActionUnityEvent OnInputActionStartedGrip;
-    //public InputActionUnityEvent OnInputActionEndedGrip;
-
     /// <summary>
     /// Activates the description texts for descriptionShowTime seconds.
     /// </summary>
