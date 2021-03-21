@@ -12,26 +12,24 @@ public class PieMenuRenderer : MonoBehaviour
 {
     
     [SerializeField]
-    GameObject piemenuPiecePrefab;
+    private GameObject piemenuPiecePrefab;
+
     [SerializeField]
-    Color normalColor;
-    [SerializeField]
-    Color highlightColor;
+    GameObject menuCursor;
+
+    private Color normalColor;
+    private Color highlightColor;
 
     List<MenuEntry> menuEntries;
     List<GameObject> pieMenuPieces;
     public int currentlyHighlighted { private set; get;}
-    int test = 0;
-
-    [SerializeField]
-    GameObject menuCursor;
 
     GameObject instiatedMenuCursor;
 
     IMixedRealityPointer pointer;
 
     /// <summary>
-    /// The contructor
+    /// Generates a pie menu according to the menu entries and colors in the tool setup service
     /// </summary>
     /// <param name="pointer"></param> The pointer of the input source that opend this PieMenu
     public void Constructor(IMixedRealityPointer pointer)
@@ -39,11 +37,15 @@ public class PieMenuRenderer : MonoBehaviour
         this.pointer = pointer;
         currentlyHighlighted = int.MinValue;
 
+        //Get the setup informations from the tool setup service
+        ToolSetup toolSetup = ServiceManager.GetService<ToolSetupService>().toolSetup;
+        menuEntries = toolSetup.menuEntries;
+        normalColor = toolSetup.pieMenuPieceNormalColor;
+        highlightColor = toolSetup.pieMenuPieceHighlighColor;
+
         //Positioning
         transform.LookAt(Camera.main.transform);
         transform.Rotate(new Vector3(0, 180, 0),Space.Self);
-
-        menuEntries = ServiceManager.GetService<ToolSetupService>().toolSetup.menuEntries;
 
         //Generation
         int numberItems = menuEntries.Count;

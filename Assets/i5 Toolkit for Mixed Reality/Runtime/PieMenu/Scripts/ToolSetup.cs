@@ -14,6 +14,10 @@ public struct ToolSetup
     public MixedRealityInputAction gripPressAction;
     public MixedRealityInputAction menuAction;
 
+    //The colors for the menu
+    public Color pieMenuPieceNormalColor;
+    public Color pieMenuPieceHighlighColor;
+
     public float descriptionShowTime;
 
     //The menu entries for the virtual tool controller
