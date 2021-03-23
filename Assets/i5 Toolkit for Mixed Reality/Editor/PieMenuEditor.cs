@@ -12,20 +12,25 @@ public class PieMenuEditor : Editor
         PieMenuServiceBootstraper pieMenu = (PieMenuServiceBootstraper)target;
 
         GUIStyle borders = new GUIStyle(EditorStyles.helpBox);
+        GUIStyle buttonMarked = new GUIStyle(GUI.skin.GetStyle("Button"));
+        buttonMarked.normal = new GUIStyleState { background = buttonMarked.active.background};
+
+        GUIStyle buttonNormal = new GUIStyle(GUI.skin.GetStyle("Button"));
+        
 
         EditorGUILayout.BeginHorizontal();
 
         EditorGUILayout.BeginVertical(borders, GUILayout.MaxWidth(30));
 
-        if (GUILayout.Button("Apperance"))
+        if (GUILayout.Button("Apperance", state == PieMenuInsepectorState.Apperance ? buttonMarked : buttonNormal))
         {
             state = PieMenuInsepectorState.Apperance;
         }
-        if (GUILayout.Button("Actions"))
+        if (GUILayout.Button("Actions", state == PieMenuInsepectorState.Actions ? buttonMarked : buttonNormal))
         {
             state = PieMenuInsepectorState.Actions;
         }
-        if (GUILayout.Button("Default Behavior"))
+        if (GUILayout.Button("Default Behavior", state == PieMenuInsepectorState.DefaultBehavior ? buttonMarked : buttonNormal))
         {
             state = PieMenuInsepectorState.DefaultBehavior;
         }
@@ -56,6 +61,7 @@ public class PieMenuEditor : Editor
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndHorizontal();
     }
+
 }
 
 public enum PieMenuInsepectorState
