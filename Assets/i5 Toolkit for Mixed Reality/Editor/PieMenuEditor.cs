@@ -6,7 +6,7 @@ using UnityEngine;
 [CustomEditor(typeof(PieMenuServiceBootstraper))]
 public class PieMenuEditor : Editor
 {
-    int state = 0;
+    private PieMenuInsepectorState state = PieMenuInsepectorState.Apperance;
     public override void OnInspectorGUI()
     {
         PieMenuServiceBootstraper pieMenu = (PieMenuServiceBootstraper)target;
@@ -19,26 +19,38 @@ public class PieMenuEditor : Editor
 
         if (GUILayout.Button("Apperance"))
         {
-            state = 0;
+            state = PieMenuInsepectorState.Apperance;
         }
         if (GUILayout.Button("Actions"))
         {
-            state = 1;
+            state = PieMenuInsepectorState.Actions;
+        }
+        if (GUILayout.Button("Default Behavior"))
+        {
+            state = PieMenuInsepectorState.DefaultBehavior;
         }
 
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.BeginVertical(borders);
 
-        if (state == 0)
+        switch (state)
         {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceNormalColor"), new GUIContent("Color of the PieMenu"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceHighlighColor"), new GUIContent("Color of highlighted pieces"));
-        }
-        else
-        {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.triggerInputAction"), new GUIContent("Trigger input action"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.touchpadTouchActionAction"), new GUIContent("Touchpad touch action"));
+            case PieMenuInsepectorState.Apperance:
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceNormalColor"), new GUIContent("Color of the PieMenu"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceHighlighColor"), new GUIContent("Color of highlighted pieces"));
+                break;
+            case PieMenuInsepectorState.Actions:
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.menuAction"), new GUIContent("Menu action"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.triggerInputAction"), new GUIContent("Trigger input action"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.touchpadTouchActionAction"), new GUIContent("Touchpad touch action"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.touchpadPressAction"), new GUIContent("Touchpad press action"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.gripPressAction"), new GUIContent("Grip press action"));
+                break;
+            case PieMenuInsepectorState.DefaultBehavior:
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.defaultEntry"), true);
+                serializedObject.ApplyModifiedProperties();
+                break;
         }
 
         EditorGUILayout.EndVertical();
@@ -46,8 +58,9 @@ public class PieMenuEditor : Editor
     }
 }
 
-public enum PieInsepectoState
+public enum PieMenuInsepectorState
 {
-    Apperace,
-    Actions
+    Apperance,
+    Actions,
+    DefaultBehavior
 }
