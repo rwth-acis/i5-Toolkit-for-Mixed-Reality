@@ -12,7 +12,7 @@ using UnityEngine.Events;
 public struct MenuEntry
 {
     public Sprite iconTool;
-    public String toolName;
+    public string toolName;
    
     public string textTrigger;
     public InputActionUnityEvent OnInputActionStartedTrigger;
