@@ -11,9 +11,11 @@ public class PieMenuEditor : Editor
     {
         PieMenuServiceBootstraper pieMenu = (PieMenuServiceBootstraper)target;
 
+        GUIStyle borders = new GUIStyle(EditorStyles.helpBox);
+
         EditorGUILayout.BeginHorizontal();
 
-        EditorGUILayout.BeginVertical(GUILayout.MaxWidth(30));
+        EditorGUILayout.BeginVertical(borders, GUILayout.MaxWidth(30));
 
         if (GUILayout.Button("Apperance"))
         {
@@ -26,7 +28,7 @@ public class PieMenuEditor : Editor
 
         EditorGUILayout.EndVertical();
 
-        EditorGUILayout.BeginVertical();
+        EditorGUILayout.BeginVertical(borders);
 
         if (state == 0)
         {
