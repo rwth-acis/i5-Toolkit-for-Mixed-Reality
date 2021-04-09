@@ -48,8 +48,9 @@ public class PieMenuEditor : Editor
             case PieMenuInsepectorState.Apperance:
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceNormalColor"), new GUIContent("Color of the PieMenu"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceHighlighColor"), new GUIContent("Color of highlighted pieces"));
-                EditorGUILayout.TextField("asd");
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.descriptionShowTime"), new GUIContent("Description show time"));
                 break;
+
             case PieMenuInsepectorState.Actions:
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.menuAction"), new GUIContent("Menu action"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.triggerInputAction"), new GUIContent("Trigger input action"));
@@ -57,33 +58,42 @@ public class PieMenuEditor : Editor
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.touchpadPressAction"), new GUIContent("Touchpad press action"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.gripPressAction"), new GUIContent("Grip press action"));
                 break;
+
             case PieMenuInsepectorState.DefaultBehavior:
+                EditorGUILayout.HelpBox("The default behavior will always be used when the currently selected tool doesn't specify an action for a binding.", MessageType.Info);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.defaultEntry"));
                 serializedObject.ApplyModifiedProperties();
                 break;
+
             case PieMenuInsepectorState.MenuEntries:
-                SerializedProperty list = serializedObject.FindProperty("toolSetup.menuEntries");
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.menuEntries"),true);
+                //EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.menuEntries"),true);
+
 
                 SerializedProperty menuEntries = serializedObject.FindProperty("toolSetup.menuEntries");
-                //menuEntries.ClearArray();
+                int entryToDelete = -1;
 
-                //if (GUILayout.Button("Clear"))
-                //{
-                //    menuEntries.ClearArray();
-                //}
+                int size = menuEntries.arraySize;
 
-                //int size = menuEntries.arraySize;
+                for (int i = 0; i < size; i++)
+                {
+                    EditorGUILayout.BeginVertical(borders);
+                    EditorGUILayout.PropertyField(menuEntries.GetArrayElementAtIndex(i));
+                    if (GUILayout.Button("Delete this entry"))
+                    {
+                        entryToDelete = i;
+                    }
+                    EditorGUILayout.EndVertical();
+                }
 
-                //for (int i = 0; i < size; i++)
-                //{
-                //    EditorGUILayout.PropertyField(menuEntries.GetArrayElementAtIndex(i));
-                //}
+                if (entryToDelete >= 0)
+                {
+                    menuEntries.DeleteArrayElementAtIndex(entryToDelete);
+                }
 
-                //if (GUILayout.Button("Add Entry"))
-                //{
-                //    menuEntries.InsertArrayElementAtIndex(menuEntries.arraySize);
-                //}
+                if (GUILayout.Button("Add Entry"))
+                {
+                    menuEntries.InsertArrayElementAtIndex(menuEntries.arraySize);
+                }
                 break;
         }
         serializedObject.ApplyModifiedProperties();
