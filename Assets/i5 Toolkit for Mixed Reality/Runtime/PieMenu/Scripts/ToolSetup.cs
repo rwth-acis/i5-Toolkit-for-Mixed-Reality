@@ -18,6 +18,7 @@ public struct ToolSetup
     public Color pieMenuPieceNormalColor;
     public Color pieMenuPieceHighlighColor;
 
+    [Tooltip("Number of seconds, the descriptions will be shown after a tool switch")]
     public float descriptionShowTime;
 
     //The menu entries for the virtual tool controller
