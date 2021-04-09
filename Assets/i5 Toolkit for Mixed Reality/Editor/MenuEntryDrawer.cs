@@ -17,6 +17,7 @@ public class MenuEntryDrawer : PropertyDrawer
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        EditorGUI.BeginProperty(position, label, property);
         EditorGUI.indentLevel++;
 
         showToolSetup = ShowPropertysInFoldout("General Tool Settings", property, new PropertyInfos[] {             new PropertyInfos("toolName", "Tool Name"),
@@ -51,7 +52,8 @@ public class MenuEntryDrawer : PropertyDrawer
                                                                                                                     new PropertyInfos("OnHoverOverTargetStart",""),
                                                                                                                     new PropertyInfos("OnHoverOverTargetActive",""),
                                                                                                                     new PropertyInfos("OnHoverOverTargetStop", "")}, showToolSpecificEvents);
-
+        EditorGUI.indentLevel--;
+        EditorGUI.EndProperty();
     }
 
 
