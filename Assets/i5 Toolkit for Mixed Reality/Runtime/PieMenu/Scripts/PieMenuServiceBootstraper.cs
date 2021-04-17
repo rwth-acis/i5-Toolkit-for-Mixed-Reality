@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using i5.Toolkit.Core.ServiceCore;
 
-public class PieMenuServiceBootstraper : BaseServiceBootstrapper
+
+namespace i5.Toolkit.MixedReality.PieMenu
 {
-    public ToolSetup toolSetup;
-    override protected void RegisterServices()
+    public class PieMenuServiceBootstraper : BaseServiceBootstrapper
     {
-        CommandStackService commandStackService = new CommandStackService();
-        ToolSetupService toolSetupService = new ToolSetupService(toolSetup);
+        public ToolSetup toolSetup;
+        override protected void RegisterServices()
+        {
+            CommandStackService commandStackService = new CommandStackService();
+            ToolSetupService toolSetupService = new ToolSetupService(toolSetup);
 
-        ServiceManager.RegisterService(commandStackService);
-        ServiceManager.RegisterService(toolSetupService);
-    }
+            ServiceManager.RegisterService(commandStackService);
+            ServiceManager.RegisterService(toolSetupService);
+        }
 
-    protected override void UnRegisterServices()
-    {
-        ServiceManager.RemoveService<CommandStackService>();
-    }
+        protected override void UnRegisterServices()
+        {
+            ServiceManager.RemoveService<CommandStackService>();
+        }
+    } 
 }

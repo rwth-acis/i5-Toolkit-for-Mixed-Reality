@@ -5,20 +5,23 @@ using i5.Toolkit.Core.ServiceCore;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
 
-public class ToolSetupService : IService
+namespace i5.Toolkit.MixedReality.PieMenu
 {
-    public ToolSetup toolSetup;
-
-    public ToolSetupService(ToolSetup toolSetup)
+    public class ToolSetupService : IService
     {
-        this.toolSetup = toolSetup;
-    }
+        public ToolSetup toolSetup;
 
-    void IService.Initialize(IServiceManager owner)
-    {
-    }
+        public ToolSetupService(ToolSetup toolSetup)
+        {
+            this.toolSetup = toolSetup;
+        }
 
-    void IService.Cleanup()
-    {
-    }
+        void IService.Initialize(IServiceManager owner)
+        {
+        }
+
+        void IService.Cleanup()
+        {
+        }
+    } 
 }
