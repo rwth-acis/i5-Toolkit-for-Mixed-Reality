@@ -28,7 +28,7 @@ public class GeneralToolActions : ActionHelperFunctions
         if (objectTransformer != null)
         {
             IObjectTransformer transformer = objectTransformer.GetComponent<IObjectTransformer>();
-            objectToSpawnIconOver = transformer.transformObject(data.NewFocusedObject, virtualTool.currentEntry.toolName);
+            objectToSpawnIconOver = transformer.transformObject(data.NewFocusedObject, virtualTool.currentEntry.toolSettings.toolName);
         }
         else
         {
@@ -42,7 +42,7 @@ public class GeneralToolActions : ActionHelperFunctions
                 Destroy(instantiatedIcon);
             }
             instantiatedIcon = Instantiate(highlightSprite);
-            instantiatedIcon.GetComponentInChildren<Image>().sprite = GetVirtualToolFromPointer(data.Pointer).currentEntry.iconTool;
+            instantiatedIcon.GetComponentInChildren<Image>().sprite = GetVirtualToolFromPointer(data.Pointer).currentEntry.toolSettings.iconTool;
         }
     }
 
@@ -60,7 +60,7 @@ public class GeneralToolActions : ActionHelperFunctions
             if (objectTransformer != null)
             {
                 IObjectTransformer transformer = objectTransformer.GetComponent<IObjectTransformer>();
-                target = transformer.transformObject(data.NewFocusedObject, virtualTool.currentEntry.toolName);
+                target = transformer.transformObject(data.NewFocusedObject, virtualTool.currentEntry.toolSettings.toolName);
             }
             else
             {

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Replaces the default inspector by one that looks similar to the Microsoft MRTK inspector
+/// </summary>
 [CustomEditor(typeof(PieMenuServiceBootstraper))]
 public class PieMenuEditor : Editor
 {
@@ -61,14 +64,13 @@ public class PieMenuEditor : Editor
 
             case PieMenuInsepectorState.DefaultBehavior:
                 EditorGUILayout.HelpBox("The default behavior will always be used when the currently selected tool doesn't specify an action for a binding.", MessageType.Info);
+                EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.defaultEntry"));
-                serializedObject.ApplyModifiedProperties();
+                EditorGUI.indentLevel--;
                 break;
 
             case PieMenuInsepectorState.MenuEntries:
-                //EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.menuEntries"),true);
-
-
+                EditorGUI.indentLevel++;
                 SerializedProperty menuEntries = serializedObject.FindProperty("toolSetup.menuEntries");
                 int entryToDelete = -1;
 
@@ -94,6 +96,7 @@ public class PieMenuEditor : Editor
                 {
                     menuEntries.InsertArrayElementAtIndex(menuEntries.arraySize);
                 }
+                EditorGUI.indentLevel--;
                 break;
         }
         serializedObject.ApplyModifiedProperties();

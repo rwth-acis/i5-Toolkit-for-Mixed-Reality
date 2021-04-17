@@ -23,35 +23,35 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
     /// <param name="newEntry"></param> The new entry
     public void SetupTool(MenuEntry newEntry)
     {
-        if (currentEntry.OnToolDestroyed != null)
+        if (currentEntry.toolSpecificevents.OnToolDestroyed != null)
         {
-            currentEntry.OnToolDestroyed.Invoke(null);
+            currentEntry.toolSpecificevents.OnToolDestroyed.Invoke(null);
         }
 
         defaultEntry = ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry;
 
         //set the new icons
-        SetIcon("ToolIconCanvas", newEntry.iconTool, defaultEntry.iconTool);
-        SetIcon("TouchpadRightIcon", newEntry.iconTouchpadRight, defaultEntry.iconTouchpadRight);
-        SetIcon("TouchpadUpIcon", newEntry.iconTouchpadUp, defaultEntry.iconTouchpadUp);
-        SetIcon("TouchpadLeftIcon", newEntry.iconTouchpadLeft, defaultEntry.iconTouchpadLeft);
-        SetIcon("TouchpadDownIcon", newEntry.iconTouchpadDown, defaultEntry.iconTouchpadDown);
+        SetIcon("ToolIconCanvas", newEntry.toolSettings.iconTool, defaultEntry.toolSettings.iconTool);
+        SetIcon("TouchpadRightIcon", newEntry.touchpadRightSettings.iconTouchpadRight, defaultEntry.touchpadRightSettings.iconTouchpadRight);
+        SetIcon("TouchpadUpIcon", newEntry.touchpadUpSettings.iconTouchpadUp, defaultEntry.touchpadUpSettings.iconTouchpadUp);
+        SetIcon("TouchpadLeftIcon", newEntry.touchpadLeftSettings.iconTouchpadLeft, defaultEntry.touchpadLeftSettings.iconTouchpadLeft);
+        SetIcon("TouchpadDownIcon", newEntry.TouchpadDownSettings.iconTouchpadDown, defaultEntry.TouchpadDownSettings.iconTouchpadDown);
 
-        if (newEntry.OnToolCreated != null)
+        if (newEntry.toolSpecificevents.OnToolCreated != null)
         {
-            newEntry.OnToolCreated.Invoke(null);
+            newEntry.toolSpecificevents.OnToolCreated.Invoke(null);
         }
 
         //Enable the button explain text
         GameObject menuButton = transform.Find("ButtonDescriptions").gameObject;
         menuButton.SetActive(true);
 
-        SetText("TouchpadRightText", newEntry.textTouchpadRight, defaultEntry.textTouchpadRight);
-        SetText("TouchpadDownText", newEntry.textTouchpadDown, defaultEntry.textTouchpadDown);
-        SetText("TouchpadLeftText", newEntry.textTouchpadLeft, defaultEntry.textTouchpadLeft);
-        SetText("TouchpadUpText", newEntry.textTouchpadUp, defaultEntry.textTouchpadUp);
-        SetText("TriggerText", newEntry.textTrigger, defaultEntry.textTrigger);
-        SetText("GripText", newEntry.textGrip, defaultEntry.textGrip);
+        SetText("TouchpadRightText", newEntry.touchpadRightSettings.textTouchpadRight, defaultEntry.touchpadRightSettings.textTouchpadRight);
+        SetText("TouchpadDownText", newEntry.TouchpadDownSettings.textTouchpadDown, defaultEntry.TouchpadDownSettings.textTouchpadDown);
+        SetText("TouchpadLeftText", newEntry.touchpadLeftSettings.textTouchpadLeft, defaultEntry.touchpadLeftSettings.textTouchpadLeft);
+        SetText("TouchpadUpText", newEntry.touchpadUpSettings.textTouchpadUp, defaultEntry.touchpadUpSettings.textTouchpadUp);
+        SetText("TriggerText", newEntry.triggerSettings.textTrigger, defaultEntry.triggerSettings.textTrigger);
+        SetText("GripText", newEntry.gripSettings.textGrip, defaultEntry.gripSettings.textGrip);
 
         StopCoroutine("DisableDescriptions");
         //Waits descriptionShowTime befor disabling the descriptions
@@ -103,18 +103,18 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
             {
                 if (oldFocusTarget != null)
                 {
-                    currentEntry.OnHoverOverTargetStop.Invoke(data);
+                    currentEntry.toolSpecificevents.OnHoverOverTargetStop.Invoke(data);
                 }
 
                 if (target != null)
                 {
-                    currentEntry.OnHoverOverTargetStart.Invoke(data);
-                    currentEntry.OnHoverOverTargetActive.Invoke(data);
+                    currentEntry.toolSpecificevents.OnHoverOverTargetStart.Invoke(data);
+                    currentEntry.toolSpecificevents.OnHoverOverTargetActive.Invoke(data);
                 }
             }
             else if (target != null)
             {
-                currentEntry.OnHoverOverTargetActive.Invoke(data);
+                currentEntry.toolSpecificevents.OnHoverOverTargetActive.Invoke(data);
             }
             oldFocusTarget = target;
         }
@@ -150,7 +150,7 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
         if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.triggerInputAction && IsInputSourceThis(eventData.InputSource) && !eventData.used)
         {
             //On Trigger event
-            currentEntry.OnInputActionStartedTrigger?.Invoke(eventData);
+            currentEntry.triggerSettings.OnInputActionStartedTrigger?.Invoke(eventData);
         }
     }
     /// <summary>
@@ -163,7 +163,7 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
         {
             if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.triggerInputAction)
             {
-                    currentEntry.OnInputActionEndedTrigger?.Invoke(eventData);
+                    currentEntry.triggerSettings.OnInputActionEndedTrigger?.Invoke(eventData);
             }
             else if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.touchpadPressAction)
             {
@@ -172,49 +172,49 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
                 if (angle > -45 && angle <= 45)
                 {
                     //Right press
-                    if (currentEntry.OnInputActionEndedTouchpadRight.GetPersistentEventCount() > 0)
+                    if (currentEntry.touchpadRightSettings.OnInputActionEndedTouchpadRight.GetPersistentEventCount() > 0)
                     {
-                        currentEntry.OnInputActionEndedTouchpadRight?.Invoke(eventData);
+                        currentEntry.touchpadRightSettings.OnInputActionEndedTouchpadRight?.Invoke(eventData);
                     }
                     else
                     {
-                        defaultEntry.OnInputActionEndedTouchpadRight.Invoke(eventData);
+                        defaultEntry.touchpadRightSettings.OnInputActionEndedTouchpadRight.Invoke(eventData);
                     }
                 }
                 else if (angle > 45 && angle <= 135)
                 {
                     //Up press
-                    if (currentEntry.OnInputActionEndedTouchpadUp.GetPersistentEventCount() > 0)
+                    if (currentEntry.touchpadUpSettings.OnInputActionEndedTouchpadUp.GetPersistentEventCount() > 0)
                     {
-                        currentEntry.OnInputActionEndedTouchpadUp.Invoke(eventData);
+                        currentEntry.touchpadUpSettings.OnInputActionEndedTouchpadUp.Invoke(eventData);
                     }
                     else
                     {
-                        defaultEntry.OnInputActionEndedTouchpadUp.Invoke(eventData);
+                        defaultEntry.touchpadUpSettings.OnInputActionEndedTouchpadUp.Invoke(eventData);
                     }
                 }
                 else if ((angle > 135 && angle <= 180) || (angle >= -180 && angle <= -135))
                 {
                     //Left press
-                    if (currentEntry.OnInputActionEndedTouchpadLeft.GetPersistentEventCount() > 0)
+                    if (currentEntry.touchpadLeftSettings.OnInputActionEndedTouchpadLeft.GetPersistentEventCount() > 0)
                     {
-                        currentEntry.OnInputActionEndedTouchpadLeft?.Invoke(eventData);
+                        currentEntry.touchpadLeftSettings.OnInputActionEndedTouchpadLeft?.Invoke(eventData);
                     }
                     else
                     {
-                        defaultEntry.OnInputActionEndedTouchpadLeft.Invoke(eventData);
+                        defaultEntry.touchpadLeftSettings.OnInputActionEndedTouchpadLeft.Invoke(eventData);
                     }
                 }
                 else
                 {
                     //Down press
-                    if (currentEntry.OnInputActionEndedTouchpadDown.GetPersistentEventCount() > 0)
+                    if (currentEntry.TouchpadDownSettings.OnInputActionEndedTouchpadDown.GetPersistentEventCount() > 0)
                     {
-                        currentEntry.OnInputActionEndedTouchpadDown?.Invoke(eventData);
+                        currentEntry.TouchpadDownSettings.OnInputActionEndedTouchpadDown?.Invoke(eventData);
                     }
                     else
                     {
-                        defaultEntry.OnInputActionEndedTouchpadDown.Invoke(eventData);
+                        defaultEntry.TouchpadDownSettings.OnInputActionEndedTouchpadDown.Invoke(eventData);
                     }
                 }
             }
@@ -242,24 +242,24 @@ public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IM
         {
             if (eventData.InputData > 0.5)
             {
-                if (currentEntry.OnInputActionStartedGrip.GetPersistentEventCount() > 0)
+                if (currentEntry.gripSettings.OnInputActionStartedGrip.GetPersistentEventCount() > 0)
                 {
-                    currentEntry.OnInputActionStartedGrip.Invoke(eventData);
+                    currentEntry.gripSettings.OnInputActionStartedGrip.Invoke(eventData);
                 }
                 else
                 {
-                    defaultEntry.OnInputActionStartedGrip.Invoke(eventData);
+                    defaultEntry.gripSettings.OnInputActionStartedGrip.Invoke(eventData);
                 }
             }
             else
             {
-                if (currentEntry.OnInputActionEndedGrip.GetPersistentEventCount() > 0)
+                if (currentEntry.gripSettings.OnInputActionEndedGrip.GetPersistentEventCount() > 0)
                 {
-                    currentEntry.OnInputActionEndedGrip.Invoke(eventData);
+                    currentEntry.gripSettings.OnInputActionEndedGrip.Invoke(eventData);
                 }
                 else
                 {
-                    defaultEntry.OnInputActionEndedGrip.Invoke(eventData);
+                    defaultEntry.gripSettings.OnInputActionEndedGrip.Invoke(eventData);
                 }
             }
         }
