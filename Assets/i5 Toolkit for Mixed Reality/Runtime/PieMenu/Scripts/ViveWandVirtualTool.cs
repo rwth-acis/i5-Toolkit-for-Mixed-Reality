@@ -3,7 +3,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
 using i5.Toolkit.Core.ServiceCore;
-//using TMPro;
+
 
 public class ViveWandVirtualTool : ViveWand, IMixedRealityInputActionHandler, IMixedRealityInputHandler<Vector2>, IMixedRealityInputHandler<float>
 {
