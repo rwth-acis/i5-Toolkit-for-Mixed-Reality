@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
@@ -42,6 +44,10 @@ namespace i5.Toolkit.MixedReality.PieMenu
             if (GUILayout.Button("Menu Entries", state == PieMenuInsepectorState.MenuEntries ? buttonMarked : buttonNormal))
             {
                 state = PieMenuInsepectorState.MenuEntries;
+            }
+            if (GUILayout.Button("Debug", state == PieMenuInsepectorState.Debug ? buttonMarked : buttonNormal))
+            {
+                state = PieMenuInsepectorState.Debug;
             }
 
             EditorGUILayout.EndVertical();
@@ -100,6 +106,44 @@ namespace i5.Toolkit.MixedReality.PieMenu
                     }
                     EditorGUI.indentLevel--;
                     break;
+                case PieMenuInsepectorState.Debug:
+                    EditorGUI.indentLevel++;
+
+                    void OverrideThumbPosition(Vector2 position)
+                    {
+                        foreach (var source in CoreServices.InputSystem.DetectedInputSources)
+                        {
+                            foreach (var p in source.Pointers)
+                            {
+                                ViveWandVirtualTool tool = ActionHelperFunctions.GetVirtualToolFromPointer(p);
+                                if (tool != null)
+                                {
+                                    tool.thumbPosition = position;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (GUILayout.Button("Override Thumposition Right"))
+                    {
+                        OverrideThumbPosition(new Vector2(1,0));
+                    }
+                    if (GUILayout.Button("Override Thumposition Up"))
+                    {
+                        OverrideThumbPosition(new Vector2(0, 1));
+                    }
+                    if (GUILayout.Button("Override Thumposition Left"))
+                    {
+                        OverrideThumbPosition(new Vector2(-1, 0));
+                    }
+                    if (GUILayout.Button("Override Thumposition Down"))
+                    {
+                        OverrideThumbPosition(new Vector2(0, -1));
+                    }
+
+                    EditorGUI.indentLevel--;
+                    break;
             }
             serializedObject.ApplyModifiedProperties();
             EditorGUILayout.EndVertical();
@@ -113,6 +157,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         Apperance,
         Actions,
         DefaultBehavior,
-        MenuEntries
+        MenuEntries,
+        Debug
     } 
 }

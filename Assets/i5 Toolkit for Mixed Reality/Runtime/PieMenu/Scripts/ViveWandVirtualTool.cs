@@ -12,7 +12,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         MenuEntry defaultEntry;
 
         //The last recorded position on the touchpad
-        Vector2 thumbPosition;
+        public Vector2 thumbPosition;
 
         public MenuEntry currentEntry { get; private set; }
 
