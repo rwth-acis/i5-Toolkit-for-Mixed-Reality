@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public interface IToolAction
+namespace i5.Toolkit.MixedReality.PieMenu
 {
-    void DoAction();
-    void UndoAction();
+    public interface IToolAction
+    {
+        void DoAction();
+        void UndoAction();
+    }
 }

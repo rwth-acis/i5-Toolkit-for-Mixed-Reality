@@ -4,29 +4,32 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using i5.Toolkit.Core.ServiceCore;
 
-/// <summary>
-/// Manages the undo and redo stack for the tool actions
-/// </summary>
-public class CommandStackService : IService
+namespace i5.Toolkit.MixedReality.PieMenu
 {
-    public Stack undoActionStack;
-    public Stack redoActionStack;
-
-    void IService.Initialize(IServiceManager owner)
+    /// <summary>
+    /// Manages the undo and redo stack for the tool actions
+    /// </summary>
+    public class CommandStackService : IService
     {
-        undoActionStack = new Stack();
-        redoActionStack = new Stack();
-    }
+        public Stack undoActionStack;
+        public Stack redoActionStack;
 
-    void IService.Cleanup()
-    {
-        undoActionStack = null;
-        redoActionStack = null;
-    }
+        void IService.Initialize(IServiceManager owner)
+        {
+            undoActionStack = new Stack();
+            redoActionStack = new Stack();
+        }
 
-    public void Initialise()
-    {
-        undoActionStack = new Stack();
-        redoActionStack = new Stack();
+        void IService.Cleanup()
+        {
+            undoActionStack = null;
+            redoActionStack = null;
+        }
+
+        public void Initialise()
+        {
+            undoActionStack = new Stack();
+            redoActionStack = new Stack();
+        }
     }
 }
