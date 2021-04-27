@@ -20,9 +20,9 @@ MonoBehaviour:
   useDefaultModels: 1
   defaultControllerModelMaterial: {fileID: 2100000, guid: 54322026142964d4084eda2478d9b1a2,
     type: 2}
-  globalLeftControllerModel: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
+  globalLeftControllerModel: {fileID: 1090043531797461259, guid: c449276faef3704409b263ad4d8b8018,
     type: 3}
-  globalRightControllerModel: {fileID: 1760394390528354, guid: 9ef0df44319c4fb4a05649e5b8ceb6d1,
+  globalRightControllerModel: {fileID: 1090043531797461259, guid: c449276faef3704409b263ad4d8b8018,
     type: 3}
   globalLeftHandVisualizer: {fileID: 1227372834072826, guid: 378f91dbbff9e2343b27a467467750bf,
     type: 3}
