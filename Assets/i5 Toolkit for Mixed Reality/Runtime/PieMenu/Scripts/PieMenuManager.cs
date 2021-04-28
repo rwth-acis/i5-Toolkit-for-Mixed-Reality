@@ -26,17 +26,19 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
         void IMixedRealityInputActionHandler.OnActionStarted(BaseInputEventData eventData)
         {
-            if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.menuAction)
+            if (!eventData.used && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.menuAction)
             {
                 MenuOpen(eventData);
+                eventData.Use();
             }
         }
 
         void IMixedRealityInputActionHandler.OnActionEnded(BaseInputEventData eventData)
         {
-            if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.menuAction)
+            if (!eventData.used && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.menuAction)
             {
                 MenuClose(eventData);
+                eventData.Use();
             }
         }
 
