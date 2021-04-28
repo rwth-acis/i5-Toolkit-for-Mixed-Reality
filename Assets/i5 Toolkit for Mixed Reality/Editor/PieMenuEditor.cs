@@ -59,7 +59,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 case PieMenuInsepectorState.Apperance:
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceNormalColor"), new GUIContent("Color of the PieMenu"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceHighlighColor"), new GUIContent("Color of highlighted pieces"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.descriptionShowTime"), new GUIContent("Description show time"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.descriptionShowTime"), new GUIContent("Description show time in Seconds"));
                     break;
 
                 case PieMenuInsepectorState.Actions:
@@ -73,7 +73,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 case PieMenuInsepectorState.DefaultBehavior:
                     EditorGUILayout.HelpBox("The default behavior will always be used when the currently selected tool doesn't specify an action for a binding.", MessageType.Info);
                     EditorGUI.indentLevel++;
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.defaultEntry"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.defaultEntry"), true);
                     EditorGUI.indentLevel--;
                     break;
 
@@ -87,7 +87,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                     for (int i = 0; i < size; i++)
                     {
                         EditorGUILayout.BeginVertical(borders);
-                        EditorGUILayout.PropertyField(menuEntries.GetArrayElementAtIndex(i));
+                        EditorGUILayout.PropertyField(menuEntries.GetArrayElementAtIndex(i), true);
                         if (GUILayout.Button("Delete this entry"))
                         {
                             entryToDelete = i;
