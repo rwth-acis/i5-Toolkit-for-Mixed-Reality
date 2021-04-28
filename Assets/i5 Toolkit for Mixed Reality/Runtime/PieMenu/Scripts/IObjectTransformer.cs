@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IObjectTransformer
+namespace i5.Toolkit.MixedReality.PieMenu
 {
-    GameObject transformObject(GameObject objectToTransform, string toolName);
+    public interface IObjectTransformer
+    {
+        GameObject transformObject(GameObject objectToTransform, string toolName);
+    }
 }
