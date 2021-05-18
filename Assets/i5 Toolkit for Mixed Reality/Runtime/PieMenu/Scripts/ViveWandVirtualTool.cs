@@ -105,18 +105,51 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 {
                     if (oldFocusTarget != null)
                     {
-                        currentEntry.toolSpecificevents.OnHoverOverTargetStop.Invoke(data);
+                        //Hover stop
+                        if (currentEntry.toolSpecificevents.OnHoverOverTargetStop.GetPersistentEventCount() > 0)
+                        {
+                            currentEntry.toolSpecificevents.OnHoverOverTargetStop.Invoke(data);
+                        }
+                        else
+                        {
+                            defaultEntry.toolSpecificevents.OnHoverOverTargetStop.Invoke(data);
+                        }
                     }
 
                     if (target != null)
                     {
-                        currentEntry.toolSpecificevents.OnHoverOverTargetStart.Invoke(data);
-                        currentEntry.toolSpecificevents.OnHoverOverTargetActive.Invoke(data);
+                        //Hover start
+                        if (currentEntry.toolSpecificevents.OnHoverOverTargetStart.GetPersistentEventCount() > 0)
+                        {
+                            currentEntry.toolSpecificevents.OnHoverOverTargetStart.Invoke(data);
+                        }
+                        else
+                        {
+                            defaultEntry.toolSpecificevents.OnHoverOverTargetStart.Invoke(data);
+                        }
+
+                        //Hover active
+                        if (currentEntry.toolSpecificevents.OnHoverOverTargetActive.GetPersistentEventCount() > 0)
+                        {
+                            currentEntry.toolSpecificevents.OnHoverOverTargetActive.Invoke(data);
+                        }
+                        else
+                        {
+                            defaultEntry.toolSpecificevents.OnHoverOverTargetActive.Invoke(data);
+                        }
                     }
                 }
                 else if (target != null)
                 {
-                    currentEntry.toolSpecificevents.OnHoverOverTargetActive.Invoke(data);
+                    //Hover active
+                    if (currentEntry.toolSpecificevents.OnHoverOverTargetActive.GetPersistentEventCount() > 0)
+                    {
+                        currentEntry.toolSpecificevents.OnHoverOverTargetActive.Invoke(data);
+                    }
+                    else
+                    {
+                        defaultEntry.toolSpecificevents.OnHoverOverTargetActive.Invoke(data);
+                    }
                 }
                 oldFocusTarget = target;
             }
