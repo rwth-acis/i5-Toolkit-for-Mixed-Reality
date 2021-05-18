@@ -15,12 +15,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// </summary>
         public void UndoToolAction()
         {
-            if (ServiceManager.GetService<CommandStackService>().undoActionStack.Count > 0)
-            {
-                IToolAction action = (IToolAction)ServiceManager.GetService<CommandStackService>().undoActionStack.Pop();
-                action.UndoAction();
-                ServiceManager.GetService<CommandStackService>().redoActionStack.Push(action);
-            }
+            ServiceManager.GetService<CommandStackService>().UndoAction();
         }
 
         /// <summary>
@@ -29,12 +24,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         public void RedoToolAction()
         {
 
-            if (ServiceManager.GetService<CommandStackService>().redoActionStack.Count > 0)
-            {
-                IToolAction action = (IToolAction)ServiceManager.GetService<CommandStackService>().redoActionStack.Pop();
-                action.DoAction();
-                ServiceManager.GetService<CommandStackService>().undoActionStack.Push(action);
-            }
+            ServiceManager.GetService<CommandStackService>().RedoAction();
         }
     }
 }

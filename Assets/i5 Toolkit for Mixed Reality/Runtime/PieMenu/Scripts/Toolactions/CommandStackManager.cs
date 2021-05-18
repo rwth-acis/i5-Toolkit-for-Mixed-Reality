@@ -11,13 +11,13 @@ namespace i5.Toolkit.MixedReality.PieMenu
     /// </summary>
     public class CommandStackService : IService
     {
-        public Stack undoActionStack;
-        public Stack redoActionStack;
+        Stack<IToolAction> undoActionStack;
+        Stack<IToolAction> redoActionStack;
 
         void IService.Initialize(IServiceManager owner)
         {
-            undoActionStack = new Stack();
-            redoActionStack = new Stack();
+            undoActionStack = new Stack<IToolAction>();
+            redoActionStack = new Stack<IToolAction>();
         }
 
         void IService.Cleanup()
@@ -28,8 +28,39 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
         public void Initialise()
         {
-            undoActionStack = new Stack();
-            redoActionStack = new Stack();
+            undoActionStack = new Stack<IToolAction>();
+            redoActionStack = new Stack<IToolAction>();
+        }
+
+        public void AddAndPerformAction(IToolAction action)
+        {
+            action.DoAction();
+            undoActionStack.Push(action);
+        }
+
+        public void AddAction(IToolAction action)
+        {
+            undoActionStack.Push(action);
+        }
+
+        public void UndoAction()
+        {
+            if (undoActionStack.Count > 0)
+            {
+                IToolAction action = undoActionStack.Pop();
+                action.UndoAction();
+                redoActionStack.Push(action);
+            }
+        }
+
+        public void RedoAction()
+        {
+            if (redoActionStack.Count > 0)
+            {
+                IToolAction action = redoActionStack.Pop();
+                action.DoAction();
+                undoActionStack.Push(action);
+            }
         }
     }
 }
