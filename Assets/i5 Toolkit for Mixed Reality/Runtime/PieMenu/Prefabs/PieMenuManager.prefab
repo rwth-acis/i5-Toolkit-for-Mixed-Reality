@@ -85,79 +85,72 @@ MonoBehaviour:
     descriptionShowTime: 0
     menuEntries: []
     defaultEntry:
-      iconTool: {fileID: 0}
-      toolName: 
-      textTrigger: 
-      OnInputActionStartedTrigger:
-        m_PersistentCalls:
-          m_Calls: []
-      OnInputActionEndedTrigger:
-        m_PersistentCalls:
-          m_Calls: []
-      textGrip: Show Descriptions
-      OnInputActionStartedGrip:
-        m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 8821610706099530504}
-            m_MethodName: ActivateDesciptionTexts
-            m_Mode: 0
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
-      OnInputActionEndedGrip:
-        m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 8821610706099530504}
-            m_MethodName: DeactivateDesciptionTexts
-            m_Mode: 0
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
-      textTouchpadRight: 
-      iconTouchpadRight: {fileID: 0}
-      OnInputActionEndedTouchpadRight:
-        m_PersistentCalls:
-          m_Calls: []
-      textTouchpadLeft: 
-      iconTouchpadLeft: {fileID: 0}
-      OnInputActionEndedTouchpadLeft:
-        m_PersistentCalls:
-          m_Calls: []
-      textTouchpadUp: 
-      iconTouchpadUp: {fileID: 0}
-      OnInputActionEndedTouchpadUp:
-        m_PersistentCalls:
-          m_Calls: []
-      textTouchpadDown: 
-      iconTouchpadDown: {fileID: 0}
-      OnInputActionEndedTouchpadDown:
-        m_PersistentCalls:
-          m_Calls: []
-      OnToolCreated:
-        m_PersistentCalls:
-          m_Calls: []
-      OnToolDestroyed:
-        m_PersistentCalls:
-          m_Calls: []
-      OnHoverOverTargetStart:
-        m_PersistentCalls:
-          m_Calls: []
-      OnHoverOverTargetActive:
-        m_PersistentCalls:
-          m_Calls: []
-      OnHoverOverTargetStop:
-        m_PersistentCalls:
-          m_Calls: []
+      toolSettings:
+        iconTool: {fileID: 0}
+        toolName: 
+      triggerSettings:
+        textTrigger: 
+        OnInputActionStartedTrigger:
+          m_PersistentCalls:
+            m_Calls: []
+        OnInputActionEndedTrigger:
+          m_PersistentCalls:
+            m_Calls: []
+      gripSettings:
+        textGrip: 
+        OnInputActionStartedGrip:
+          m_PersistentCalls:
+            m_Calls: []
+        OnInputActionEndedGrip:
+          m_PersistentCalls:
+            m_Calls: []
+      touchpadUpSettings:
+        textTouchpadUp: 
+        iconTouchpadUp: {fileID: 0}
+        OnInputActionEndedTouchpadUp:
+          m_PersistentCalls:
+            m_Calls: []
+      touchpadRightSettings:
+        textTouchpadRight: 
+        iconTouchpadRight: {fileID: 0}
+        OnInputActionEndedTouchpadRight:
+          m_PersistentCalls:
+            m_Calls: []
+      TouchpadDownSettings:
+        textTouchpadDown: 
+        iconTouchpadDown: {fileID: 0}
+        OnInputActionEndedTouchpadDown:
+          m_PersistentCalls:
+            m_Calls: []
+      touchpadLeftSettings:
+        textTouchpadLeft: 
+        iconTouchpadLeft: {fileID: 0}
+        OnInputActionEndedTouchpadLeft:
+          m_PersistentCalls:
+            m_Calls: []
+      toolSpecificevents:
+        OnToolCreated:
+          m_PersistentCalls:
+            m_Calls: []
+        OnToolDestroyed:
+          m_PersistentCalls:
+            m_Calls: []
+        OnHoverOverTargetStart:
+          m_PersistentCalls:
+            m_Calls: []
+        OnHoverOverTargetActive:
+          m_PersistentCalls:
+            m_Calls: []
+        OnHoverOverTargetStop:
+          m_PersistentCalls:
+            m_Calls: []
+    textGrip: 
+    OnInputActionStartedGrip:
+      m_PersistentCalls:
+        m_Calls: []
+    OnInputActionEndedGrip:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &8821610706099530504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,5 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06fffcae02927244b989639db4a97a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightSprite: {fileID: 0}
+  highlightSprite: {fileID: 4521950659112143869, guid: db57ff4ff63901f4eaeb3d9a1a1255e2,
+    type: 3}
   objectTransformer: {fileID: 0}

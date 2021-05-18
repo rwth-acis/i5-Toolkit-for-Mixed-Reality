@@ -1578,7 +1578,7 @@ PrefabInstance:
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].gripSettings.textGrip
-      value: Grip Test
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1620,8 +1620,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadLeftSettings.iconTouchpadLeft
+      value: 
+      objectReference: {fileID: 21300000, guid: 8c6f907fc56082b43a03a99b716476ee,
+        type: 3}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadLeftSettings.textTouchpadLeft
+      value: Undo
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadRightSettings.iconTouchpadRight
+      value: 
+      objectReference: {fileID: 21300000, guid: 6430351aea990a3448764d7504c52f90,
+        type: 3}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadRightSettings.textTouchpadRight
+      value: Redo
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].triggerSettings.textTrigger
-      value: Trigger Test
+      value: Delete
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1642,12 +1664,11 @@ PrefabInstance:
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].touchpadUpSettings.iconTouchpadUp
       value: 
-      objectReference: {fileID: 21300000, guid: c39a5627a91ae1243b9cd308c32c8138,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].touchpadUpSettings.textTouchpadUp
-      value: Up Press Test
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1669,23 +1690,21 @@ PrefabInstance:
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].TouchpadDownSettings.iconTouchpadDown
       value: 
-      objectReference: {fileID: 21300000, guid: c39a5627a91ae1243b9cd308c32c8138,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].TouchpadDownSettings.textTouchpadDown
-      value: Down Press Test
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].touchpadLeftSettings.iconTouchpadLeft
       value: 
-      objectReference: {fileID: 21300000, guid: c39a5627a91ae1243b9cd308c32c8138,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].touchpadLeftSettings.textTouchpadLeft
-      value: Left Press Test
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1713,12 +1732,11 @@ PrefabInstance:
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].touchpadRightSettings.iconTouchpadRight
       value: 
-      objectReference: {fileID: 21300000, guid: c39a5627a91ae1243b9cd308c32c8138,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].touchpadRightSettings.textTouchpadRight
-      value: Right Press Test
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1818,6 +1836,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStop.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1828,8 +1851,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStart.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.defaultEntry.OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetActive.m_PersistentCalls.m_Calls.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1868,13 +1901,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStop.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].gripSettings.OnInputActionStartedGrip.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1888,13 +1926,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStart.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadLeftSettings.OnInputActionEndedTouchpadLeft.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.defaultEntry.gripSettings.OnInputActionStartedGrip.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetActive.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStop.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1081343623}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.defaultEntry.gripSettings.OnInputActionStartedGrip.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ActivateDesciptionTexts
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStart.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1081343623}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadRightSettings.OnInputActionEndedTouchpadRight.m_PersistentCalls.m_Calls.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1903,8 +1971,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetActive.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1081343623}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].triggerSettings.OnInputActionEndedTrigger.m_PersistentCalls.m_Calls.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStop.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1915,6 +1993,16 @@ PrefabInstance:
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStart.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStop.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DestroyCurrentIconOverVisualisation
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1930,6 +2018,21 @@ PrefabInstance:
         type: 3}
       propertyPath: toolSetup.OnInputActionEndedGrip.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetActive.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStart.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SpawnCurrentIconOverObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetActive.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdateCurrentIconOverVisualisation
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1949,7 +2052,7 @@ PrefabInstance:
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].touchpadUpSettings.OnInputActionEndedTouchpadUp.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1959,6 +2062,11 @@ PrefabInstance:
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[1].touchpadUpSettings.OnInputActionEndedTouchpadUp.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadLeftSettings.OnInputActionEndedTouchpadLeft.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
@@ -1973,13 +2081,23 @@ PrefabInstance:
       objectReference: {fileID: 417411542}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadLeftSettings.OnInputActionEndedTouchpadLeft.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2118513132}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadRightSettings.OnInputActionEndedTouchpadRight.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].TouchpadDownSettings.OnInputActionEndedTouchpadDown.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].touchpadLeftSettings.OnInputActionEndedTouchpadLeft.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -1998,6 +2116,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadRightSettings.OnInputActionEndedTouchpadRight.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2118513132}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].gripSettings.OnInputActionStartedGrip.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -2008,13 +2131,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadLeftSettings.OnInputActionEndedTouchpadLeft.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].gripSettings.OnInputActionStartedGrip.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: GripPressTest
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].touchpadRightSettings.OnInputActionEndedTouchpadRight.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -2024,7 +2152,7 @@ PrefabInstance:
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].triggerSettings.OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -2043,14 +2171,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadLeftSettings.OnInputActionEndedTouchpadLeft.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UndoToolAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadRightSettings.OnInputActionEndedTouchpadRight.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].triggerSettings.OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2118513129}
+      objectReference: {fileID: 2118513130}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[1].triggerSettings.OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 417411542}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadRightSettings.OnInputActionEndedTouchpadRight.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RedoToolAction
+      objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].triggerSettings.OnInputActionEndedTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -2089,7 +2232,7 @@ PrefabInstance:
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].triggerSettings.OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: Delete
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -2263,12 +2406,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStop.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStart.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetActive.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[0].gripSettings.OnInputActionStartedGrip.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[1].gripSettings.OnInputActionStartedGrip.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadLeftSettings.OnInputActionEndedTouchpadLeft.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.defaultEntry.touchpadRightSettings.OnInputActionEndedTouchpadRight.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
@@ -2386,6 +2554,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8821610706099530504, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: objectTransformer
+      value: 
+      objectReference: {fileID: 233829214}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 252c416399fdd8b4c9bcd1ee661222ad, type: 3}
 --- !u!1 &233829214
@@ -2981,6 +3154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2118513131}
   - component: {fileID: 2118513130}
+  - component: {fileID: 2118513132}
   m_Layer: 0
   m_Name: ToolActions
   m_TagString: Untagged
@@ -3014,3 +3188,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2118513132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118513129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0652fd8c0fd34ef4d9573316702664de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
