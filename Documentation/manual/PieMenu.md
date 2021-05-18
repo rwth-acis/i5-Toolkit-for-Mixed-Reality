@@ -62,5 +62,70 @@ The event handler already provided by the Pie Menu aim at providing visual feedb
 ### The Default Entry
 In the "Default Behavior" tab, the behavior for the case when no handler for a thrown event in the currently selected tool is specified can be adjusted. This is handy for defining handlers that should be used by every tool and saves the work of manually adding them to them. This can for example be used to use the Activate-/DeactivateDesciptionTexts for every tool, since giving the user a way to look up what which button does is always a good idea.
 
-## Example Scene
-In 
+### Un- and Redoable Actions
+In order to make tool actions easily un- and redoable, the Pie Menu already offers an implementation of the Command Pattern.
+To use it, your tool actions need to implement the IToolAction interface.
+To do that, they need to implement the `DoAction()` and `UndoAction()` function, and implement the actual action into the do function and an action that reverses the effect into undo. 
+Now instead of assigning the do action as an event handler, you need to also implement a wrapper with a function that first setups the action and then calls the already provided command stack service with
+`ServiceManager.GetService<CommandStackService>()` and then call `AddAndPerformAction(action)` from it. This function can then be assigned as eventhandler.
+The service manager is provided by the i5 toolkit and is in the namespace i5.Toolkit.Core.ServiceCore.
+Remember that the wrapper needs to inherit MonoBehavior in order to make its funtions assignable as event handler in the PieMenuManager.
+
+To now un- and redo these actions, you need to call the Un- and RedoAction from the already provided Undoactions script.
+You can for example assign these to the left and right click on the touchpad of a Vive Wand.
+
+## Building a Small Sample Scene
+This section describes how to build a sample scene with a Pie Menu that offers a delete, resize and move, and color change tool.
+Every action will be un- and redoable. The resulting scene of this can also be seen in "i5 Toolkit for Mixed Reality/Samples/PieMenu"
+
+### General Setup
+Perform the general setup as described in the Usage section.
+Now create a script called SampleObject.
+Attach this script to some new 3D objects like default cubes.
+They need to have colliders to make them selectable with MRTK input devices.
+These objects will be the ones the tools will operate on.
+Also create some basic scenery like a floor and some walls, without the SampleObject component attached.
+These will be important later to see if your tools operate on the correct objects and are for example not able to delete the floor.
+
+### Delete Tool
+The delete tool should be able to delete all objects with the SampleObject component attached and only these, properly communicate to the user what can be deleted and its actions should be un- and redoable.
+First, create a class called DelteAction, that implements the IToolAction interface.
+As only field it has a GameObject called target.
+The do action should delete it and the undo action should restore it again.
+In a proper project, a good way to do this would be to first serialize the GameObject before destroying it, so it can be deserialized and instantiated in the undo action again.
+However, for the sake of simplicity our delete action will simply activate and deactivate the target.
+For a user this looks like the object was actually deleted.
+The class then looks like this:
+
+```
+using UnityEngine;
+using i5.Toolkit.MixedReality.PieMenu;
+
+public class DeleteAction : IToolAction
+{
+    GameObject target;
+
+    public DeleteAction(GameObject target)
+    {
+        this.target = target;
+    }
+
+    void IToolAction.DoAction()
+    {
+        target.SetActive(false);
+    }
+
+    void IToolAction.UndoAction()
+    {
+        target.SetActive(true);
+    }
+}
+```
+Now you need to create the wrapper, that acts as event handler.
+It needs a delete function with the BaseInputEventData as argument that reads out the currently focused object, checks is it is deletable and if yes, preforms the delete action through the command stack manager.
+To get the currently focused object, you can use the `GetTargetFromInputSource()` function from the ActionHelperFunctions class.
+Checking if the object is deltable shouldn't be done directly here, but with the help of an ObjectTransformer.
+This is because it doesn't only need to get checked here, but also in the event handler of the tools focus events, that will signal the user if an object is deletable.
+The signaling will be done later through the already provided SpawnCurrentIconOverObject functionalities.
+
+Create a script ObjectTransformer that implements the IObjectTransformer interface.
