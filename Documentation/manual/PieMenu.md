@@ -97,6 +97,8 @@ These will be important later to see if your tools operate on the correct object
 
 ### Delete Tool
 The delete tool should be able to delete all objects with the ManipulationInformation component attached and the deletePossible flag set (and only these), properly communicate to the user what can be deleted and its actions should be un- and redoable.
+
+#### Functionality
 First, create a class called DelteAction, that implements the IToolAction interface.
 As only field it has a GameObject called target.
 The do action should delete it and the undo action should restore it again.
@@ -210,3 +212,38 @@ public class DeleteActionWrapper : MonoBehaviour
     }
 }
 ```
+
+#### Creating a Menu Entry for the Delete Tool
+
+To now use the delete functionality through the Pie Menu, you need to create a new menu entry.
+Go to the PieMenuManager in your scene, go to the menu entries tab and then add a new menu entry. 
+Extend the tool settings, name the tool "Delete" and then assign it an icon.
+Some icons are already provided, for example a bin icon, which you can use here.
+
+To use the delete action wrapper you created, you need to attach it to an GameObject.
+Create an empty GameObject in the scene, name it ToolActions and attach the DeleteActionWrapper component to it .
+
+Now go to the trigger settings in the menu entry for the delete tool.
+There, change the description text to "Delte".
+Finally, click the small "plus" icon on the bottom right of the "On Input Action Started Trigger" event, drag the ToolActions object in the field saying "None (Object)" and then select the delete action wrapper from it.
+This should now look like this:
+
+<img src="../resources/PieMenu/DeleteToolSetup.png" alt="DeleteToolSetup" height="400"/>
+
+When you now start the scene you created, you should be able to open the menu by pressing and holding the menu button and then to select the entry with the bin icon.
+The bin icon should then be displayed on the input source and the trigger should be labeled with "Delete" for three seconds after selecting the tool.
+Pressing the trigger while pointing at an object with the ManipulationInformation component attached and the deletePossible flag set should now result in its "deletion" (actually its deactivation).
+
+Now, the do and undo functionality is still missing.
+Attach the provided UndoActions component to the ToolActions object.
+In order to make the un- and redo functionality accessible to all tools, you don't need to add it to every tool individually but instead you can add it to the default entry, that is explained in more detail in the The Default Entry Section.
+To do that, go to the PieMenuManager and select the default behavior tab.
+There, you can add the Undo and Redo Toolaction to the events you want.
+For the ViveWands for example, you can bind them to the left and right clicks on the touch pad.
+Remember to assign a name and an icon.
+You can use the un- and redo icons that are already provided.
+
+<img src="../resources/PieMenu/DefaultBehaviorSetup.png" alt="DeleteToolSetup" height="400"/>
+
+#### Signaling
+To now signal to the user that he is about to delete the object he is currently pointing at
