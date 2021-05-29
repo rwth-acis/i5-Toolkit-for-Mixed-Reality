@@ -7,13 +7,21 @@ public class ObjectTransformer : MonoBehaviour, IObjectTransformer
 {
     GameObject IObjectTransformer.transformObject(GameObject objectToTransform, string toolName)
     {
-        switch (toolName)
+        GameObject transformed = ActionHelperFunctions.GetGameobjectOfTypeFromHirachy(objectToTransform,
+                                                                                      typeof(ManipulationInformation));
+        if (transformed != null)
         {
-            case "Delete":
-                return ActionHelperFunctions.GetGameobjectOfTypeFromHirachy(objectToTransform, typeof(SampleObject));
-            default:
-                return null;
-
+            ManipulationInformation information = transformed.GetComponent<ManipulationInformation>();
+            switch (toolName)
+            {
+                case "Delete":
+                    if (information.deletePossible)
+                    {
+                        return transformed;
+                    }
+                    break;
+            }
         }
+        return null;
     }
 }
