@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
@@ -71,18 +71,40 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
                 if (target != null)
                 {
-                    //Try if the object has a MRTK BoundingBox
-                    Collider collider = target.GetComponentInChildren<BoundingBox>()?.GetComponent<Collider>();
-                    //If not, try if it has collider itself
-                    collider = target.GetComponent<Collider>();
-
-                    if (collider != null)
+                    Collider[] colliders = target.GetComponentsInChildren<Collider>();
+                    //Calculate the Axis Alligned BoundingBox from the colliders
+                    if (colliders.Length > 0)
                     {
-                        Vector3 maxpoint = collider.bounds.max;
-                        Vector3 minpoint = collider.bounds.min;
+                        Vector3 maxpoint = colliders[0].bounds.max;
+                        Vector3 minpoint = colliders[0].bounds.min;
+
+                        foreach (var collider in colliders)
+                        {
+
+                            bool OneComponentDifferent(Vector3 vec1, Vector3 vec2, Func<float, float, bool> relation)
+                            {
+                                return (relation(vec1.x, vec2.x) || relation(vec1.y, vec2.y) || relation(vec1.z, vec2.z));
+                            }
+
+                            Vector3 potentialMaxPoint = collider.bounds.max;
+
+                            if (OneComponentDifferent(maxpoint, potentialMaxPoint, (x, y) => (x > y)))
+                            {
+                                maxpoint = potentialMaxPoint;
+                            }
+
+                            Vector3 potentialMinPoint = collider.bounds.min;
+
+                            if (OneComponentDifferent(maxpoint, potentialMaxPoint, (x, y) => (x < y)))
+                            {
+                                minpoint = potentialMinPoint;
+                            }
+                        }
+                        //Calculate the top middle point of the AABB
                         minpoint.y = maxpoint.y;
                         Vector3 topMiddle = minpoint + 0.5f * (maxpoint - minpoint);
                         topMiddle.y += 0.3f;
+
                         RotateToCameraOnXZPlane(instantiatedIcon, topMiddle);
                     }
                 }
