@@ -105,7 +105,7 @@ However, for the sake of simplicity our delete action will simply activate and d
 For a user this looks like the object was actually deleted.
 The class then looks like this:
 
-```
+```csharp
 using UnityEngine;
 using i5.Toolkit.MixedReality.PieMenu;
 
@@ -156,17 +156,18 @@ public class ObjectTransformer : MonoBehaviour, IObjectTransformer
 {
     GameObject IObjectTransformer.transformObject(GameObject objectToTransform, string toolName)
     {
-        GameObject transformed = ActionHelperFunctions.GetGameobjectOfTypeFromHirachy(objectToTransform, typeof(ManipulationInformation));
+        GameObject transformed = ActionHelperFunctions.GetGameobjectOfTypeFromHirachy(objectToTransform,
+                                                                                      typeof(ManipulationInformation));
         if (transformed != null)
         {
             ManipulationInformation information = transformed.GetComponent<ManipulationInformation>();
             switch (toolName)
             {
                 case "Delete":
-                        if (information.deletePossible)
-                        {
-                            return transformed;
-                        }
+                    if (information.deletePossible)
+                    {
+                        return transformed;
+                    }
                     break;
             }
         }
