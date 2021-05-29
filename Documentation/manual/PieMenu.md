@@ -131,9 +131,11 @@ public class DeleteAction : IToolAction
 ```
 Now you need to create the wrapper, that acts as event handler.
 It needs a delete function with a BaseInputEventData as argument that reads out the currently focused object, checks if it is deletable, at which part in the hierarchy the deleting should start and if it then can be deleted, preforms the delete action through the command stack manager.
-To get the currently focused object, you can use the `GetTargetFromInputSource()` function from the ActionHelperFunctions class.
 
-Now, the method needs to check if the object is actually deltable and which part of it should be deleted, which is an important question for object that have child or parent objects attached, because the user can focus only one of the child objects, but we don't want to delete only the child, but thte entire object.
+First, the delete methods needs to to get the currently focused object.
+For that, you can use the `GetTargetFromInputSource()` function from the ActionHelperFunctions class.
+
+Now, it needs to check if the object is actually deltable and which part of it should be deleted, which is an important question for object that have child or parent objects attached, because the user can focus one of the child objects, but we don't want to delete only the child, but the entire object.
 The deletability shouldn't be checked directly in the delete function, but with the help of an ObjectTransformer.
 This is because it doesn't only need to get checked here, but also in the event handler of the tools focus events, that will signal the user if an object is deletable.
 The signaling will be done later through the already provided SpawnCurrentIconOverObject functionalities.
@@ -142,11 +144,12 @@ Create a script ObjectTransformer that implements the IObjectTransformer interfa
 Now you need to implement the transformObject method from the interface, which takes a GameObject that should be checked for deletability and at which part the delete process should start, and the name of the current tool, so different tools can effect different objects.
 First, the method needs to get the object from the hierarchy to which the ManipulationInformation component is attached to, in case it even exists.
 To do this, use the `GetGameobjectOfTypeFromHirachy()` function from the ActionHelperFunctions.
-This method iterates upwards in the hirachy of the provided gameObject and returns the first GameObject that has a script of the provided type typeToSearch attached.
+This method iterates upwards in the hirachy of the provided GameObject and returns the first GameObject that has a script of the provided type typeToSearch attached.
 
 If `GetGameobjectOfTypeFromHirachy()` returned something, the transform method now needs to get the ManipulationInformation from it.
 Now, if the the provided name of the current tool is "Delete", it needs to check if the deletePossible flag is set and if that is the case, return the GameObject, that has the ManipulationInformation component attached.
-The ObjectTransformer now should look like this:
+
+To make it possible to provide the object transformer to the already provided functionalities, it also needs to inherit the MonoBeahviour class. The ObjectTransformer now should look like this:
 
 ```csharp
 using UnityEngine;
@@ -172,6 +175,38 @@ public class ObjectTransformer : MonoBehaviour, IObjectTransformer
             }
         }
         return null;
+    }
+}
+```
+
+Create an empty GameObject in the scene, and attach the ObjectTransformer component to it.
+
+Now we can continue with the delete action wrapper.
+It needs to retrieve the ObjectTransformer from the scene and then use the transform method from it on the target.
+If this results in a valid GameObject, it now needs to create a new DeleteAction with it as target and tell the the CommandStackManager to execute the action.
+The CommandStackManager is already provided as a Service and initialized by the PieMenuManager.
+It can be accessed through the ServiceManager class with `ServiceManager.GetService<CommandStackService>()`
+The delete action wrapper should now look like this:
+
+```csharp
+using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Input;
+using i5.Toolkit.MixedReality.PieMenu;
+using i5.Toolkit.Core.ServiceCore;
+
+public class DeleteActionWrapper : MonoBehaviour
+{
+    public void Delete(BaseInputEventData data)
+    {
+        GameObject target = ActionHelperFunctions.GetTargetFromInputSource(data.InputSource);
+        IObjectTransformer objectTransformer = FindObjectOfType<ObjectTransformer>().GetComponent<ObjectTransformer>();
+        target = objectTransformer.transformObject(target, "Delete");
+
+        if (target != null)
+        {
+            DeleteAction deleteAction = new DeleteAction(target);
+            ServiceManager.GetService<CommandStackService>().AddAndPerformAction(deleteAction);
+        }
     }
 }
 ```
