@@ -68,27 +68,35 @@ To use it, your tool actions need to implement the IToolAction interface.
 To do that, they need to implement the `DoAction()` and `UndoAction()` function, and implement the actual action into the do function and an action that reverses the effect into undo. 
 Now instead of assigning the do action as an event handler, you need to also implement a wrapper with a function that first setups the action and then calls the already provided command stack service with
 `ServiceManager.GetService<CommandStackService>()` and then call `AddAndPerformAction(action)` from it. This function can then be assigned as eventhandler.
-The service manager is provided by the i5 toolkit and is in the namespace i5.Toolkit.Core.ServiceCore.
-Remember that the wrapper needs to inherit MonoBehavior in order to make its funtions assignable as event handler in the PieMenuManager.
+The service manager is provided by the i5 toolkit and is in the namespace i5.Toolkit.Core.ServiceCore .
+Remember that the wrapper needs to inherit MonoBehavior in order to make its functions assignable as event handler in the PieMenuManager.
 
 To now un- and redo these actions, you need to call the Un- and RedoAction from the already provided Undoactions script.
 You can for example assign these to the left and right click on the touchpad of a Vive Wand.
 
 ## Building a Small Sample Scene
 This section describes how to build a sample scene with a Pie Menu that offers a delete, resize and move, and color change tool.
-Every action will be un- and redoable. The resulting scene of this can also be seen in "i5 Toolkit for Mixed Reality/Samples/PieMenu"
+Every action will be un- and redoable. The resulting scene of this can also be seen in "i5 Toolkit for Mixed Reality/Samples/PieMenu"	
 
 ### General Setup
-Perform the general setup as described in the Usage section.
-Now create a script called SampleObject.
-Attach this script to some new 3D objects like default cubes.
-They need to have colliders to make them selectable with MRTK input devices.
-These objects will be the ones the tools will operate on.
-Also create some basic scenery like a floor and some walls, without the SampleObject component attached.
+Perform the general setup as described in the Usage Section.
+Now create a script called ManipulationInformation with three public bools: deletePossible, resizePossible and colorChangePossible.
+Add some empty objects to the scene, attach the ManipulationInformation component you created earlier to them and give them some 3D child objects, that form a slightly more complex object.
+These child objects should not have the ManipulationInformation component attached.
+They should look somewhat like this for example:
+
+<center>
+<img src="../resources/PieMenu/Pillar.png" alt="Pillar" height="200"/>
+</center>
+
+They need to have colliders to make them selectable with MRTK input devices, but as long as you used the default 3D objects, that will be the case.
+Set the deletePossible flag for some objects of your choice. 
+
+Also create some basic scenery like a floor and some walls, without the ManipulationInformation component attached.
 These will be important later to see if your tools operate on the correct objects and are for example not able to delete the floor.
 
 ### Delete Tool
-The delete tool should be able to delete all objects with the SampleObject component attached and only these, properly communicate to the user what can be deleted and its actions should be un- and redoable.
+The delete tool should be able to delete all objects with the ManipulationInformation component attached and the deletePossible flag set (and only these), properly communicate to the user what can be deleted and its actions should be un- and redoable.
 First, create a class called DelteAction, that implements the IToolAction interface.
 As only field it has a GameObject called target.
 The do action should delete it and the undo action should restore it again.
@@ -122,10 +130,47 @@ public class DeleteAction : IToolAction
 }
 ```
 Now you need to create the wrapper, that acts as event handler.
-It needs a delete function with the BaseInputEventData as argument that reads out the currently focused object, checks is it is deletable and if yes, preforms the delete action through the command stack manager.
+It needs a delete function with a BaseInputEventData as argument that reads out the currently focused object, checks if it is deletable, at which part in the hierarchy the deleting should start and if it then can be deleted, preforms the delete action through the command stack manager.
 To get the currently focused object, you can use the `GetTargetFromInputSource()` function from the ActionHelperFunctions class.
-Checking if the object is deltable shouldn't be done directly here, but with the help of an ObjectTransformer.
+
+Now, the method needs to check if the object is actually deltable and which part of it should be deleted, which is an important question for object that have child or parent objects attached, because the user can focus only one of the child objects, but we don't want to delete only the child, but thte entire object.
+The deletability shouldn't be checked directly in the delete function, but with the help of an ObjectTransformer.
 This is because it doesn't only need to get checked here, but also in the event handler of the tools focus events, that will signal the user if an object is deletable.
 The signaling will be done later through the already provided SpawnCurrentIconOverObject functionalities.
 
 Create a script ObjectTransformer that implements the IObjectTransformer interface.
+Now you need to implement the transformObject method from the interface, which takes a GameObject that should be checked for deletability and at which part the delete process should start, and the name of the current tool, so different tools can effect different objects.
+First, the method needs to get the object from the hierarchy to which the ManipulationInformation component is attached to, in case it even exists.
+To do this, use the `GetGameobjectOfTypeFromHirachy()` function from the ActionHelperFunctions.
+This method iterates upwards in the hirachy of the provided gameObject and returns the first GameObject that has a script of the provided type typeToSearch attached.
+
+If `GetGameobjectOfTypeFromHirachy()` returned something, the transform method now needs to get the ManipulationInformation from it.
+Now, if the the provided name of the current tool is "Delete", it needs to check if the deletePossible flag is set and if that is the case, return the GameObject, that has the ManipulationInformation component attached.
+The ObjectTransformer now should look like this:
+
+```csharp
+using UnityEngine;
+using i5.Toolkit.MixedReality.PieMenu;
+
+public class ObjectTransformer : MonoBehaviour, IObjectTransformer
+{
+    GameObject IObjectTransformer.transformObject(GameObject objectToTransform, string toolName)
+    {
+        GameObject transformed = ActionHelperFunctions.GetGameobjectOfTypeFromHirachy(objectToTransform, typeof(ManipulationInformation));
+        if (transformed != null)
+        {
+            ManipulationInformation information = transformed.GetComponent<ManipulationInformation>();
+            switch (toolName)
+            {
+                case "Delete":
+                        if (information.deletePossible)
+                        {
+                            return transformed;
+                        }
+                    break;
+            }
+        }
+        return null;
+    }
+}
+```
