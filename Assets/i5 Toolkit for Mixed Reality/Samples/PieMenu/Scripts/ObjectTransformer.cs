@@ -20,6 +20,13 @@ public class ObjectTransformer : MonoBehaviour, IObjectTransformer
                         return transformed;
                     }
                     break;
+
+                case "Manipulate":
+                    if (information.manipulationPossible)
+                    {
+                        return transformed;
+                    }
+                    break;
             }
         }
         return null;
