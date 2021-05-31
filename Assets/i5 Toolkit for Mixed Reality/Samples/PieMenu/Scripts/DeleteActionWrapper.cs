@@ -9,14 +9,15 @@ public class DeleteActionWrapper : MonoBehaviour
 {
     public void Delete(BaseInputEventData data)
     {
-        IObjectTransformer objectTransformer = FindObjectOfType<ObjectTransformer>().GetComponent<ObjectTransformer>();
         GameObject target = ActionHelperFunctions.GetTargetFromInputSource(data.InputSource);
+        IObjectTransformer objectTransformer = FindObjectOfType<ObjectTransformer>().GetComponent<ObjectTransformer>();
         //string toolName = ActionHelperFunctions.GetVirtualToolFromPointer(data.InputSource.Pointers[0]).currentEntry.toolSettings.toolName;
         target = objectTransformer.transformObject(target, "Delete");
 
         if (target != null)
         {
-            ServiceManager.GetService<CommandStackService>().AddAndPerformAction(new DeleteAction(target));
+            DeleteAction deleteAction = new DeleteAction(target);
+            ServiceManager.GetService<CommandStackService>().AddAndPerformAction(deleteAction);
         }
     }
 }
