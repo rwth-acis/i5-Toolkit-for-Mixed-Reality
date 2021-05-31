@@ -25,6 +25,7 @@ public class ManipulationActionWrapper : MonoBehaviour
             ManiplulationAction.target = target;
             ManiplulationAction.startPosition = target.transform.position;
             ManiplulationAction.startRotation = target.transform.rotation;
+            ManiplulationAction.startScalation = target.transform.localScale;
             ServiceManager.GetService<CommandStackService>().AddAction(ManiplulationAction);
         }
     }
