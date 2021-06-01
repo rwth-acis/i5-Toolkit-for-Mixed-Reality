@@ -28,10 +28,6 @@ public class ManiplulationAction : IToolAction
     /// </summary>
     void IToolAction.UndoAction()
     {
-        endPosition = target.transform.position;
-        endRotation = target.transform.rotation;
-        endScalation = target.transform.localScale;
-
         target.transform.SetPositionAndRotation(startPosition, startRotation);
         target.transform.localScale = startScalation;
     }

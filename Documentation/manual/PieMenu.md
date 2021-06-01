@@ -6,7 +6,7 @@
 
 One great challenge of Mixed Reality is the usage of User Interfaces.
 Conventional 2D User Interfaces don't work due to a different set of input devices and true 3D interfaces are hard to implement and often bound to one specific use case.
-A convenient compromise are 3D widgets,which allow the usage of interfaces similar to 2D interfaces in a 3D environment.
+A convenient compromise are 3D widgets, which allow the usage of interfaces similar to 2D interfaces in a 3D environment.
 
 This Pie Menu is such a 3D Widget implementation. It is highly customizable and allows manipulation of the virtual world through the selection virtual tools.
 
@@ -80,7 +80,7 @@ Every action will be un- and redoable. The resulting scene of this can also be s
 
 ### General Setup
 Perform the general setup as described in the Usage Section.
-Now create a script called ManipulationInformation with three public bools: deletePossible, resizePossible and colorChangePossible.
+Now create a script called ManipulationInformation with three public bools: deletePossible, manipulationPossible and colorChangePossible.
 Add some empty objects to the scene, attach the ManipulationInformation component you created earlier to them and give them some 3D child objects, that form a slightly more complex object.
 These child objects should not have the ManipulationInformation component attached.
 They should look somewhat like this for example:
@@ -245,5 +245,167 @@ You can use the un- and redo icons that are already provided.
 
 <img src="../resources/PieMenu/DefaultBehaviorSetup.png" alt="DeleteToolSetup" height="400"/>
 
+### The Move and Resize Tool
+
+For moving and resizing we will use the BoundsControl and ObjectManipulator components from the MRTK.
+Add theses to the parent object of the objects you want to be able to move and resize, but disable them.
+Also remember to set the manipulationPossible flag.
+
+These components should now be enabled as soon as the manipulation tool is selected and disabled, when it is deselected again.
+To accomplish that, we can use the OnToolCreated and OnToolDestroyed events, but first we need an event handler.
+Create a script called ManipulationActionWrapper (the actual ManipulationAction will be created later).
+Now create a method called StartManipulating() in this script.
+It needs to find all objects in the scene that have an ManipulationInformation component attached, the manipulationPossible flag set and then it needs to enable there BoundsControl and ObjectManipulator components.
+The objects on which the components were enabled also need to be stored, so the components can be disabled again later.
+Now create a method called StopManipulating, that disables them again.
+It should now look like this:
+
+```csharp
+using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Input;
+using i5.Toolkit.MixedReality.PieMenu;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
+using Microsoft.MixedReality.Toolkit.UI;
+
+ManipulationInformation[] objectsThatCanBeManipulated;
+
+public class ManipulationActionWrapper : MonoBehaviour
+{
+    public void StartManipulating()
+    {
+        objectsThatCanBeManipulated = FindObjectsOfType<ManipulationInformation>();
+        foreach (var objectToManipulate in objectsThatCanBeManipulated)
+        {
+            if (objectToManipulate.manipulationPossible)
+            {
+                objectToManipulate.gameObject.GetComponentInChildren<BoundsControl>().enabled = true;
+                objectToManipulate.gameObject.GetComponentInChildren<ObjectManipulator>().enabled = true;
+            }
+        }
+    }
+    
+    
+    public void StopManipulating()
+    {
+        foreach (var objectToManipulate in objectsThatCanBeManipulated)
+        {
+            if (objectToManipulate != null && objectToManipulate.manipulationPossible)
+            {
+                objectToManipulate.gameObject.GetComponentInChildren<BoundsControl>().enabled = false;
+                objectToManipulate.gameObject.GetComponentInChildren<ObjectManipulator>().enabled = false;
+            }
+        }
+    }
+}
+```
+
+To now use these functions, add the ManipulationActionWrapper to the ToolActions object and create a new menu entry just like for the delete tool.
+Call the new entry "Manipulation" and give it an icon, like the BoundingBoxIcon for example.
+Now extend the Tool Specific Events menu point and assign StartManipulating() to the OnToolCreated event and StopManipulating() to the OnToolDestroyed event.
+
+When you now start the scene and select the manipulation tool, all GameObjects that were set up as described earlier should be surrounded by a bounding box, with manipulation handles at each side for rotation and scalation. 
+Translation should be possible through simply clicking and holding somewhere on the bounding box, where there is no manipulation handle.
+
+<img src="../resources/PieMenu/PillarWithBoundingBox.png" alt="PillarWithBoundingBox" height="200"/>
+
+But now we face a problem: the manipulation actions should be reversable but they are performed by a different library and can therefore not easily be transformed into commands form the command stack pattern.
+For this situation the command stack implementation offers the functionality to add a command to the stack without executing it.
+This allows us to let the first execution be handled by different library and then to add a simplified version of it to the stack.
+In our case, the MRTK provides very convenient manipulation options with nice smoothing and a lot of visual indicators.
+But for reversing these actions, it is completely sufficient to simply set the position, rotation and scalation of the manipulated object back its original values.
+
+Create the ManipulationAction class, which again implements the IToolAction interface and has a attribute for the target and start/end position, rotation and scalation.
+The DoAction sets the targets transform values to the end values and the UndoAction to the start values.
+
+```csharp
+using UnityEngine;
+using i5.Toolkit.MixedReality.PieMenu;
+
+public class ManiplulationAction : IToolAction
+{
+    public GameObject target;
+
+    public Vector3 startPosition;
+    public Quaternion startRotation;
+    public Vector3 startScalation;
+
+    public Vector3 endPosition;
+    public Quaternion endRotation;
+    public Vector3 endScalation;
+
+    void IToolAction.DoAction()
+    {
+        target.transform.SetPositionAndRotation(endPosition, endRotation);
+        target.transform.localScale = endScalation;
+    }
+
+    void IToolAction.UndoAction()
+    {
+        target.transform.SetPositionAndRotation(startPosition, startRotation);
+        target.transform.localScale = startScalation;
+    }
+}
+```
+
+
+Now create the methods `StartPositionRecording()` and `EndPositionRecording()` in the ManipulationActionWrapper class. `StartPositionRecording()` creates a new ManipulationAction and sets its start values to the current transform values of the target and `EndPositionRecording()` sets the end values to the current transform values and adds it on the stack, but without executing it.
+
+```csharp
+
+using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Input;
+using i5.Toolkit.MixedReality.PieMenu;
+using i5.Toolkit.Core.ServiceCore;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
+using Microsoft.MixedReality.Toolkit.UI;
+
+public class ManipulationActionWrapper : MonoBehaviour
+{
+
+    ManiplulationAction curentManiplulationAction;
+
+    public void StartPositionRecording(BaseInputEventData data)
+    {
+        GameObject target = ActionHelperFunctions.GetTargetFromInputSource(data.InputSource);
+
+        IObjectTransformer objectTransformer = FindObjectOfType<ObjectTransformer>().GetComponent<ObjectTransformer>();
+        target = objectTransformer.transformObject(target, "Manipulate");
+        if (target != null)
+        {
+            curentManiplulationAction = new ManiplulationAction();
+            curentManiplulationAction.target = target;
+            curentManiplulationAction.startPosition = target.transform.localPosition;
+            curentManiplulationAction.startRotation = target.transform.localRotation;
+            curentManiplulationAction.startScalation = target.transform.localScale;
+        }
+    }
+
+
+    public void EndPositionRecording(BaseInputEventData data)
+    {
+        GameObject target = ActionHelperFunctions.GetTargetFromInputSource(data.InputSource);
+
+        IObjectTransformer objectTransformer = FindObjectOfType<ObjectTransformer>().GetComponent<ObjectTransformer>();
+        target = objectTransformer.transformObject(target, "Manipulate");
+        if (target != null && target == curentManiplulationAction.target)
+        {
+            curentManiplulationAction.endPosition = target.transform.localPosition;
+            curentManiplulationAction.endRotation = target.transform.localRotation;
+            curentManiplulationAction.endScalation = target.transform.localScale;
+            ServiceManager.GetService<CommandStackService>().AddAction(curentManiplulationAction);
+        }
+    }
+
+	[...]
+}
+
+```
+
+
+Finally, assign these two methods to the OnInputActionStartedTrigger and OnInputActionEndedTrigger event of the manipulation tool respectively.
+
+
+
 #### Signaling
-To now signal to the user that he is about to delete the object he is currently pointing at
+Now we want to signal to the user that his currently selected tool can affect the object he is currently pointing at.
+To do that, we can use the already provided 
