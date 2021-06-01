@@ -63,9 +63,22 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// </summary>
         /// <param name="pointer"></param>
         /// <returns></returns>
-        public static ViveWandVirtualTool GetVirtualToolFromPointer(IMixedRealityPointer pointer)
+        public static ViveWandVirtualTool GetVirtualTool(IMixedRealityPointer pointer)
         {
             return pointer?.Controller?.Visualizer?.GameObjectProxy?.GetComponentInChildren<ViveWandVirtualTool>();
+        }
+
+        public static ViveWandVirtualTool GetVirtualTool(IMixedRealityInputSource inputSource)
+        {
+            foreach (var pointer in inputSource.Pointers)
+            {
+                ViveWandVirtualTool tool = pointer?.Controller?.Visualizer?.GameObjectProxy?.GetComponentInChildren<ViveWandVirtualTool>();
+                if (tool != null)
+                {
+                    return tool;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -97,6 +110,16 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Returns the name of the currently selected tool
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <returns></returns>
+        public static string GetCurrentToolName(IMixedRealityInputSource inputSource)
+        {
+            return GetVirtualTool(inputSource)?.currentEntry.toolSettings.toolName;
         }
     } 
 }

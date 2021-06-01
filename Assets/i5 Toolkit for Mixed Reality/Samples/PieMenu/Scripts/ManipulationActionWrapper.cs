@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using i5.Toolkit.MixedReality.PieMenu;
 using i5.Toolkit.Core.ServiceCore;

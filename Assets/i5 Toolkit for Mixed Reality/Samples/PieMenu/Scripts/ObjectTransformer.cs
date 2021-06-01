@@ -27,6 +27,12 @@ public class ObjectTransformer : MonoBehaviour, IObjectTransformer
                         return transformed;
                     }
                     break;
+                case "ColorChange":
+                    if (information.colorChangePossible)
+                    {
+                        return transformed;
+                    }
+                    break;
             }
         }
         return null;
