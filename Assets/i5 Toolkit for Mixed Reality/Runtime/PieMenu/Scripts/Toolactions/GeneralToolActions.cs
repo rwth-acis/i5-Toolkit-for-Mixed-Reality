@@ -52,7 +52,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// Updates position and rotation of the currently spawned icon over the visualisation, the tool currently points at
         /// </summary>
         /// <param name="data"></param> The data from the corresponding focus event
-        public void UpdateCurrentIconOverVisualisation(FocusEventData data)
+        public void UpdateCurrentIconOverObject(FocusEventData data)
         {
             if (instantiatedIcon != null)
             {
@@ -114,7 +114,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// <summary>
         /// Destroys the instantiated icon, that was spawned by SpawnCurrentIconOverVisualisation()
         /// </summary>
-        public void DestroyCurrentIconOverVisualisation()
+        public void DestroyCurrentIconOverObject()
         {
             Destroy(instantiatedIcon);
         }

@@ -2090,7 +2090,7 @@ PrefabInstance:
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[2].toolSpecificevents.OnToolCreated.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -2110,7 +2110,7 @@ PrefabInstance:
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[2].toolSpecificevents.OnToolDestroyed.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -2260,7 +2260,7 @@ PrefabInstance:
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[2].triggerSettings.OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -2546,7 +2546,7 @@ PrefabInstance:
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[2].triggerSettings.OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2118513134}
+      objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.defaultEntry.touchpadRightSettings.OnInputActionEndedTouchpadRight.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -2641,7 +2641,7 @@ PrefabInstance:
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[2].touchpadUpSettings.OnInputActionEndedTouchpadUp.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2118513134}
+      objectReference: {fileID: 2118513135}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[2].triggerSettings.OnInputActionStartedTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -2741,7 +2741,7 @@ PrefabInstance:
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[2].TouchpadDownSettings.OnInputActionEndedTouchpadDown.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2118513134}
+      objectReference: {fileID: 2118513135}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.menuEntries.Array.data[2].touchpadUpSettings.OnInputActionEndedTouchpadUp.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -9140,7 +9140,6 @@ GameObject:
   - component: {fileID: 2118513130}
   - component: {fileID: 2118513132}
   - component: {fileID: 2118513133}
-  - component: {fileID: 2118513134}
   - component: {fileID: 2118513135}
   m_Layer: 0
   m_Name: ToolActions
@@ -9199,22 +9198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb5bd70f9263774ab1bd063343daa09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2118513134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2118513129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b922d0cf546a254fab5e1cd84139a67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colors:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &2118513135
 MonoBehaviour:
   m_ObjectHideFlags: 0
