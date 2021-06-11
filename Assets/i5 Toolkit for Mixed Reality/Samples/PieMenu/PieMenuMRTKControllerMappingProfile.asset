@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a1cf5fd47e548e6a23bdd3ddcc00cf6, type: 3}
-  m_Name: ExampleMRTKControllerMappingProfile
+  m_Name: PieMenuMRTKControllerMappingProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
   mixedRealityControllerMappings:
@@ -570,6 +570,561 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 1
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Grab
+      axisType: 3
+      inputType: 13
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Index Finger Pose
+      axisType: 7
+      inputType: 33
+      inputAction:
+        id: 13
+        description: Index Finger Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 2
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Grab
+      axisType: 3
+      inputType: 13
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Index Finger Pose
+      axisType: 7
+      inputType: 33
+      inputAction:
+        id: 13
+        description: Index Finger Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKGGVHand,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 0
+    interactions:
+    - id: 0
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Grip Pose
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKGGVHand,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 1
+    interactions:
+    - id: 0
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Grip Pose
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKGGVHand,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 2
+    interactions:
+    - id: 0
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Grip Pose
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 1
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Grip Press
+      axisType: 3
+      inputType: 60
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Trigger Position
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 6
+        description: Trigger
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Trigger Touch
+      axisType: 2
+      inputType: 11
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Trigger Press (Select)
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 6
+      description: Touchpad Position
+      axisType: 4
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 7
+      description: Touchpad Touch
+      axisType: 2
+      inputType: 22
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 8
+      description: Touchpad Press
+      axisType: 2
+      inputType: 24
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 9
+      description: Menu Press
+      axisType: 2
+      inputType: 27
+      inputAction:
+        id: 2
+        description: Menu
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 10
+      description: Thumbstick Position
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 11
+      description: Thumbstick Press
+      axisType: 2
+      inputType: 18
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    handedness: 2
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Grip Press
+      axisType: 3
+      inputType: 60
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Trigger Position
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 6
+        description: Trigger
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Trigger Touch
+      axisType: 2
+      inputType: 11
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Trigger Press (Select)
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 6
+      description: Touchpad Position
+      axisType: 4
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 7
+      description: Touchpad Touch
+      axisType: 2
+      inputType: 22
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 8
+      description: Touchpad Press
+      axisType: 2
+      inputType: 24
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 9
+      description: Menu Press
+      axisType: 2
+      inputType: 27
+      inputAction:
+        id: 2
+        description: Menu
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 10
+      description: Thumbstick Position
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 11
+      description: Thumbstick Press
+      axisType: 2
+      inputType: 18
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
       reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseController,
         Microsoft.MixedReality.Toolkit
     handedness: 7
@@ -749,7 +1304,8 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.XboxController, Microsoft.MixedReality.Toolkit
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.XboxController,
+        Microsoft.MixedReality.Toolkit
     handedness: 0
     interactions:
     - id: 0
@@ -1818,7 +2374,8 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveWandController, Microsoft.MixedReality.Toolkit.Providers.OpenVR
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveWandController,
+        Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 1
     interactions:
     - id: 0
@@ -1939,7 +2496,8 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveWandController, Microsoft.MixedReality.Toolkit.Providers.OpenVR
+      reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveWandController,
+        Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 2
     interactions:
     - id: 0
@@ -2522,906 +3080,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
-    handedness: 1
-    interactions:
-    - id: 0
-      description: Spatial Pointer
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 4
-        description: Pointer Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Spatial Grip
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 2
-      description: Select
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 3
-      description: Grab
-      axisType: 3
-      inputType: 13
-      inputAction:
-        id: 7
-        description: Grip Press
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 4
-      description: Index Finger Pose
-      axisType: 7
-      inputType: 33
-      inputAction:
-        id: 13
-        description: Index Finger Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
-    handedness: 2
-    interactions:
-    - id: 0
-      description: Spatial Pointer
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 4
-        description: Pointer Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Spatial Grip
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 2
-      description: Select
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 3
-      description: Grab
-      axisType: 3
-      inputType: 13
-      inputAction:
-        id: 7
-        description: Grip Press
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 4
-      description: Index Finger Pose
-      axisType: 7
-      inputType: 33
-      inputAction:
-        id: 13
-        description: Index Finger Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
-    handedness: 0
-    interactions:
-    - id: 0
-      description: Select
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Grip Pose
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
-    handedness: 1
-    interactions:
-    - id: 0
-      description: Select
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Grip Pose
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
-    handedness: 2
-    interactions:
-    - id: 0
-      description: Select
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Grip Pose
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedMotionController, Microsoft.MixedReality.Toolkit.Services.InputSimulation
-    handedness: 1
-    interactions:
-    - id: 0
-      description: Spatial Pointer
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 4
-        description: Pointer Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Spatial Grip
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 2
-      description: Grip Press
-      axisType: 3
-      inputType: 13
-      inputAction:
-        id: 7
-        description: Grip Press
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 3
-      description: Trigger Position
-      axisType: 3
-      inputType: 10
-      inputAction:
-        id: 6
-        description: Trigger
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 4
-      description: Trigger Touch
-      axisType: 2
-      inputType: 11
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 5
-      description: Trigger Press (Select)
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 6
-      description: Touchpad Position
-      axisType: 4
-      inputType: 21
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 7
-      description: Touchpad Touch
-      axisType: 2
-      inputType: 22
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 8
-      description: Touchpad Press
-      axisType: 2
-      inputType: 24
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 9
-      description: Menu Press
-      axisType: 2
-      inputType: 27
-      inputAction:
-        id: 2
-        description: Menu
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 10
-      description: Thumbstick Position
-      axisType: 4
-      inputType: 17
-      inputAction:
-        id: 5
-        description: Teleport Direction
-        axisConstraint: 4
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 11
-      description: Thumbstick Press
-      axisType: 2
-      inputType: 18
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedMotionController, Microsoft.MixedReality.Toolkit.Services.InputSimulation
-    handedness: 2
-    interactions:
-    - id: 0
-      description: Spatial Pointer
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 4
-        description: Pointer Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Spatial Grip
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 2
-      description: Grip Press
-      axisType: 3
-      inputType: 13
-      inputAction:
-        id: 7
-        description: Grip Press
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 3
-      description: Trigger Position
-      axisType: 3
-      inputType: 10
-      inputAction:
-        id: 6
-        description: Trigger
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 4
-      description: Trigger Touch
-      axisType: 2
-      inputType: 11
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 5
-      description: Trigger Press (Select)
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 6
-      description: Touchpad Position
-      axisType: 4
-      inputType: 21
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 7
-      description: Touchpad Touch
-      axisType: 2
-      inputType: 22
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 8
-      description: Touchpad Press
-      axisType: 2
-      inputType: 24
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 9
-      description: Menu Press
-      axisType: 2
-      inputType: 27
-      inputAction:
-        id: 2
-        description: Menu
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 10
-      description: Thumbstick Position
-      axisType: 4
-      inputType: 17
-      inputAction:
-        id: 5
-        description: Teleport Direction
-        axisConstraint: 4
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 11
-      description: Thumbstick Press
-      axisType: 2
-      inputType: 18
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
-    handedness: 2
-    interactions:
-    - id: 0
-      description: Spatial Pointer
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 4
-        description: Pointer Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Spatial Grip
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 2
-      description: Select
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 3
-      description: Grab
-      axisType: 3
-      inputType: 13
-      inputAction:
-        id: 7
-        description: Grip Press
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 4
-      description: Index Finger Pose
-      axisType: 7
-      inputType: 33
-      inputAction:
-        id: 13
-        description: Index Finger Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
-    handedness: 1
-    interactions:
-    - id: 0
-      description: Spatial Pointer
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 4
-        description: Pointer Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Spatial Grip
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 2
-      description: Select
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 3
-      description: Grab
-      axisType: 3
-      inputType: 13
-      inputAction:
-        id: 7
-        description: Grip Press
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 4
-      description: Index Finger Pose
-      axisType: 7
-      inputType: 33
-      inputAction:
-        id: 13
-        description: Index Finger Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKTouchController,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
-    handedness: 2
-    interactions:
-    - id: 0
-      description: Spatial Pointer
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 4
-        description: Pointer Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Axis1D.SecondaryIndexTrigger
-      axisType: 3
-      inputType: 10
-      inputAction:
-        id: 6
-        description: Trigger
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 2
-      description: Axis1D.SecondaryIndexTrigger Touch
-      axisType: 2
-      inputType: 11
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 3
-      description: Axis1D.SecondaryIndexTrigger Near Touch
-      axisType: 2
-      inputType: 12
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 4
-      description: Axis1D.SecondaryIndexTrigger Press
-      axisType: 2
-      inputType: 13
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 5
-      description: Axis1D.SecondaryHandTrigger Press
-      axisType: 3
-      inputType: 60
-      inputAction:
-        id: 7
-        description: Grip Press
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 6
-      description: Axis2D.SecondaryThumbstick
-      axisType: 4
-      inputType: 17
-      inputAction:
-        id: 5
-        description: Teleport Direction
-        axisConstraint: 4
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 7
-      description: Button.SecondaryThumbstick Touch
-      axisType: 2
-      inputType: 19
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 8
-      description: Button.SecondaryThumbstick Near Touch
-      axisType: 2
-      inputType: 31
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 9
-      description: Button.SecondaryThumbstick Press
-      axisType: 2
-      inputType: 18
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 10
-      description: Button.One Press
-      axisType: 2
-      inputType: 51
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 11
-      description: Button.Two Press
-      axisType: 2
-      inputType: 54
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 12
-      description: Button.One Touch
-      axisType: 2
-      inputType: 52
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 13
-      description: Button.Two Touch
-      axisType: 2
-      inputType: 55
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 14
-      description: Touch.SecondaryThumbRest Touch
-      axisType: 2
-      inputType: 30
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 15
-      description: Touch.SecondaryThumbRest Near Touch
-      axisType: 2
-      inputType: 31
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKTouchController,
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusXRSDKTouchController,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 1
     interactions:
@@ -3647,9 +3306,588 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKMotionController,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusXRSDKTouchController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 2
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Axis1D.SecondaryIndexTrigger
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 6
+        description: Trigger
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Axis1D.SecondaryIndexTrigger Touch
+      axisType: 2
+      inputType: 11
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Axis1D.SecondaryIndexTrigger Near Touch
+      axisType: 2
+      inputType: 12
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Axis1D.SecondaryIndexTrigger Press
+      axisType: 2
+      inputType: 13
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Axis1D.SecondaryHandTrigger Press
+      axisType: 3
+      inputType: 60
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 6
+      description: Axis2D.SecondaryThumbstick
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 7
+      description: Button.SecondaryThumbstick Touch
+      axisType: 2
+      inputType: 19
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 8
+      description: Button.SecondaryThumbstick Near Touch
+      axisType: 2
+      inputType: 31
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 9
+      description: Button.SecondaryThumbstick Press
+      axisType: 2
+      inputType: 18
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 10
+      description: Button.One Press
+      axisType: 2
+      inputType: 51
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 11
+      description: Button.Two Press
+      axisType: 2
+      inputType: 54
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 12
+      description: Button.One Touch
+      axisType: 2
+      inputType: 52
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 13
+      description: Button.Two Touch
+      axisType: 2
+      inputType: 55
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 14
+      description: Touch.SecondaryThumbRest Touch
+      axisType: 2
+      inputType: 30
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 15
+      description: Touch.SecondaryThumbRest Near Touch
+      axisType: 2
+      inputType: 31
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
+    handedness: 1
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Grab
+      axisType: 3
+      inputType: 13
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Index Finger Pose
+      axisType: 7
+      inputType: 33
+      inputAction:
+        id: 13
+        description: Index Finger Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
+    handedness: 2
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Grab
+      axisType: 3
+      inputType: 13
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Index Finger Pose
+      axisType: 7
+      inputType: 33
+      inputAction:
+        id: 13
+        description: Index Finger Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    handedness: 1
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Grab
+      axisType: 3
+      inputType: 13
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Index Finger Pose
+      axisType: 7
+      inputType: 33
+      inputAction:
+        id: 13
+        description: Index Finger Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    handedness: 2
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Spatial Grip
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Grab
+      axisType: 3
+      inputType: 13
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Index Finger Pose
+      axisType: 7
+      inputType: 33
+      inputAction:
+        id: 13
+        description: Index Finger Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    handedness: 0
+    interactions:
+    - id: 0
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Grip Pose
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    handedness: 1
+    interactions:
+    - id: 0
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Grip Pose
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    handedness: 2
+    interactions:
+    - id: 0
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Grip Pose
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedMotionController,
+        Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    handedness: 1
     interactions:
     - id: 0
       description: Spatial Pointer
@@ -3680,7 +3918,7 @@ MonoBehaviour:
     - id: 2
       description: Grip Press
       axisType: 3
-      inputType: 60
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -3808,25 +4046,25 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKGGVHand,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
-    handedness: 0
+      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedMotionController,
+        Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    handedness: 2
     interactions:
     - id: 0
-      description: Select
-      axisType: 2
-      inputType: 25
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
       inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
     - id: 1
-      description: Grip Pose
+      description: Spatial Grip
       axisType: 7
       inputType: 14
       inputAction:
@@ -3838,9 +4076,351 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
+    - id: 2
+      description: Grip Press
+      axisType: 3
+      inputType: 13
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Trigger Position
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 6
+        description: Trigger
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Trigger Touch
+      axisType: 2
+      inputType: 11
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Trigger Press (Select)
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 6
+      description: Touchpad Position
+      axisType: 4
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 7
+      description: Touchpad Touch
+      axisType: 2
+      inputType: 22
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 8
+      description: Touchpad Press
+      axisType: 2
+      inputType: 24
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 9
+      description: Menu Press
+      axisType: 2
+      inputType: 27
+      inputAction:
+        id: 2
+        description: Menu
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 10
+      description: Thumbstick Position
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 11
+      description: Thumbstick Press
+      axisType: 2
+      inputType: 18
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKTouchController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
+    handedness: 2
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Axis1D.SecondaryIndexTrigger
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 6
+        description: Trigger
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Axis1D.SecondaryIndexTrigger Touch
+      axisType: 2
+      inputType: 11
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Axis1D.SecondaryIndexTrigger Near Touch
+      axisType: 2
+      inputType: 12
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Axis1D.SecondaryIndexTrigger Press
+      axisType: 2
+      inputType: 13
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Axis1D.SecondaryHandTrigger Press
+      axisType: 3
+      inputType: 60
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 6
+      description: Axis2D.SecondaryThumbstick
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 7
+      description: Button.SecondaryThumbstick Touch
+      axisType: 2
+      inputType: 19
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 8
+      description: Button.SecondaryThumbstick Near Touch
+      axisType: 2
+      inputType: 31
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 9
+      description: Button.SecondaryThumbstick Press
+      axisType: 2
+      inputType: 18
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 10
+      description: Button.One Press
+      axisType: 2
+      inputType: 51
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 11
+      description: Button.Two Press
+      axisType: 2
+      inputType: 54
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 12
+      description: Button.One Touch
+      axisType: 2
+      inputType: 52
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 13
+      description: Button.Two Touch
+      axisType: 2
+      inputType: 55
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 14
+      description: Touch.SecondaryThumbRest Touch
+      axisType: 2
+      inputType: 30
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 15
+      description: Touch.SecondaryThumbRest Near Touch
+      axisType: 2
+      inputType: 31
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 1
     interactions:
     - id: 0
@@ -3909,8 +4489,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 2
     interactions:
     - id: 0
@@ -4166,229 +4745,6 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKGGVHand,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
-    handedness: 1
-    interactions:
-    - id: 0
-      description: Select
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Grip Pose
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKGGVHand,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
-    handedness: 2
-    interactions:
-    - id: 0
-      description: Select
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Grip Pose
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKMotionController,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
-    handedness: 1
-    interactions:
-    - id: 0
-      description: Spatial Pointer
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 4
-        description: Pointer Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Spatial Grip
-      axisType: 7
-      inputType: 14
-      inputAction:
-        id: 3
-        description: Grip Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 2
-      description: Grip Press
-      axisType: 3
-      inputType: 60
-      inputAction:
-        id: 7
-        description: Grip Press
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 3
-      description: Trigger Position
-      axisType: 3
-      inputType: 10
-      inputAction:
-        id: 6
-        description: Trigger
-        axisConstraint: 3
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 4
-      description: Trigger Touch
-      axisType: 2
-      inputType: 11
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 5
-      description: Trigger Press (Select)
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 6
-      description: Touchpad Position
-      axisType: 4
-      inputType: 21
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 7
-      description: Touchpad Touch
-      axisType: 2
-      inputType: 22
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 8
-      description: Touchpad Press
-      axisType: 2
-      inputType: 24
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 9
-      description: Menu Press
-      axisType: 2
-      inputType: 27
-      inputAction:
-        id: 2
-        description: Menu
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 10
-      description: Thumbstick Position
-      axisType: 4
-      inputType: 17
-      inputAction:
-        id: 5
-        description: Teleport Direction
-        axisConstraint: 4
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 11
-      description: Thumbstick Press
-      axisType: 2
-      inputType: 18
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - controllerType:
       reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit.Providers.OpenVR
     handedness: 2
@@ -4557,6 +4913,232 @@ MonoBehaviour:
         id: 3
         description: Grip Pose
         axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKTouchController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
+    handedness: 1
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Axis1D.PrimaryIndexTrigger
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 6
+        description: Trigger
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Axis1D.PrimaryIndexTrigger Touch
+      axisType: 2
+      inputType: 11
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Axis1D.PrimaryIndexTrigger Near Touch
+      axisType: 2
+      inputType: 12
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Axis1D.PrimaryIndexTrigger Press
+      axisType: 2
+      inputType: 13
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Axis1D.PrimaryHandTrigger Press
+      axisType: 3
+      inputType: 60
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 6
+      description: Axis2D.PrimaryThumbstick
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 7
+      description: Button.PrimaryThumbstick Touch
+      axisType: 2
+      inputType: 19
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 8
+      description: Button.PrimaryThumbstick Near Touch
+      axisType: 2
+      inputType: 31
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 9
+      description: Button.PrimaryThumbstick Press
+      axisType: 2
+      inputType: 18
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 10
+      description: Button.Three Press
+      axisType: 2
+      inputType: 51
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 11
+      description: Button.Four Press
+      axisType: 2
+      inputType: 54
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 12
+      description: Button.Three Touch
+      axisType: 2
+      inputType: 52
+      inputAction:
+        id: 2
+        description: Menu
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 13
+      description: Button.Four Touch
+      axisType: 2
+      inputType: 55
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 14
+      description: Button.Start Press
+      axisType: 2
+      inputType: 27
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 15
+      description: Touch.PrimaryThumbRest Touch
+      axisType: 2
+      inputType: 30
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 16
+      description: Touch.PrimaryThumbRest Near Touch
+      axisType: 2
+      inputType: 31
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 0
       axisCodeX: 
       axisCodeY: 

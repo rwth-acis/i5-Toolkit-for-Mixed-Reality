@@ -2245,7 +2245,7 @@ PrefabInstance:
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetStop.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: DestroyCurrentIconOverVisualisation
+      value: DestroyCurrentIconOverObject
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
@@ -2300,7 +2300,7 @@ PrefabInstance:
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: toolSetup.defaultEntry.toolSpecificevents.OnHoverOverTargetActive.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UpdateCurrentIconOverVisualisation
+      value: UpdateCurrentIconOverObject
       objectReference: {fileID: 0}
     - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
