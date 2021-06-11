@@ -26,11 +26,50 @@ The icon is shown all the time on the input device and the description texts are
 TODO
 
 #### Adjusting the MRTK Settings
-TODO
+Add the MRTK to the scene and then navigate to the inspector of the MRTK object.
+Now you can either customize the MRTK profiles yourself or you can use the ones provided by the PieMenu.
+They are located in "i5 Toolkit for Mixed Reality/Samples/PieMenu/"
+To use them, you simply have to have to change the MRTK profile in the drop down in the inspector from the default to PieMenuMRTKProfile.
 
-#### Binding Input Actions#
+<img src="../resources/PieMenu/ProfileSetup.png" alt="ProfileSetup"/>
+
+
+If you instead want to setup it yourself, you need to navigate to the input tab.
+If you are using the default profiles, you always have to clone them, before you can edit anything.
+Go to "Controller Visualization Settings" and add two controller definitions, one for the left and one for the right.
+For controller type select the controller you want to setup, for example for the Vive Wands select Micosoft.MixedReality.Toolkit.OpenVR.Input.ViveWandController.
+Note that the MRTK sometimes has troubles in identifying the controllers.
+As long as you only support one controller type, you can also select the GenericOpenVRController as type, to work around this.
+Assign the corresponding input source prefabs from "i5 Toolkit for Mixed Reality/Runtime/PieMenu/Prefabs" to the "Override Model" slot and deselect "Use Default Model".
+For the Vive Wands that would be the vr\_controller\_vive\_1\_5\_teleporter and the vr\_controller\_vive\_1\_5\_tool prefab.
+
+<img src="../resources/PieMenu/VisualisationSetupLocal.png" alt="VisualisationSetupLocal"/>
+
+If you want to use the input simulation system for testing you also need to override the global models with these.
+
+<img src="../resources/PieMenu/VisualisationSetupGlobal.png" alt="VisualisationSetupGlobal"/>
+
+Now go to to "Input Actions" and add two new actions "TouchpadPress" and "TouchpadPosition". 
+"TouchpadPress" has to be a digital action and "TouchpadPosition" a dual axis action.
+Go to "Controllers" and assign these to the corresponding buttons.
+For the Vive Wands, you have to assign them to "Trackpad Press" and "Trackpad Position".
+
+<img src="../resources/PieMenu/ControllerSetupWands.png" alt="VisualisationSetupGlobal"/>
+
+In case you are using the generic controller workaround you have to edit the input action map for the generic controllers.
+There you have to add two new interactions.
+The first should be a dual axis interaction, operating on axis 17 and 18 for the left hand and on axis 19 and 20 for the right.
+As action assign the "TouchpadPosition" action
+The second interaction should be a digital one operating on joystick button 8 for th eleft and joystick button 9 for the right controller.
+As action assign the "TouchpadPress" action
+
+#### Binding Input Actions
 In the inspector of the Pie Menu you see five tabs on the left.
-Select the on named ""
+Select the on named "Input Actions".
+Assign the actions as showed in this Figure:
+
+<img src="../resources/PieMenu/InputActionSetup.png" alt="InputActionSetup"/>
+
 
 ### Creating a Menu Entry
 
