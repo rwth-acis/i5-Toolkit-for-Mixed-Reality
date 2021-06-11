@@ -22,9 +22,6 @@ The behavior and appearance of a tool can be configured by the developer in the 
 There the developer can easily set up handlers for the various events thrown by the tool, for example when the tool is selected, or when a button is pressed on the controller and setup things like an icon and description texts.
 The icon is shown all the time on the input device and the description texts are displayed for an adjustable amount of time, after the tool was activated.
 
-### Setting up for Usage With HTC Vive Wands
-TODO
-
 #### Adjusting the MRTK Settings
 Add the MRTK to the scene and then navigate to the inspector of the MRTK object.
 Now you can either customize the MRTK profiles yourself or you can use the ones provided by the PieMenu.
@@ -61,7 +58,7 @@ There you have to add two new interactions.
 The first should be a dual axis interaction, operating on axis 17 and 18 for the left hand and on axis 19 and 20 for the right.
 As action assign the "TouchpadPosition" action
 The second interaction should be a digital one operating on joystick button 8 for th eleft and joystick button 9 for the right controller.
-As action assign the "TouchpadPress" action
+As action assign the "TouchpadPress" action.
 
 #### Binding Input Actions
 In the inspector of the Pie Menu you see five tabs on the left.
@@ -80,12 +77,18 @@ Now you can setup the event handlers to implement the actual functionality.
 All input methods have the OnToolCreated, OnToolDestroyed, OnHoverOverTargetStart, OnHoverOverTargetActive and OnHoverOverTargetStop events.
 The other events depend on the used input source, but are usually something like GripPressStarted and GripPressEnded.
 
-The Pie Menu implementation already provides some useful event handlers, which are located in the GeneralToolAction Srcipt, which is already attached to the PieMenuManager.
-To assign one of them to an event, press the small "+" button TODO
+The Pie Menu implementation already provides some useful event handlers, which are located in the GeneralToolAction Script, which is already attached to the PieMenuManager.
+To assign one of them to an event, press the small "+" button, drag the PieMenuManager in the object slot and select the corresponding method from the drop down.
+
+Some of the general tool actions require an object transformer.
+This is simply a component that takes the current target and decides if the current tool can operate on it and on which parts of it.
+An object transformer needs to implement the IObjectTransformer interface and inherit MonoBehaviour.
+To make an object transformer usable by the general tool actions, attach it to an object in the scene and then drag it into the object transformer slot of the general tool action component on the PieMenuManager.
+An example of an object transformer can be seen in the step by step instructions.
+
 You can use any method as event handler, as long as it it is in a script inheriting MonoBehaviour and as it has either no arguments or one of the type BaseInputEventData (located in the Microsoft.MixedReality.Toolkit.Input namespace).
 For the hover events, you need to use the type FocusEventData instead.
 The class ActionHelperFunction from the i5.Toolkit.MixedReality.PieMenu namespace provides some helpful methods for designing own event handler.
-TODO explain the object transformer
 
 
 #### General Tool Actions
