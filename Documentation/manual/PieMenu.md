@@ -404,7 +404,11 @@ public class ManipulationActionWrapper : MonoBehaviour
 
 Finally, assign these two methods to the OnInputActionStartedTrigger and OnInputActionEndedTrigger event of the manipulation tool respectively.
 
-
+### The Color Change Tool
+The color change tool is very similar to the previous functionalities and shouldn't pose a problem to you.
+Create an undoable tool that can apply colors from a color array to the object the tool is pointing at!
+Pressing up on the touch pad should increase the index of the color array and apply it and down should decrease and apply.
+Note, that you can access the color of a GameObject with `gameObject.GetComponent<Renderer>().material.color`
 
 #### Signaling
 Now we want to signal to the user that his currently selected tool can affect the object he is currently pointing at.
