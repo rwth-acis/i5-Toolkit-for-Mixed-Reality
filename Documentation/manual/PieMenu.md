@@ -408,4 +408,16 @@ Finally, assign these two methods to the OnInputActionStartedTrigger and OnInput
 
 #### Signaling
 Now we want to signal to the user that his currently selected tool can affect the object he is currently pointing at.
-To do that, we can use the already provided 
+To do that, we can use the already provided CurrentIconOverObject functions.
+Go to the default behavior tab and open the Tool Specific Events menu point.
+There, assign the SpawnCurrentIconOverObject function to the hover start, the UpdateCurrentIconOverObject the the hover active and the DestroyCurrentIconOverObject to the hover end event.
+These function are all located in the general tool actions script, which is already attached to the PieMenuManager.
+
+Now the CurrentIconOverObject functions needs to know which object transformer we are using.
+Drag the object transformer object into the corresponding slot in the general tool actions component of the PieMenuManager.
+
+<img src="../resources/PieMenu/SignalingSetUp.png" alt="SignalingSetUp" height="300"/>
+
+When you now hover over an object with a tool that can affect it, the icon of the tool should be displayed over the object.
+
+<img src="../resources/PieMenu/Signaling.png" alt="Signaling" height="300"/>
