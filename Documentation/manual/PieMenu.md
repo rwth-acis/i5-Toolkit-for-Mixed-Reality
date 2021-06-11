@@ -425,3 +425,6 @@ Drag the object transformer object into the corresponding slot in the general to
 When you now hover over an object with a tool that can affect it, the icon of the tool should be displayed over the object.
 
 <img src="../resources/PieMenu/Signaling.png" alt="Signaling" height="300"/>
+
+We also want to give the user an option to check what certain buttons do, after the explanation texts faded.
+Assign the ActivateDescriptionTexts and DeactivateDescriptionTexts functions from the general tool actions to the OnInputStartedGrip and OnInputEndedGrip events.
