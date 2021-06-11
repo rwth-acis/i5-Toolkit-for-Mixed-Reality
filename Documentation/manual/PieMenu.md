@@ -86,7 +86,7 @@ These child objects should not have the ManipulationInformation component attach
 They should look somewhat like this for example:
 
 <center>
-<img src="../resources/PieMenu/Pillar.png" alt="Pillar" height="200"/>
+<img src="../resources/PieMenu/ObjectExample.png" alt="Pillar" height="200"/>
 </center>
 
 They need to have colliders to make them selectable with MRTK input devices, but as long as you used the default 3D objects, that will be the case.
@@ -306,7 +306,7 @@ Now extend the Tool Specific Events menu point and assign StartManipulating() to
 When you now start the scene and select the manipulation tool, all GameObjects that were set up as described earlier should be surrounded by a bounding box, with manipulation handles at each side for rotation and scalation. 
 Translation should be possible through simply clicking and holding somewhere on the bounding box, where there is no manipulation handle.
 
-<img src="../resources/PieMenu/PillarWithBoundingBox.png" alt="PillarWithBoundingBox" height="200"/>
+<img src="../resources/PieMenu/ManipulationExample.png" alt=ManipulationExample" height="200"/>
 
 But now we face a problem: the manipulation actions should be reversable but they are performed by a different library and can therefore not easily be transformed into commands form the command stack pattern.
 For this situation the command stack implementation offers the functionality to add a command to the stack without executing it.
