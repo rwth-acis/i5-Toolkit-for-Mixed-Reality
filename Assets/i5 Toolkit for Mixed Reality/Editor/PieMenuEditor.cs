@@ -154,7 +154,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
     public enum PieMenuInsepectorState
     {
-        Apperance,
+        Appearance,
         Actions,
         DefaultBehavior,
         MenuEntries,
