@@ -22,12 +22,9 @@ namespace i5.Toolkit.MixedReality.PieMenu
             StopCoroutine(DisableDescriptions());
             //Waits descriptionShowTime befor disabling the descriptions
             StartCoroutine(DisableDescriptions());
-
         }
 
-        /// <summary>
-        /// Registers the handlers in the input system. Otherwise, they will recive events only when a pointer has this object in focus.
-        /// </summary>
+        // Registers the handlers in the input system. Otherwise, they will recive events only when a pointer has this object in focus.
         private void OnEnable()
         {
             StartCoroutine(SetOwnSource());
@@ -35,18 +32,13 @@ namespace i5.Toolkit.MixedReality.PieMenu
             SetupTool();
         }
 
-        /// <summary>
-        /// Deregisters all handlers, otherwise it will recive events even after deactivcation.
-        /// </summary>
+        // Deregisters all handlers, otherwise it will recive events even after deactivcation.
         private void OnDisable()
         {
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputHandler<float>>(this);
         }
 
-        /// <summary>
-        /// Triggerd when an input action of type float changes its value. Used for the grip button.
-        /// </summary>
-        /// <param name="eventData"></param>
+        // Triggerd when an input action of type float changes its value. Used for the grip button.
         void IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)
         {
             if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.gripPressAction)
