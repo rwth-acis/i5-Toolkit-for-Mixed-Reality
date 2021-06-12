@@ -77,7 +77,7 @@ Now you can setup the event handlers to implement the actual functionality.
 All input methods have the OnToolCreated, OnToolDestroyed, OnHoverOverTargetStart, OnHoverOverTargetActive and OnHoverOverTargetStop events.
 The other events depend on the used input source, but are usually something like GripPressStarted and GripPressEnded.
 
-The Pie Menu implementation already provides some useful event handlers, which are located in the GeneralToolAction Script, which is already attached to the PieMenuManager.
+The Pie Menu implementation already provides some useful event handlers, which are located in the GeneralToolAction script, which is already attached to the PieMenuManager.
 To assign one of them to an event, press the small "+" button, drag the PieMenuManager in the object slot and select the corresponding method from the drop down.
 
 Some of the general tool actions require an object transformer.
