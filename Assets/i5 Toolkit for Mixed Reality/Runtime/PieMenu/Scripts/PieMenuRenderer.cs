@@ -66,21 +66,13 @@ namespace i5.Toolkit.MixedReality.PieMenu
             instantiatedMenuCursor = Instantiate(menuCursor, transform);
         }
 
-        /// <summary>
-        /// Convert an index of the MenuEntry array to the corrosponding rotation on the PieMenu
-        /// </summary>
-        /// <param name="number"></param> The index from the MenuEntry array
-        /// <returns></returns> The corresponding rotation on the PieMenu
+        // Convert an index of the MenuEntry array to the corrosponding rotation on the PieMenu
         float EntryNumberToRotation(int number)
         {
             return ((float)number / menuEntries.Count) * 360;
         }
 
-        /// <summary>
-        /// Convert the position of the pointer to the corresponding index from the MenuEntry array
-        /// </summary>
-        /// <param name="projectedPointer"></param> The position of the pointer projected on the plane of the pie menu
-        /// <returns></returns> The corresponding index from the MenuEntry array
+        // Convert the position of the pointer to the corresponding index from the MenuEntry array
         int CalculatePieceID(Vector2 projectedPointer)
         {
             float angle = Vector2.SignedAngle(Vector2.down, projectedPointer);
@@ -117,11 +109,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
-        /// <summary>
-        /// Place the icon from the menu entry with the number entryNumber on the correct position in the PieMenu
-        /// </summary>
-        /// <param name="entryNumber"></param> The number of the menu entry
-        /// <param name="menuRadius"></param> The radius of the PieMenu
+        // Place the icon from the menu entry with the number entryNumber on the correct position in the PieMenu
         void PlaceIcon(int entryNumber, float menuRadius)
         {
             //Place the icon in the middle of the piece
@@ -134,9 +122,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         }
 
 
-        /// <summary>
-        /// Calculate the new position of the pointer and highlight/dehighlight correspondingly
-        /// </summary>
+        // Calculate the new position of the pointer and highlight/dehighlight correspondingly
         void Update()
         {
             instantiatedMenuCursor.transform.position = pointer.Position;
