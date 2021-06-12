@@ -13,7 +13,7 @@ This Pie Menu is such a 3D Widget implementation. It is highly customizable and 
 ## Usage
 Under "i5 Toolkit for Mixed Reality/Runtime/PieMenu/Prefabs", there is the PieMenuManager prefab.
 Drag it into the scene.
-Once the manager and the scene is setted up as described in the following sections, it spawns a 3D Pie Menu when the menu button is pressed or the menu gesture is performed.
+Once the manager and the scene is set up as described in the following sections, it spawns a 3D Pie Menu if the menu button is pressed or the menu gesture is performed.
 In this menu, the user can select a virtual tool.
 These virtual tools extend the input devices, by adding various event listeners and optic indicators what which button does to them.
 
