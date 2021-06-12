@@ -72,7 +72,7 @@ You can either follow these general instructions or start by building a small sa
 
 Select the "Menu Entries" tab and then click on the button labeled "Add Entry".
 This adds an entry to the Pie Menu, which you can now customize.
-First, you have to choose an icon, which can be any unity sprite, and then a name for the entry.
+First, you have to choose an icon, which can be any Unity sprite, and then a name for the entry.
 Now you can setup the event handlers to implement the actual functionality.
 All input methods have the OnToolCreated, OnToolDestroyed, OnHoverOverTargetStart, OnHoverOverTargetActive and OnHoverOverTargetStop events.
 The other events depend on the used input source, but are usually something like GripPressStarted and GripPressEnded.
