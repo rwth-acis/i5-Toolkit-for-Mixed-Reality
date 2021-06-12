@@ -42,17 +42,13 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
-        /// <summary>
-        /// Registers the handlers in the input system. Otherwise, they will recive events only when a pointer has this object in focus.
-        /// </summary>
+        // Registers the handlers in the input system. Otherwise, they will recive events only when a pointer has this object in focus.
         private void OnEnable()
         {
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputActionHandler>(this);
         }
 
-        /// <summary>
-        /// Deregisters all handlers, otherwise it will recive events even after deactivcation.
-        /// </summary>
+        // Deregisters all handlers, otherwise it will recive events even after deactivcation.
         private void OnDisable()
         {
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputActionHandler>(this);
