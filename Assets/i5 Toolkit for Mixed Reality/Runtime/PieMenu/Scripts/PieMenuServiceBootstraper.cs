@@ -21,6 +21,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         protected override void UnRegisterServices()
         {
             ServiceManager.RemoveService<CommandStackService>();
+            ServiceManager.RemoveService<ToolSetupService>();
         }
     } 
 }
