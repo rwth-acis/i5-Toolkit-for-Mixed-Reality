@@ -68,7 +68,7 @@ Assign the actions as showed in this Figure:
 
 
 ## Creating a Menu Entry
-You can either follow these general instructions or start by building a small sample scene with the help of these TODO(link somehow) step by step instructions.
+You can either follow these general instructions or start by building a small sample scene with the help of [these](./PieMenuStepByStep.md) step by step instructions.
 
 Select the "Menu Entries" tab and then click on the button labeled "Add Entry".
 This adds an entry to the Pie Menu, which you can now customize.
