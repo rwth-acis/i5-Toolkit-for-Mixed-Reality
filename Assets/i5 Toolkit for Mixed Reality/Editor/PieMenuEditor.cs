@@ -13,7 +13,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
     [CustomEditor(typeof(PieMenuServiceBootstraper))]
     public class PieMenuEditor : Editor
     {
-        private PieMenuInsepectorState state = PieMenuInsepectorState.Appearance;
+        private PieMenuInspectorState state = PieMenuInspectorState.Appearance;
         public override void OnInspectorGUI()
         {
             PieMenuServiceBootstraper pieMenu = (PieMenuServiceBootstraper)target;
@@ -29,25 +29,25 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
             EditorGUILayout.BeginVertical(borders, GUILayout.MaxWidth(30));
 
-            if (GUILayout.Button("Appearance", state == PieMenuInsepectorState.Appearance ? buttonMarked : buttonNormal))
+            if (GUILayout.Button("Appearance", state == PieMenuInspectorState.Appearance ? buttonMarked : buttonNormal))
             {
-                state = PieMenuInsepectorState.Appearance;
+                state = PieMenuInspectorState.Appearance;
             }
-            if (GUILayout.Button("Actions", state == PieMenuInsepectorState.Actions ? buttonMarked : buttonNormal))
+            if (GUILayout.Button("Actions", state == PieMenuInspectorState.Actions ? buttonMarked : buttonNormal))
             {
-                state = PieMenuInsepectorState.Actions;
+                state = PieMenuInspectorState.Actions;
             }
-            if (GUILayout.Button("Default Behavior", state == PieMenuInsepectorState.DefaultBehavior ? buttonMarked : buttonNormal))
+            if (GUILayout.Button("Default Behavior", state == PieMenuInspectorState.DefaultBehavior ? buttonMarked : buttonNormal))
             {
-                state = PieMenuInsepectorState.DefaultBehavior;
+                state = PieMenuInspectorState.DefaultBehavior;
             }
-            if (GUILayout.Button("Menu Entries", state == PieMenuInsepectorState.MenuEntries ? buttonMarked : buttonNormal))
+            if (GUILayout.Button("Menu Entries", state == PieMenuInspectorState.MenuEntries ? buttonMarked : buttonNormal))
             {
-                state = PieMenuInsepectorState.MenuEntries;
+                state = PieMenuInspectorState.MenuEntries;
             }
-            if (GUILayout.Button("Debug", state == PieMenuInsepectorState.Debug ? buttonMarked : buttonNormal))
+            if (GUILayout.Button("Debug", state == PieMenuInspectorState.Debug ? buttonMarked : buttonNormal))
             {
-                state = PieMenuInsepectorState.Debug;
+                state = PieMenuInspectorState.Debug;
             }
 
             EditorGUILayout.EndVertical();
@@ -56,13 +56,13 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
             switch (state)
             {
-                case PieMenuInsepectorState.Appearance:
+                case PieMenuInspectorState.Appearance:
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceNormalColor"), new GUIContent("Color of the PieMenu"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceHighlighColor"), new GUIContent("Color of highlighted pieces"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.descriptionShowTime"), new GUIContent("Description show time in Seconds"));
                     break;
 
-                case PieMenuInsepectorState.Actions:
+                case PieMenuInspectorState.Actions:
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.menuAction"), new GUIContent("Menu action"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.triggerInputAction"), new GUIContent("Trigger input action"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.touchpadTouchActionAction"), new GUIContent("Touchpad touch action"));
@@ -70,14 +70,14 @@ namespace i5.Toolkit.MixedReality.PieMenu
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.gripPressAction"), new GUIContent("Grip press action"));
                     break;
 
-                case PieMenuInsepectorState.DefaultBehavior:
+                case PieMenuInspectorState.DefaultBehavior:
                     EditorGUILayout.HelpBox("The default behavior will always be used when the currently selected tool doesn't specify an action for a binding.", MessageType.Info);
                     EditorGUI.indentLevel++;
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.defaultEntry"), true);
                     EditorGUI.indentLevel--;
                     break;
 
-                case PieMenuInsepectorState.MenuEntries:
+                case PieMenuInspectorState.MenuEntries:
                     EditorGUI.indentLevel++;
                     SerializedProperty menuEntries = serializedObject.FindProperty("toolSetup.menuEntries");
                     int entryToDelete = -1;
@@ -106,7 +106,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                     }
                     EditorGUI.indentLevel--;
                     break;
-                case PieMenuInsepectorState.Debug:
+                case PieMenuInspectorState.Debug:
                     EditorGUI.indentLevel++;
 
                     void OverrideThumbPosition(Vector2 position)
@@ -152,7 +152,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
     }
 
-    public enum PieMenuInsepectorState
+    public enum PieMenuInspectorState
     {
         Appearance,
         Actions,
