@@ -26,7 +26,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         List<GameObject> pieMenuPieces;
         public int currentlyHighlighted { private set; get; }
 
-        GameObject instiatedMenuCursor;
+        GameObject instantiatedMenuCursor;
 
         IMixedRealityPointer pointer;
 
@@ -63,7 +63,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 PlaceIcon(i, 0.5f);
             }
 
-            instiatedMenuCursor = Instantiate(menuCursor, transform);
+            instantiatedMenuCursor = Instantiate(menuCursor, transform);
         }
 
         /// <summary>
@@ -139,10 +139,10 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// </summary>
         void Update()
         {
-            instiatedMenuCursor.transform.position = pointer.Position;
-            Vector3 localPosition = instiatedMenuCursor.transform.localPosition;
-            instiatedMenuCursor.transform.localPosition = new Vector3(localPosition.x, localPosition.y, 0);
-            HighlightPiece(CalculatePieceID(instiatedMenuCursor.transform.localPosition));
+            instantiatedMenuCursor.transform.position = pointer.Position;
+            Vector3 localPosition = instantiatedMenuCursor.transform.localPosition;
+            instantiatedMenuCursor.transform.localPosition = new Vector3(localPosition.x, localPosition.y, 0);
+            HighlightPiece(CalculatePieceID(instantiatedMenuCursor.transform.localPosition));
         }
     }
 
