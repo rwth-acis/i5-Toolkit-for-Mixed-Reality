@@ -81,7 +81,7 @@ The Pie Menu implementation already provides some useful event handlers, which a
 To assign one of them to an event, press the small "+" button, drag the PieMenuManager in the object slot and select the corresponding method from the drop down.
 
 Some of the general tool actions require an object transformer.
-This is simply a component that takes the current target and decides if the current tool can operate on it and on which parts of it.
+This is a component that takes the current target and decides if the current tool can operate on it and on which parts of it.
 An object transformer needs to implement the IObjectTransformer interface and inherit MonoBehaviour.
 To make an object transformer usable by the general tool actions, attach it to an object in the scene and then drag it into the object transformer slot of the general tool action component on the PieMenuManager.
 An example of an object transformer can be seen in the step by step instructions.
