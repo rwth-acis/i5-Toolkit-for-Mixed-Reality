@@ -74,7 +74,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
     }
 
     /// <summary>
-    /// Contains everything needed to define a virtual tool
+    /// Contains everything needed to define a menu entry
     /// </summary>
     [Serializable]
     public struct MenuEntry
