@@ -20,7 +20,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             SetText("GripText", "", ServiceManager.GetService<ToolSetupService>().toolSetup.textGrip);
 
             StopCoroutine("DisableDescriptions");
-            //Waits descriptionShowTime befor disabling the descriptions
+            //Waits descriptionShowTime before disabling the descriptions
             StartCoroutine("DisableDescriptions");
 
         }
