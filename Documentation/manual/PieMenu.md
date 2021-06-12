@@ -5,7 +5,7 @@
 ## Use Case
 
 One challenge of Mixed Reality is the usage of User Interfaces.
-Conventional 2D User Interfaces don't work due to a different set of input devices and true 3D interfaces are hard to implement and often bound to one specific use case.
+Conventional 2D User Interfaces do not work due to a different set of input devices and true 3D interfaces are hard to implement and often bound to one specific use case.
 A convenient compromise are 3D widgets, which allow the usage of interfaces similar to 2D interfaces in a 3D environment.
 
 This Pie Menu is such a 3D Widget implementation. It is highly customizable and allows manipulation of the virtual world through the selection virtual tools.
