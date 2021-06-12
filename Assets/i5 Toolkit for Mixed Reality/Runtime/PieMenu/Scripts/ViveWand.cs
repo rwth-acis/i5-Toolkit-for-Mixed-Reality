@@ -13,7 +13,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         protected IMixedRealityInputSource ownSource;
 
         /// <summary>
-        /// Disabel the description texts after descriptionShowTime seconds
+        /// Disabel the description texts after descriptionShowTime seconds.
         /// </summary>
         /// <returns></returns>
         protected IEnumerator DisableDescriptions()
@@ -23,6 +23,10 @@ namespace i5.Toolkit.MixedReality.PieMenu
             menuButton.SetActive(false);
         }
 
+        /// <summary>
+        /// Coroutine to set the ownSourceVariable. Has to be done in a loop in a coroutine, because it can vary at which point the input source is registered in the InputSystem.
+        /// </summary>
+        /// <returns></returns>
         protected IEnumerator SetOwnSource()
         {
             while (ownSource == null)
