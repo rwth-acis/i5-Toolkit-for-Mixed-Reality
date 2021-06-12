@@ -68,6 +68,11 @@ namespace i5.Toolkit.MixedReality.PieMenu
             return pointer?.Controller?.Visualizer?.GameObjectProxy?.GetComponentInChildren<ViveWandVirtualTool>();
         }
 
+        /// <summary>
+        /// Get the virtual tool that is attached to the input source
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <returns></returns>
         public static ViveWandVirtualTool GetVirtualTool(IMixedRealityInputSource inputSource)
         {
             foreach (var pointer in inputSource.Pointers)
