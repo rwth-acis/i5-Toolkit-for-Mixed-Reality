@@ -6,6 +6,6 @@ namespace i5.Toolkit.MixedReality.PieMenu
 {
     public interface IObjectTransformer
     {
-        GameObject transformObject(GameObject objectToTransform, string toolName);
+        GameObject TransformObject(GameObject objectToTransform, string toolName);
     }
 }
