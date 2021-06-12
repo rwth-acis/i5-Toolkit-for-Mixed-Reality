@@ -1,19 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using NUnit.Framework;
+using NUnit.Framework;
+using FakeItEasy;
+using UnityEngine.TestTools;
+using i5.Toolkit.Core.TestHelpers;
 
-public class TestTest : MonoBehaviour
+public class TestTest
 {
-    // Start is called before the first frame update
-    void Start()
+    [SetUp] //NUnit
+    public void LoadScene()
     {
-        
+        A.Fake<>
+        Debug.Log("Setup");
     }
 
-    // Update is called once per frame
-    void Update()
+    [TearDown] //NUinit
+    public void TearDownScene()
     {
-        
+        Debug.Log("Teardown");
+    }
+
+    [UnityTest] //TestTools
+    public IEnumerator Runner_RunnerGameObjectDestroyed_CreatesNewRunner()
+    {
+        Debug.Log("Test");
+        yield return null;
+        Assert.True(true);
     }
 }
