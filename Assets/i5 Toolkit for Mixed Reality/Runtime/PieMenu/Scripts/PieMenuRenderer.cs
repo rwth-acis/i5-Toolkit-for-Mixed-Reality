@@ -40,7 +40,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             currentlyHighlighted = int.MinValue;
 
             //Get the setup informations from the tool setup service
-            ToolSetup toolSetup = ServiceManager.GetService<ToolSetupService>().toolSetup;
+            PieMenuSetup toolSetup = ServiceManager.GetService<ToolSetupService>().toolSetup;
             menuEntries = toolSetup.menuEntries;
             normalColor = toolSetup.pieMenuPieceNormalColor;
             highlightColor = toolSetup.pieMenuPieceHighlighColor;

@@ -8,7 +8,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
 {
     public class PieMenuServiceBootstraper : BaseServiceBootstrapper
     {
-        public ToolSetup toolSetup;
+        public PieMenuSetup toolSetup;
         override protected void RegisterServices()
         {
             CommandStackService commandStackService = new CommandStackService();
