@@ -29,7 +29,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
             EditorGUILayout.BeginVertical(borders, GUILayout.MaxWidth(30));
 
-            if (GUILayout.Button("Apperance", state == PieMenuInsepectorState.Apperance ? buttonMarked : buttonNormal))
+            if (GUILayout.Button("Appearance", state == PieMenuInsepectorState.Appearance ? buttonMarked : buttonNormal))
             {
                 state = PieMenuInsepectorState.Apperance;
             }
