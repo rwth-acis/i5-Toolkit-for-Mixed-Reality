@@ -19,9 +19,9 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
             SetText("GripText", "", ServiceManager.GetService<ToolSetupService>().toolSetup.textGrip);
 
-            StopCoroutine("DisableDescriptions");
+            StopCoroutine(DisableDescriptions());
             //Waits descriptionShowTime befor disabling the descriptions
-            StartCoroutine("DisableDescriptions");
+            StartCoroutine(DisableDescriptions());
 
         }
 
@@ -30,7 +30,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// </summary>
         private void OnEnable()
         {
-            StartCoroutine("SetOwnSource");
+            StartCoroutine(SetOwnSource());
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<float>>(this);
             SetupTool();
         }

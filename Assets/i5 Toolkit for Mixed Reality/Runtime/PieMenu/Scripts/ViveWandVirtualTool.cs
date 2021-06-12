@@ -55,9 +55,9 @@ namespace i5.Toolkit.MixedReality.PieMenu
             SetText("TriggerText", newEntry.triggerSettings.textTrigger, defaultEntry.triggerSettings.textTrigger);
             SetText("GripText", newEntry.gripSettings.textGrip, defaultEntry.gripSettings.textGrip);
 
-            StopCoroutine("DisableDescriptions");
+            StopCoroutine(DisableDescriptions());
             //Waits descriptionShowTime befor disabling the descriptions
-            StartCoroutine("DisableDescriptions");
+            StartCoroutine(DisableDescriptions());
 
             currentEntry = newEntry;
         }
@@ -160,7 +160,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// </summary>
         private void OnEnable()
         {
-            StartCoroutine("SetOwnSource");
+            StartCoroutine(SetOwnSource());
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputActionHandler>(this);
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<Vector2>>(this);
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<float>>(this);
