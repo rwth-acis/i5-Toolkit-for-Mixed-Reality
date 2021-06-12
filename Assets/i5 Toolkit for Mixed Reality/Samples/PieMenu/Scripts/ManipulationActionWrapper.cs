@@ -19,7 +19,7 @@ public class ManipulationActionWrapper : MonoBehaviour
         GameObject target = ActionHelperFunctions.GetTargetFromInputSource(data.InputSource);
 
         IObjectTransformer objectTransformer = FindObjectOfType<ObjectTransformer>().GetComponent<ObjectTransformer>();
-        target = objectTransformer.transformObject(target, "Manipulate");
+        target = objectTransformer.TransformObject(target, "Manipulate");
         if (target != null)
         {
             curentManiplulationAction = new ManiplulationAction();
@@ -36,7 +36,7 @@ public class ManipulationActionWrapper : MonoBehaviour
         GameObject target = ActionHelperFunctions.GetTargetFromInputSource(data.InputSource);
 
         IObjectTransformer objectTransformer = FindObjectOfType<ObjectTransformer>().GetComponent<ObjectTransformer>();
-        target = objectTransformer.transformObject(target, "Manipulate");
+        target = objectTransformer.TransformObject(target, "Manipulate");
         if (target != null && target == curentManiplulationAction.target)
         {
             curentManiplulationAction.endPosition = target.transform.localPosition;

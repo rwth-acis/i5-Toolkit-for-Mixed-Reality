@@ -31,7 +31,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
             if (GUILayout.Button("Appearance", state == PieMenuInsepectorState.Appearance ? buttonMarked : buttonNormal))
             {
-                state = PieMenuInsepectorState.Apperance;
+                state = PieMenuInsepectorState.Appearance;
             }
             if (GUILayout.Button("Actions", state == PieMenuInsepectorState.Actions ? buttonMarked : buttonNormal))
             {
@@ -56,7 +56,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
             switch (state)
             {
-                case PieMenuInsepectorState.Apperance:
+                case PieMenuInsepectorState.Appearance:
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceNormalColor"), new GUIContent("Color of the PieMenu"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.pieMenuPieceHighlighColor"), new GUIContent("Color of highlighted pieces"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.descriptionShowTime"), new GUIContent("Description show time in Seconds"));

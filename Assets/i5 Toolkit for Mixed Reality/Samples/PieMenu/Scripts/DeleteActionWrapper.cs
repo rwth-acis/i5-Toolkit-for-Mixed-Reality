@@ -12,7 +12,7 @@ public class DeleteActionWrapper : MonoBehaviour
         GameObject target = ActionHelperFunctions.GetTargetFromInputSource(data.InputSource);
         IObjectTransformer objectTransformer = FindObjectOfType<ObjectTransformer>().GetComponent<ObjectTransformer>();
         //string toolName = ActionHelperFunctions.GetVirtualToolFromPointer(data.InputSource.Pointers[0]).currentEntry.toolSettings.toolName;
-        target = objectTransformer.transformObject(target, "Delete");
+        target = objectTransformer.TransformObject(target, "Delete");
 
         if (target != null)
         {
