@@ -13,7 +13,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
     [CustomEditor(typeof(PieMenuServiceBootstraper))]
     public class PieMenuEditor : Editor
     {
-        private PieMenuInsepectorState state = PieMenuInsepectorState.Apperance;
+        private PieMenuInsepectorState state = PieMenuInsepectorState.Appearance;
         public override void OnInspectorGUI()
         {
             PieMenuServiceBootstraper pieMenu = (PieMenuServiceBootstraper)target;
