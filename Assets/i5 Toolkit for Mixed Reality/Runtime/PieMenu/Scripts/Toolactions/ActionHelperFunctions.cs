@@ -77,7 +77,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         {
             foreach (var pointer in inputSource.Pointers)
             {
-                ViveWandVirtualTool tool = pointer?.Controller?.Visualizer?.GameObjectProxy?.GetComponentInChildren<ViveWandVirtualTool>();
+                ViveWandVirtualTool tool = GetVirtualTool(pointer);
                 if (tool != null)
                 {
                     return tool;
