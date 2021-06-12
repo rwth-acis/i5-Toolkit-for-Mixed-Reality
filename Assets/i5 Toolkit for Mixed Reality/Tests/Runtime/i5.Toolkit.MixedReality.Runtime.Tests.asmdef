@@ -1,7 +1,12 @@
 {
     "name": "i5.Toolkit.MixedReality.Runtime.Tests",
     "references": [
-        "GUID:27619889b8ba8c24980f49ee34dbb44a"
+        "i5.Toolkit.Core.Editor",
+        "i5.Toolkit.Core.Runtime",
+        "UnityEngine.TestRunner",
+        "i5.Toolkit.Core.TestHelpers",
+        "UnityEditor.TestRunner",
+        "i5.Toolkit.MixedReality.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
