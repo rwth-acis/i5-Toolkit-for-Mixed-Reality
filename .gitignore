@@ -58,3 +58,18 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+/Assets/TextMesh Pro
+/Assets/TextMesh Pro.meta
+/Assets/i5 Toolkit for Mixed Reality/package-lock.json
+/Assets/i5 Toolkit for Mixed Reality/package-lock.json.meta
+
+
+# DocFX
+/_site/
+/**/DROP/
+/**/TEMP/
+/**/packages/
+/**/bin/
+/**/obj/
+reference
+/Documentation/api

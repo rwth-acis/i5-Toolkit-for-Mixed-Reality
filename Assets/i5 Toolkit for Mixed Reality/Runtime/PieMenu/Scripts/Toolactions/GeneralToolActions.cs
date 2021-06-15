@@ -30,7 +30,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             if (objectTransformer != null)
             {
                 IObjectTransformer transformer = objectTransformer.GetComponent<IObjectTransformer>();
-                objectToSpawnIconOver = transformer.transformObject(data.NewFocusedObject, virtualTool.currentEntry.toolSettings.toolName);
+                objectToSpawnIconOver = transformer.TransformObject(data.NewFocusedObject, virtualTool.currentEntry.toolSettings.toolName);
             }
             else
             {
@@ -62,7 +62,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 if (objectTransformer != null)
                 {
                     IObjectTransformer transformer = objectTransformer.GetComponent<IObjectTransformer>();
-                    target = transformer.transformObject(data.NewFocusedObject, virtualTool.currentEntry.toolSettings.toolName);
+                    target = transformer.TransformObject(data.NewFocusedObject, virtualTool.currentEntry.toolSettings.toolName);
                 }
                 else
                 {

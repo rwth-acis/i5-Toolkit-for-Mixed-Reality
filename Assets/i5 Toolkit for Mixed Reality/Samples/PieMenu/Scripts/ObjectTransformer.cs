@@ -5,7 +5,7 @@ using i5.Toolkit.MixedReality.PieMenu;
 
 public class ObjectTransformer : MonoBehaviour, IObjectTransformer
 {
-    GameObject IObjectTransformer.transformObject(GameObject objectToTransform, string toolName)
+    GameObject IObjectTransformer.TransformObject(GameObject objectToTransform, string toolName)
     {
         GameObject transformed = ActionHelperFunctions.GetGameobjectOfTypeFromHirachy(objectToTransform,
                                                                                       typeof(ManipulationInformation));

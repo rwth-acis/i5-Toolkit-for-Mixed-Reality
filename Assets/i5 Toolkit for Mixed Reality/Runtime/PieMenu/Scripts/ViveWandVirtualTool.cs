@@ -55,19 +55,14 @@ namespace i5.Toolkit.MixedReality.PieMenu
             SetText("TriggerText", newEntry.triggerSettings.textTrigger, defaultEntry.triggerSettings.textTrigger);
             SetText("GripText", newEntry.gripSettings.textGrip, defaultEntry.gripSettings.textGrip);
 
-            StopCoroutine("DisableDescriptions");
+            StopCoroutine(DisableDescriptions());
             //Waits descriptionShowTime befor disabling the descriptions
-            StartCoroutine("DisableDescriptions");
+            StartCoroutine(DisableDescriptions());
 
             currentEntry = newEntry;
         }
 
-        /// <summary>
-        /// Sets the icon on the coresponding canvas on the tool.
-        /// </summary>
-        /// <param name="canvasName"></param> The name of the canvas, on which the icon shoould be set
-        /// <param name="icon"></param> The new Icon. If null, the defaut icon is used
-        /// <param name="defaultIcon"></param> Only used, if icon is null
+        // Sets the icon on the coresponding canvas on the tool.
         private void SetIcon(string canvasName, Sprite icon, Sprite defaultIcon)
         {
             Transform iconCanvas = transform.Find(canvasName);
@@ -155,21 +150,17 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
-        /// <summary>
-        /// Registers the handlers in the input system. Otherwise, they will recive events only when a pointer has this object in focus.
-        /// </summary>
+        // Registers the handlers in the input system. Otherwise, they will recive events only when a pointer has this object in focus.
         private void OnEnable()
         {
-            StartCoroutine("SetOwnSource");
+            StartCoroutine(SetOwnSource());
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputActionHandler>(this);
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<Vector2>>(this);
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<float>>(this);
             SetupTool(ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry);
         }
 
-        /// <summary>
-        /// Deregisters all handlers, otherwise it will recive events even after deactivcation.
-        /// </summary>
+        // Deregisters all handlers, otherwise it will recive events even after deactivcation.
         private void OnDisable()
         {
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputActionHandler>(this);
@@ -177,9 +168,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputHandler<float>>(this);
         }
 
-        /// <summary>
-        /// Triggerd when an input action starts
-        /// </summary>
+        // Triggerd when an input action starts
         void IMixedRealityInputActionHandler.OnActionStarted(BaseInputEventData eventData)
         {
             if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.triggerInputAction && IsInputSourceThis(eventData.InputSource) && !eventData.used)
@@ -188,10 +177,8 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 currentEntry.triggerSettings.OnInputActionStartedTrigger?.Invoke(eventData);
             }
         }
-        /// <summary>
-        /// Triggerd when an input action ends. Used for the trigger and the touchpad.
-        /// </summary>
-        /// <param name="eventData"></param>
+
+        // Triggerd when an input action ends. Used for the trigger and the touchpad.
         void IMixedRealityInputActionHandler.OnActionEnded(BaseInputEventData eventData)
         {
             if (IsInputSourceThis(eventData.InputSource))
@@ -256,9 +243,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
-        /// <summary>
-        /// Save the last known position of the thumb on the trackpad to use it when the trackpad is pressed.
-        /// </summary>
+        // Save the last known position of the thumb on the trackpad to use it when the trackpad is pressed.
         void IMixedRealityInputHandler<Vector2>.OnInputChanged(InputEventData<Vector2> eventData)
         {
             if (eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.touchpadTouchActionAction)
@@ -267,10 +252,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
-        /// <summary>
-        /// Triggerd when an input action of type float changes its value. Used for the grip button.
-        /// </summary>
-        /// <param name="eventData"></param>
+        // Triggerd when an input action of type float changes its value. Used for the grip button.
         void IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)
         {
             if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.gripPressAction)

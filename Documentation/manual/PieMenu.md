@@ -4,8 +4,8 @@
 
 ## Use Case
 
-One great challenge of Mixed Reality is the usage of User Interfaces.
-Conventional 2D User Interfaces don't work due to a different set of input devices and true 3D interfaces are hard to implement and often bound to one specific use case.
+One challenge of Mixed Reality is the usage of User Interfaces.
+Conventional 2D User Interfaces do not work due to a different set of input devices and true 3D interfaces are hard to implement and often bound to one specific use case.
 A convenient compromise are 3D widgets, which allow the usage of interfaces similar to 2D interfaces in a 3D environment.
 
 This Pie Menu is such a 3D Widget implementation. It is highly customizable and allows manipulation of the virtual world through the selection virtual tools.
@@ -13,7 +13,7 @@ This Pie Menu is such a 3D Widget implementation. It is highly customizable and 
 ## Usage
 Under "i5 Toolkit for Mixed Reality/Runtime/PieMenu/Prefabs", there is the PieMenuManager prefab.
 Drag it into the scene.
-Once the manager and the scene is setted up as described in the following sections, it spawns a 3D Pie Menu when the menu button is pressed or the menu gesture is performed.
+Once the manager and the scene is set up as described in the following sections, it spawns a 3D Pie Menu if the menu button is pressed or the menu gesture is performed.
 In this menu, the user can select a virtual tool.
 These virtual tools extend the input devices, by adding various event listeners and optic indicators what which button does to them.
 
@@ -68,20 +68,20 @@ Assign the actions as showed in this Figure:
 
 
 ## Creating a Menu Entry
-You can either follow these general instructions or start by building a small sample scene with the help of these TODO(link somehow) step by step instructions.
+You can either follow these general instructions or start by building a small sample scene with the help of [these](./PieMenuStepByStep.md) step by step instructions.
 
 Select the "Menu Entries" tab and then click on the button labeled "Add Entry".
 This adds an entry to the Pie Menu, which you can now customize.
-First, you have to choose an icon, which can be any unity sprite, and then a name for the entry.
+First, you have to choose an icon, which can be any Unity sprite, and then a name for the entry.
 Now you can setup the event handlers to implement the actual functionality.
 All input methods have the OnToolCreated, OnToolDestroyed, OnHoverOverTargetStart, OnHoverOverTargetActive and OnHoverOverTargetStop events.
 The other events depend on the used input source, but are usually something like GripPressStarted and GripPressEnded.
 
-The Pie Menu implementation already provides some useful event handlers, which are located in the GeneralToolAction Script, which is already attached to the PieMenuManager.
+The Pie Menu implementation already provides some useful event handlers, which are located in the GeneralToolAction script, which is already attached to the PieMenuManager.
 To assign one of them to an event, press the small "+" button, drag the PieMenuManager in the object slot and select the corresponding method from the drop down.
 
 Some of the general tool actions require an object transformer.
-This is simply a component that takes the current target and decides if the current tool can operate on it and on which parts of it.
+This is a component that takes the current target and decides if the current tool can operate on it and on which parts of it.
 An object transformer needs to implement the IObjectTransformer interface and inherit MonoBehaviour.
 To make an object transformer usable by the general tool actions, attach it to an object in the scene and then drag it into the object transformer slot of the general tool action component on the PieMenuManager.
 An example of an object transformer can be seen in the step by step instructions.

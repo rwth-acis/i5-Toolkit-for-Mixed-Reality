@@ -9,9 +9,9 @@ namespace i5.Toolkit.MixedReality.PieMenu
 {
     public class ToolSetupService : IService
     {
-        public ToolSetup toolSetup;
+        public PieMenuSetup toolSetup;
 
-        public ToolSetupService(ToolSetup toolSetup)
+        public ToolSetupService(PieMenuSetup toolSetup)
         {
             this.toolSetup = toolSetup;
         }

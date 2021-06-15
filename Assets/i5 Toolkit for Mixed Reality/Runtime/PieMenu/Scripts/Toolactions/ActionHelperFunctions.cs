@@ -68,11 +68,16 @@ namespace i5.Toolkit.MixedReality.PieMenu
             return pointer?.Controller?.Visualizer?.GameObjectProxy?.GetComponentInChildren<ViveWandVirtualTool>();
         }
 
+        /// <summary>
+        /// Get the virtual tool that is attached to the input source
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <returns></returns>
         public static ViveWandVirtualTool GetVirtualTool(IMixedRealityInputSource inputSource)
         {
             foreach (var pointer in inputSource.Pointers)
             {
-                ViveWandVirtualTool tool = pointer?.Controller?.Visualizer?.GameObjectProxy?.GetComponentInChildren<ViveWandVirtualTool>();
+                ViveWandVirtualTool tool = GetVirtualTool(pointer);
                 if (tool != null)
                 {
                     return tool;
@@ -86,7 +91,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// </summary>
         /// <param name="objectToRotate"></param> The object to move and rotate
         /// <param name="newPosition"></param> The new position
-        public void RotateToCameraOnXZPlane(GameObject objectToRotate, Vector3 newPosition)
+        public static void RotateToCameraOnXZPlane(GameObject objectToRotate, Vector3 newPosition)
         {
             objectToRotate.transform.LookAt(Camera.main.transform);
             //Set the x and y rotation to 0 and flip it around because with LookAt, the prefab faces away from the camera and is tilted strangly

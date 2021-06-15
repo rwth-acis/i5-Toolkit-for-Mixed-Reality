@@ -26,7 +26,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         List<GameObject> pieMenuPieces;
         public int currentlyHighlighted { private set; get; }
 
-        GameObject instiatedMenuCursor;
+        GameObject instantiatedMenuCursor;
 
         IMixedRealityPointer pointer;
 
@@ -40,7 +40,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             currentlyHighlighted = int.MinValue;
 
             //Get the setup informations from the tool setup service
-            ToolSetup toolSetup = ServiceManager.GetService<ToolSetupService>().toolSetup;
+            PieMenuSetup toolSetup = ServiceManager.GetService<ToolSetupService>().toolSetup;
             menuEntries = toolSetup.menuEntries;
             normalColor = toolSetup.pieMenuPieceNormalColor;
             highlightColor = toolSetup.pieMenuPieceHighlighColor;
@@ -63,24 +63,16 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 PlaceIcon(i, 0.5f);
             }
 
-            instiatedMenuCursor = Instantiate(menuCursor, transform);
+            instantiatedMenuCursor = Instantiate(menuCursor, transform);
         }
 
-        /// <summary>
-        /// Convert an index of the MenuEntry array to the corrosponding rotation on the PieMenu
-        /// </summary>
-        /// <param name="number"></param> The index from the MenuEntry array
-        /// <returns></returns> The corresponding rotation on the PieMenu
+        // Convert an index of the MenuEntry array to the corrosponding rotation on the PieMenu
         float EntryNumberToRotation(int number)
         {
             return ((float)number / menuEntries.Count) * 360;
         }
 
-        /// <summary>
-        /// Convert the position of the pointer to the corresponding index from the MenuEntry array
-        /// </summary>
-        /// <param name="projectedPointer"></param> The position of the pointer projected on the plane of the pie menu
-        /// <returns></returns> The corresponding index from the MenuEntry array
+        // Convert the position of the pointer to the corresponding index from the MenuEntry array
         int CalculatePieceID(Vector2 projectedPointer)
         {
             float angle = Vector2.SignedAngle(Vector2.down, projectedPointer);
@@ -117,11 +109,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
-        /// <summary>
-        /// Place the icon from the menu entry with the number entryNumber on the correct position in the PieMenu
-        /// </summary>
-        /// <param name="entryNumber"></param> The number of the menu entry
-        /// <param name="menuRadius"></param> The radius of the PieMenu
+        // Place the icon from the menu entry with the number entryNumber on the correct position in the PieMenu
         void PlaceIcon(int entryNumber, float menuRadius)
         {
             //Place the icon in the middle of the piece
@@ -134,15 +122,13 @@ namespace i5.Toolkit.MixedReality.PieMenu
         }
 
 
-        /// <summary>
-        /// Calculate the new position of the pointer and highlight/dehighlight correspondingly
-        /// </summary>
+        // Calculate the new position of the pointer and highlight/dehighlight correspondingly
         void Update()
         {
-            instiatedMenuCursor.transform.position = pointer.Position;
-            Vector3 localPosition = instiatedMenuCursor.transform.localPosition;
-            instiatedMenuCursor.transform.localPosition = new Vector3(localPosition.x, localPosition.y, 0);
-            HighlightPiece(CalculatePieceID(instiatedMenuCursor.transform.localPosition));
+            instantiatedMenuCursor.transform.position = pointer.Position;
+            Vector3 localPosition = instantiatedMenuCursor.transform.localPosition;
+            instantiatedMenuCursor.transform.localPosition = new Vector3(localPosition.x, localPosition.y, 0);
+            HighlightPiece(CalculatePieceID(instantiatedMenuCursor.transform.localPosition));
         }
     }
 

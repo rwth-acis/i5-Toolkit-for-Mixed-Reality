@@ -6,8 +6,11 @@ using System.Collections.Generic;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// Contains all information needed to setup a PieMenu
+    /// </summary>
     [Serializable]
-    public class ToolSetup
+    public class PieMenuSetup
     {
         //Events and action for both controllers
         public MixedRealityInputAction triggerInputAction;

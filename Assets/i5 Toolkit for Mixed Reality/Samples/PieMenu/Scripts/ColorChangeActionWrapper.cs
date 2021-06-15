@@ -27,7 +27,7 @@ public class ColorChangeActionWrapper : MonoBehaviour
         GameObject target = ActionHelperFunctions.GetTargetFromInputSource(data.InputSource);
 
         IObjectTransformer objectTransformer = FindObjectOfType<ObjectTransformer>().GetComponent<ObjectTransformer>();
-        target = objectTransformer.transformObject(target, ActionHelperFunctions.GetCurrentToolName(data.InputSource));
+        target = objectTransformer.TransformObject(target, ActionHelperFunctions.GetCurrentToolName(data.InputSource));
 
         ColorChangeAction colorChangeAction = new ColorChangeAction(target, color);
         ServiceManager.GetService<CommandStackService>().AddAndPerformAction(colorChangeAction);
