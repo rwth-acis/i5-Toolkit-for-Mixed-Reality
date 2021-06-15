@@ -10,7 +10,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
 {
     public abstract class ViveWand : MonoBehaviour
     {
-        protected IMixedRealityInputSource ownSource;
+        public IMixedRealityInputSource ownSource { set; get; }
 
         /// <summary>
         /// Disabel the description texts after descriptionShowTime seconds.
