@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Microsoft.MixedReality.Toolkit.Input;
+using i5.Toolkit.MixedReality.PieMenu;
+using Microsoft.MixedReality.Toolkit;
+using FakeItEasy;
 
 /// <summary>
 /// Theroratically inckuded in the i5 toolkit. Only included here as workaround.
@@ -30,9 +32,34 @@ public static class PlayModeTestUtilities
         }
     }
 
-    public static BaseInputEventData FakeBaseInputEvent()
+    public static InputEventData GetFakeInputEventData(MixedRealityInputAction inputAction, Vector3 controllerPosition)
     {
-        return null;
+        InputEventData data = new InputEventData(UnityEngine.EventSystems.EventSystem.current);
+        var viveWand = GetFakeController(controllerPosition);
+        data.Initialize(viveWand.ownSource, Microsoft.MixedReality.Toolkit.Utilities.Handedness.Right, inputAction);
+        return data;
+    }
+
+    public static ViveWandVirtualTool GetFakeController(Vector3 position)
+    {
+        IMixedRealityInputSource inputSource = GetFakeInputSource(position);
+        var controller = GameObject.FindObjectOfType<ViveWandVirtualTool>();
+        controller.ownSource = inputSource;
+        return controller;
+    }
+
+    public static IMixedRealityInputSource GetFakeInputSource(Vector3 position)
+    {
+        var inputSource = A.Fake<IMixedRealityInputSource>();
+
+        var pointer = A.Fake<IMixedRealityPointer>();
+        A.CallTo(() => pointer.Position).Returns(position);
+
+        var pointerArray = new IMixedRealityPointer[1];
+        pointerArray[0] = pointer;
+
+        A.CallTo(() => inputSource.Pointers).Returns(pointerArray);
+        return inputSource;
     }
 }
 
