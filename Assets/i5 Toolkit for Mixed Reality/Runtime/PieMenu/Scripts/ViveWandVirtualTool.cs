@@ -3,6 +3,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
 using i5.Toolkit.Core.ServiceCore;
+using System.Collections;
 
 
 namespace i5.Toolkit.MixedReality.PieMenu
@@ -78,6 +79,21 @@ namespace i5.Toolkit.MixedReality.PieMenu
             else
             {
                 iconCanvas.gameObject.SetActive(false);
+            }
+        }
+
+        //Checks if the SetupService exists and if yes executes it. If not, waits a frame. This is only neccesarry in case the OneEnable of the tool
+        //is called on the same frame with the ServiceRegister (for example on the first frame when both are instantiated in the scene on default)
+        private IEnumerator SetupToolWaitForService()
+        {
+            if (ServiceManager.ServiceExists<ToolSetupService>())
+            {
+                SetupTool(ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry);
+            }
+            else
+            {
+                yield return null;
+                SetupTool(ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry);
             }
         }
 
@@ -157,7 +173,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputActionHandler>(this);
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<Vector2>>(this);
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<float>>(this);
-            SetupTool(ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry);
+            StartCoroutine(SetupToolWaitForService());
         }
 
         // Deregisters all handlers, otherwise it will recive events even after deactivcation.
