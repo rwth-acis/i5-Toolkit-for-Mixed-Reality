@@ -201,7 +201,7 @@ PrefabInstance:
     - target: {fileID: 1090043531797461259, guid: c449276faef3704409b263ad4d8b8018,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1160534189334907416, guid: c449276faef3704409b263ad4d8b8018,
         type: 3}
@@ -332,6 +332,81 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.menuAction.id
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.gripPressAction.id
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.triggerInputAction.id
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.menuAction.description
+      value: Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.touchpadPressAction.id
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.menuAction.axisConstraint
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.gripPressAction.description
+      value: Grip Press
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.touchpadTouchActionAction.id
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.gripPressAction.axisConstraint
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.triggerInputAction.description
+      value: Select
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.touchpadPressAction.description
+      value: Touchpad Press
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.triggerInputAction.axisConstraint
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.touchpadPressAction.axisConstraint
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.touchpadTouchActionAction.description
+      value: Touchpad
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511928166512116513, guid: 252c416399fdd8b4c9bcd1ee661222ad,
+        type: 3}
+      propertyPath: toolSetup.touchpadTouchActionAction.axisConstraint
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2627656606189857573, guid: 252c416399fdd8b4c9bcd1ee661222ad,
         type: 3}
       propertyPath: m_Name
