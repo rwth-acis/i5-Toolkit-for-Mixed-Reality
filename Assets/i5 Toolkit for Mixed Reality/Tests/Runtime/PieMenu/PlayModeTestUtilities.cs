@@ -34,8 +34,12 @@ public static class PlayModeTestUtilities
 
     public static InputEventData GetFakeInputEventData(MixedRealityInputAction inputAction, Vector3 controllerPosition)
     {
+        return GetFakeInputEventData(inputAction, GetFakeController(controllerPosition));
+    }
+
+    public static InputEventData GetFakeInputEventData(MixedRealityInputAction inputAction, ViveWandVirtualTool viveWand)
+    {
         InputEventData data = new InputEventData(UnityEngine.EventSystems.EventSystem.current);
-        var viveWand = GetFakeController(controllerPosition);
         data.Initialize(viveWand.ownSource, Microsoft.MixedReality.Toolkit.Utilities.Handedness.Right, inputAction);
         return data;
     }

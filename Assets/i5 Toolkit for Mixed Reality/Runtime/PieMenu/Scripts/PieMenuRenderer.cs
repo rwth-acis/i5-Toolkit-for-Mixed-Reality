@@ -22,9 +22,9 @@ namespace i5.Toolkit.MixedReality.PieMenu
         private Color normalColor;
         private Color highlightColor;
 
-        List<MenuEntry> menuEntries;
-        List<GameObject> pieMenuPieces;
-        public int currentlyHighlighted { private set; get; }
+        public List<MenuEntry> menuEntries { get; private set; }
+        public List<GameObject> pieMenuPieces { get; private set; }
+        public int currentlyHighlighted { get; private set; }
 
         GameObject instantiatedMenuCursor;
 

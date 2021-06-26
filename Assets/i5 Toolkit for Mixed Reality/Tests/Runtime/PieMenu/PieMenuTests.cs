@@ -38,26 +38,103 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu {
         }
 
         [UnityTest]
-        public IEnumerator Can_spawn_PieMenu()
+        public IEnumerator Can_spawn_PieMenu_0_entrys()
         {
             yield return null;
-            //fakeTool = PlayModeTestUtilities.GetFakeController();
-            setupService = ServiceManager.GetService<ToolSetupService>();
-            var pieMenuManager = GameObject.FindObjectOfType<PieMenuManager>();
-            //ViveWandVirtualTool tool = PlayModeTestUtilities.GetFakeController();
 
-            //PlayModeTestUtilities.GetFakeInputSource();
+            SpawnPieMenu();
 
-            InputEventData fakeData = PlayModeTestUtilities.GetFakeInputEventData(setupService.toolSetup.menuAction, new Vector3(0,0,0));
-            pieMenuManager.MenuOpen(fakeData);
+            yield return null;
+
+            //Try to find the menu
+            var menu = GameObject.FindObjectOfType<PieMenuRenderer>();
+            Assert.IsNotNull(menu, "PieMenu not found");
+        }
+
+        [UnityTest]
+        public IEnumerator Can_spawn_PieMenu_1_entrys()
+        {
+            yield return null;
+
+            AddEmptyMenuEntry(1);
+
+            SpawnPieMenu();
 
             yield return null;
 
             //Try to find the menu
             var menu = GameObject.FindObjectOfType<PieMenuRenderer>();
             Assert.IsNotNull(menu);
+
+            if (menu != null)
+            {
+                CheckPieMenu(1,menu);
+            }
         }
 
-        
+        [UnityTest]
+        public IEnumerator Can_spawn_PieMenu_2_entrys()
+        {
+            yield return null;
+
+            AddEmptyMenuEntry(2);
+
+            SpawnPieMenu();
+
+            yield return null;
+
+            //Try to find the menu
+            var menu = GameObject.FindObjectOfType<PieMenuRenderer>();
+            Assert.IsNotNull(menu);
+
+            if (menu != null)
+            {
+                CheckPieMenu(2, menu);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator Can_select_tool()
+        {
+            yield return null;
+
+            AddEmptyMenuEntry(3);
+
+            //Pie
+        }
+
+        private static void CheckPieMenu(int expectedMenuEntrys, PieMenuRenderer menu)
+        {
+            Assert.AreEqual(expectedMenuEntrys, menu.menuEntries.Count, "Menu uses " + menu.menuEntries.Count + " entries, but should use " + expectedMenuEntrys);
+            Assert.AreEqual(expectedMenuEntrys, menu.pieMenuPieces.Count, "Menu generated " + menu.pieMenuPieces.Count + " pieces, but should have generated" + expectedMenuEntrys);
+        }
+
+
+
+        private void SpawnPieMenu()
+        {
+            setupService = ServiceManager.GetService<ToolSetupService>();
+            var pieMenuManager = GameObject.FindObjectOfType<PieMenuManager>();
+
+            InputEventData fakeData = PlayModeTestUtilities.GetFakeInputEventData(setupService.toolSetup.menuAction, new Vector3(0, 0, 0));
+            pieMenuManager.MenuOpen(fakeData);
+        }
+
+        private static void AddEmptyMenuEntry(int count)
+        {
+            PieMenuSetup setupInformation = ServiceManager.GetService<ToolSetupService>().toolSetup;
+            for (int i = 0; i < count; i++)
+            {
+                MenuEntry entry = new MenuEntry
+                {
+                    toolSettings = new GeneralToolSettings
+                    {
+                        toolName = i.ToString()
+                    }
+                };
+                setupInformation.menuEntries.Add(entry);
+            }
+        }
+
     }
 }
