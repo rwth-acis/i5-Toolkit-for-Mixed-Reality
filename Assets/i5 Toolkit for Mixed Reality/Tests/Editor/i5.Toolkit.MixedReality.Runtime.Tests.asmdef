@@ -1,0 +1,28 @@
+{
+    "name": "i5.Toolkit.MixedReality.Editor.Tests",
+    "references": [
+        "i5.Toolkit.Core.Editor",
+        "i5.Toolkit.Core.Runtime",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "i5.Toolkit.Core.TestHelpers",
+        "i5.Toolkit.MixedReality.Runtime",
+        "Microsoft.MixedReality.Toolkit.SDK",
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Async"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "FakeItEasy.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
