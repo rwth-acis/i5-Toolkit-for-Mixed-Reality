@@ -13,8 +13,6 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
         GameObject instantiatedPieMenu;
 
-
-        IMixedRealityPointer pointer;
         IMixedRealityInputSource invokingSource;
 
         IPieMenuManagerCore core;
@@ -36,7 +34,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
         public void instantiatePieMenu(Vector3 position, Quaternion rotation, IMixedRealityPointer pointer)
         {
-            instantiatedPieMenu = Instantiate(pieMenuPrefab, pointer.Position, Quaternion.identity);
+            instantiatedPieMenu = Instantiate(pieMenuPrefab, position, rotation);
             instantiatedPieMenu.GetComponent<PieMenuRenderer>().Constructor(pointer);
         }
 
@@ -48,7 +46,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         void IMixedRealityInputActionHandler.OnActionStarted(BaseInputEventData eventData)
         {
             ToolSetupService toolSetup = ServiceManager.GetService<ToolSetupService>();
-            core.MenuOpen(eventData, instantiatedPieMenu != null, toolSetup, ref pointer, ref invokingSource);
+            core.MenuOpen(eventData, instantiatedPieMenu != null, toolSetup,  ref invokingSource);
         }
 
         void IMixedRealityInputActionHandler.OnActionEnded(BaseInputEventData eventData)

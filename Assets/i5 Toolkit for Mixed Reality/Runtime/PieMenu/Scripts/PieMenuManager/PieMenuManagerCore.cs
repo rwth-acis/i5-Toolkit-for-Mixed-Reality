@@ -19,13 +19,13 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// Opens the PieMenu and sets it at the tip of the tool
         /// </summary>
         /// <param name="eventData"></param> The data from the corresponding input event
-        public void MenuOpen(BaseInputEventData eventData, bool pieMenuInstatiated, ToolSetupService toolSetupService, ref IMixedRealityPointer pointer, 
+        public void MenuOpen(BaseInputEventData eventData, bool pieMenuInstatiated, ToolSetupService toolSetupService,
             ref IMixedRealityInputSource invokingSource)
         {
             //Check, if the Pie Menu was already opend by another controller
             if (!pieMenuInstatiated && !eventData.used && eventData.MixedRealityInputAction == toolSetupService.toolSetup.menuAction)
             {
-                pointer = eventData.InputSource.Pointers[0];
+                var pointer = eventData.InputSource.Pointers[0];
                 invokingSource = eventData.InputSource;
                 shell.instantiatePieMenu(pointer.Position, Quaternion.identity, pointer);
                 eventData.Use();
