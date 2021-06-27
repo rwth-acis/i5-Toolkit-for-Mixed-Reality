@@ -27,7 +27,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             {
                 var pointer = eventData.InputSource.Pointers[0];
                 invokingSource = eventData.InputSource;
-                shell.instantiatePieMenu(pointer.Position, Quaternion.identity, pointer);
+                shell.InstantiatePieMenu(pointer.Position, Quaternion.identity, pointer);
                 eventData.Use();
             }
         }
@@ -42,10 +42,9 @@ namespace i5.Toolkit.MixedReality.PieMenu
             //Only the input source that opend the menu can close it again
             if (eventData.InputSource == invokingSource && pieMenuInstatiated && !eventData.used && eventData.MixedRealityInputAction == toolSetupService.toolSetup.menuAction)
             {
-                ViveWandVirtualTool virtualTool = eventData.InputSource.Pointers[0].Controller.Visualizer.GameObjectProxy.GetComponentInChildren<ViveWandVirtualTool>();
                 MenuEntry currentEntry = toolSetupService.toolSetup.menuEntries[currentlyHighlighted];
-                virtualTool.SetupTool(currentEntry);
-                shell.destroyPieMenu();
+                shell.SetupTool(currentEntry, eventData.InputSource.Pointers[0].Controller.Visualizer);
+                shell.DestroyPieMenu();
                 invokingSource = null;
                 eventData.Use();
             }

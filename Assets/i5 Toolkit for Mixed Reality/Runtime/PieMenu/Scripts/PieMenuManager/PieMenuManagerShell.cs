@@ -32,16 +32,23 @@ namespace i5.Toolkit.MixedReality.PieMenu
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputActionHandler>(this);
         }
 
-        public void instantiatePieMenu(Vector3 position, Quaternion rotation, IMixedRealityPointer pointer)
+        public void InstantiatePieMenu(Vector3 position, Quaternion rotation, IMixedRealityPointer pointer)
         {
             instantiatedPieMenu = Instantiate(pieMenuPrefab, position, rotation);
             instantiatedPieMenu.GetComponent<PieMenuRenderer>().Constructor(pointer);
         }
 
-        public void destroyPieMenu()
+        public void DestroyPieMenu()
         {
             Destroy(instantiatedPieMenu);
         }
+
+        public void SetupTool(MenuEntry currentEntry, IMixedRealityControllerVisualizer vizualizer)
+        {
+            ViveWandVirtualTool virtualTool = vizualizer.GameObjectProxy.GetComponentInChildren<ViveWandVirtualTool>();
+            virtualTool.SetupTool(currentEntry);
+        }
+
 
         void IMixedRealityInputActionHandler.OnActionStarted(BaseInputEventData eventData)
         {
