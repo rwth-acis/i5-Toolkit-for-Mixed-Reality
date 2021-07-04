@@ -9,9 +9,9 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 {
     public class PrimitivesProvider : IModelProvider
     {
-        public GameObject ProvideModel()
+        public Task<GameObject> ProvideModelAsync()
         {
-            return GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            return Task.FromResult(GameObject.CreatePrimitive(PrimitiveType.Capsule));
         }
     }
 }

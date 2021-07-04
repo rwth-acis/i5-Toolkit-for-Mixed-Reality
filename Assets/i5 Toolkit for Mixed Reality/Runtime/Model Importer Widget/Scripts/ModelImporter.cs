@@ -1,5 +1,6 @@
 using i5.Toolkit.Core.Utilities;
 using i5.Toolkit.Core.Utilities.UnityWrappers;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace i5.Toolkit.MixedReality.ModelImporterWidget
@@ -18,9 +19,9 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
             TargetBox = targetBox;
         }
 
-        public void ImportModel()
+        public async Task ImportModelAsync()
         {
-            GameObject importedModel = CurrentlySelectedProvider.ProvideModel();
+            GameObject importedModel = await CurrentlySelectedProvider.ProvideModelAsync();
 
             Bounds overallBounds = ObjectBounds.GetComposedRendererBounds(importedModel);
 

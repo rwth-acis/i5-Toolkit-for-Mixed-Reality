@@ -8,11 +8,11 @@ public class ModelImporterWidgetTester : MonoBehaviour
     [SerializeField] private ModelImporterUI modelImporterUI;
 
     // Update is called once per frame
-    void Update()
+    private async void Update()
     {
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            modelImporterUI.ImportModel();
+            await modelImporterUI.ImportModelAsync();
         }
     }
 }

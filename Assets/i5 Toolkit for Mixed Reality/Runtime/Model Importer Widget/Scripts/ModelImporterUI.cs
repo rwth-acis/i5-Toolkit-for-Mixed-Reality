@@ -1,4 +1,5 @@
 ﻿using i5.Toolkit.Core.Utilities.UnityWrappers;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace i5.Toolkit.MixedReality.ModelImporterWidget
@@ -15,9 +16,9 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
             modelImporter.CurrentlySelectedProvider = new PrimitivesProvider();
         }
 
-        public void ImportModel()
+        public async Task ImportModelAsync()
         {
-            modelImporter.ImportModel();
+            await modelImporter.ImportModelAsync();
         }
     }
 }
