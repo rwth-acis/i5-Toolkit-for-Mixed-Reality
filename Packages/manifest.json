@@ -17,10 +17,10 @@
     }
   ],
   "dependencies": {
-    "com.i5.toolkit.core": "1.2.1",
-    "com.microsoft.mixedreality.toolkit.examples": "2.6.1",
-    "com.microsoft.mixedreality.toolkit.foundation": "2.6.1",
-    "com.microsoft.mixedreality.toolkit.tools": "2.6.1",
+    "com.i5.toolkit.core": "file:D:/Unity/i5-Toolkit-for-Unity/Assets/i5 Toolkit for Unity",
+    "com.microsoft.mixedreality.toolkit.examples": "2.7.2",
+    "com.microsoft.mixedreality.toolkit.foundation": "2.7.2",
+    "com.microsoft.mixedreality.toolkit.tools": "2.7.2",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ads": "3.4.7",

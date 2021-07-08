@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ModelImporterWidgetTester : MonoBehaviour
 {
-    [SerializeField] private ModelImporterUI modelImporterUI;
+    [SerializeField] private ModelImporterBehaviour modelImporterUI;
 
     // Update is called once per frame
     private async void Update()

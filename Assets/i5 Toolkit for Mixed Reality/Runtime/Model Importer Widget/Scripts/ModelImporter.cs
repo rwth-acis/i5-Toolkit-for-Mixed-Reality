@@ -19,9 +19,9 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
             TargetBox = targetBox;
         }
 
-        public async Task ImportModelAsync()
+        public async Task ImportModelAsync(string modelId)
         {
-            GameObject importedModel = await CurrentlySelectedProvider.ProvideModelAsync();
+            GameObject importedModel = await CurrentlySelectedProvider.ProvideModelAsync(modelId);
 
             Bounds overallBounds = ObjectBounds.GetComposedRendererBounds(importedModel);
 
@@ -36,7 +36,5 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
             float scalingFactor = scalingFactors.MinimumComponent();
             importedModel.transform.localScale *= scalingFactor;
         }
-
-
     }
 }
