@@ -9,6 +9,8 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
     {
         public ModelData[] AvailablePrimitives { get; private set; }
 
+        public Shader Shader { get; set; } = Shader.Find("Mixed Reality Toolkit/Standard");
+
         public PrimitivesProvider(ModelData[] availablePrimitives)
         {
             AvailablePrimitives = availablePrimitives;
@@ -23,7 +25,9 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
         {
             if (Enum.TryParse(modelId, out PrimitiveType primitiveType))
             {
-                return Task.FromResult(GameObject.CreatePrimitive(primitiveType));
+                GameObject obj = GameObject.CreatePrimitive(primitiveType);
+                obj.GetComponent<Renderer>().material.shader = Shader;
+                return Task.FromResult(obj);
             }
             else
             {

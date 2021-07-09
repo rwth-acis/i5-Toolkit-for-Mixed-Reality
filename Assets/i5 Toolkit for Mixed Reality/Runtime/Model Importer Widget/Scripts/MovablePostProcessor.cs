@@ -1,6 +1,5 @@
-﻿using Microsoft.MixedReality.Toolkit.UI;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 
 
@@ -11,6 +10,7 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
         public void PostProcessGameObject(GameObject gameObject)
         {
             gameObject.AddComponent<ObjectManipulator>();
+            gameObject.AddComponent<NearInteractionGrabbable>();
         }
     }
 }
