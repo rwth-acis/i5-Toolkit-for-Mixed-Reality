@@ -14,6 +14,8 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 
         public Bounds TargetBox { get; set; }
 
+        public IInstantiationEffect InstantiationEffect { get; set; }
+
         public List<IModelImportPostProcessor> PostProcessors { get; set; }
 
         public ModelImporter(ITransformable targetTransform, Bounds targetBox)
@@ -43,6 +45,11 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
             Vector3 scalingFactors = realTargetBoxSize.DivideComponentWiseBy(overallBounds.size);
             float scalingFactor = scalingFactors.MinimumComponent();
             importedModel.transform.localScale *= scalingFactor;
+
+            if (InstantiationEffect != null)
+            {
+                await InstantiationEffect.PlayInstantiationEffectAsync(importedModel);
+            }
 
             foreach(IModelImportPostProcessor postProcessor in PostProcessors)
             {

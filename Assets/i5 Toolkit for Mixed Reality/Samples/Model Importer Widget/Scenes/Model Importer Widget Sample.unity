@@ -698,6 +698,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1628468855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1628468856}
+  - component: {fileID: 1628468857}
+  m_Layer: 0
+  m_Name: ClippingPlane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1628468856
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628468855}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2120528009}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1628468857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628468855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ae338a2aef44dab5e4cd3f11c6f5d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers: []
+  clippingSide: -1
+  useOnPreRender: 0
+  applyToSharedMaterial: 0
 --- !u!1 &1711758827
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,6 +830,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2120528009}
   - component: {fileID: 2120528007}
+  - component: {fileID: 2120528013}
   - component: {fileID: 2120528008}
   - component: {fileID: 2120528012}
   - component: {fileID: 2120528011}
@@ -807,7 +855,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetVolume: {fileID: 2120528008}
-  primitivesShader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   modelDatas:
   - id: Capsule
     name: Capsule
@@ -848,6 +895,7 @@ Transform:
   m_Children:
   - {fileID: 1478838082}
   - {fileID: 488895550}
+  - {fileID: 1628468856}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -922,3 +970,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoConstraintSelection: 1
   selectedConstraints: []
+--- !u!114 &2120528013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120528006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1faa226e19a8f224ebcd495192e1ab2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clippingPlane: {fileID: 1628468855}
+  effectMaterial: {fileID: 2100000, guid: c6e61f21ee21c7744958d8fced085465, type: 2}
+  minimumHeight: -0.6
+  maximumHeight: 0.6
+  effectDuration: 0.29
