@@ -14,6 +14,8 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 
         public Bounds TargetBox { get; set; }
 
+        public GameObject LastImportedObject { get; private set; }
+
         public IInstantiationEffect InstantiationEffect { get; set; }
 
         public List<IModelImportPostProcessor> PostProcessors { get; set; }
@@ -30,6 +32,11 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 
         public async Task ImportModelAsync(string modelId)
         {
+            if (LastImportedObject != null && !LastImportedObject.transform.hasChanged)
+            {
+                GameObject.Destroy(LastImportedObject);
+            }
+
             GameObject importedModel = await CurrentlySelectedProvider.ProvideModelAsync(modelId);
 
             Bounds overallBounds = ObjectBounds.GetComposedRendererBounds(importedModel);
@@ -55,6 +62,9 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
             {
                 postProcessor.PostProcessGameObject(importedModel);
             }
+
+            LastImportedObject = importedModel;
+            LastImportedObject.transform.hasChanged = false;
         }
     }
 }
