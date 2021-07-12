@@ -35,7 +35,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         public void InstantiatePieMenu(Vector3 position, Quaternion rotation, IMixedRealityPointer pointer)
         {
             instantiatedPieMenu = Instantiate(pieMenuPrefab, position, rotation);
-            instantiatedPieMenu.GetComponent<PieMenuRenderer>().Constructor(pointer);
+            instantiatedPieMenu.GetComponent<IPieMenuRendererShell>().Constructor(pointer);
         }
 
         public void DestroyPieMenu()
@@ -59,7 +59,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         void IMixedRealityInputActionHandler.OnActionEnded(BaseInputEventData eventData)
         {
             ToolSetupService toolSetup = ServiceManager.GetService<ToolSetupService>();
-            int currentlyHighlighted = instantiatedPieMenu != null ? instantiatedPieMenu.GetComponent<PieMenuRenderer>().currentlyHighlighted : -1;
+            int currentlyHighlighted = instantiatedPieMenu != null ? instantiatedPieMenu.GetComponent<IPieMenuRendererShell>().getCurrentlyHighlighted() : -1;
             core.MenuClose(eventData, instantiatedPieMenu != null, toolSetup, currentlyHighlighted, ref invokingSource);
         }
 
