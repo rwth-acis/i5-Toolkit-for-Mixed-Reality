@@ -93,7 +93,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         // Calculate the new position of the pointer and highlight/dehighlight correspondingly
         public void Update(IMixedRealityPointer pointer, PieMenuSetup toolSetup, ref int currentlyHighlighted)
         {
-            shell.SetPositionOfMenuCursor(pointer.Position);
+            shell.SetGlobalPositionOfMenuCursor(pointer.Position);
             Vector3 localPositionOfCursor = shell.GetLocalPositionOfCursor();
             shell.SetLocalPositionOfCursor(new Vector3(localPositionOfCursor.x, localPositionOfCursor.y, 0));
             int pieceNumberToHighlight = CalculatePieceID(shell.GetLocalPositionOfCursor(), toolSetup.menuEntries.Count);
