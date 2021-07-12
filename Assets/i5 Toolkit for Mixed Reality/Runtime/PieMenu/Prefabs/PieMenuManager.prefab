@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6642489127180809174}
-  - component: {fileID: 1388338223322846379}
   - component: {fileID: 1511928166512116513}
   - component: {fileID: 8821610706099530504}
+  - component: {fileID: 3689149351989424705}
   m_Layer: 0
   m_Name: PieMenuManager
   m_TagString: Untagged
@@ -33,20 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1388338223322846379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2627656606189857573}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5643c82239e15444581a119ff8448259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pieMenuPrefab: {fileID: 7545145203548608985, guid: b7e4659a8535b6b47a2ce302473d5c95,
-    type: 3}
 --- !u!114 &1511928166512116513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,3 +152,17 @@ MonoBehaviour:
   highlightSprite: {fileID: 4521950659112143869, guid: db57ff4ff63901f4eaeb3d9a1a1255e2,
     type: 3}
   objectTransformer: {fileID: 0}
+--- !u!114 &3689149351989424705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2627656606189857573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4525f48205fb9f04c8ec809d45fb10a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pieMenuPrefab: {fileID: 7545145203548608985, guid: b7e4659a8535b6b47a2ce302473d5c95,
+    type: 3}

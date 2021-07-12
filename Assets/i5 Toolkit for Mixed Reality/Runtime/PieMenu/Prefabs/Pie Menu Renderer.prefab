@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6870217252328093829}
   - component: {fileID: 7049306491588177930}
+  - component: {fileID: 7274078266434691845}
   m_Layer: 0
   m_Name: Pie Menu Renderer
   m_TagString: Untagged
@@ -38,9 +39,25 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7545145203548608985}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7bd2f74b4442179419b87e41960bda3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  piemenuPiecePrefab: {fileID: 7962698475298995039, guid: 616b1cac3fc144c47a7ab6f0cafe1ec7,
+    type: 3}
+  menuCursor: {fileID: 3687478944446362054, guid: 0ebcf52924d4b51488b48630a18ed531,
+    type: 3}
+--- !u!114 &7274078266434691845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7545145203548608985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daf33e1889a3478439166ac3e41ed008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   piemenuPiecePrefab: {fileID: 7962698475298995039, guid: 616b1cac3fc144c47a7ab6f0cafe1ec7,
