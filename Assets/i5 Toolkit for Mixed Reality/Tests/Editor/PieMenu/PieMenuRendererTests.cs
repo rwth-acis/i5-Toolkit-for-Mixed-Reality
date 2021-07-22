@@ -26,17 +26,51 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             shellTransform = A.Fake<Transform>();
         }
 
-        void RenderSetup(int numberOfEntrys)
+        void RenderSetup(int numberOfEntries)
         {
-            for (int i = 0; i < numberOfEntrys; i++)
+            toolSetup.pieMenuPieceNormalColor = Color.blue;
+            for (int i = 0; i < numberOfEntries; i++)
             {
-                toolSetup.menuEntries.Add(new MenuEntry { toolSettings = new GeneralToolSettings { toolName = "Test Tool " + i } });
+                GeneralToolSettings toolSettings = new GeneralToolSettings { toolName = "Test Tool " + i };
+                toolSettings.iconTool = Sprite.Create(new Texture2D(0,0),Rect.zero,Vector2.zero);
+                toolSetup.menuEntries.Add(new MenuEntry { toolSettings = toolSettings });
             }
 
             core = new PieMenuRendererCore(toolSetup, shell, ref currentlyHighlighted);
 
+            //Pie menu has to be directed to the camera
             A.CallTo(() => shell.LookAtCamera()).MustHaveHappenedOnceExactly();
-            //A.CallTo(() => shell.)
+
+            //numberOfEntries many PieMenu Pieces have to be instantiated
+            A.CallTo(() => shell.InstatiatePieceAndAddToList()).MustHaveHappened(numberOfEntries, Times.Exactly);
+
+            //Every piece should have the normal color at the beginning, because nothing should be higlighted at the moment
+            for (int i = 0; i < numberOfEntries; i++)
+            {
+                A.CallTo(() => shell.SetColorForPiece(0,Color.black)).WhenArgumentsMatch(
+                    args =>
+                    args.Get<int>("id") == i &&
+                    args.Get<Color>("color") == toolSetup.pieMenuPieceNormalColor).
+                    MustHaveHappenedOnceExactly();
+            }
+
+            //Every piece from id 0 to numberOfEntries needs to get assigned the icon with the same id
+            for (int i = 0; i < numberOfEntries; i++)
+            {
+                A.CallTo(() => shell.SetIconForPiece(0,null)).WhenArgumentsMatch(
+                    args =>
+                    args.Get<int>("id") == i &&
+                    args.Get<Sprite>("sprite") == toolSetup.menuEntries[i].toolSettings.iconTool).
+                    MustHaveHappenedOnceExactly();
+            }
+
+
+        }
+
+        [Test]
+        public void Render_Setup_With_0_Entry()
+        {
+            RenderSetup(0);
         }
 
         [Test]
