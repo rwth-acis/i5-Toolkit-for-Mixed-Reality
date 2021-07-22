@@ -14,7 +14,6 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
         PieMenuRendererCore core;
         IPieMenuRendererShell shell;
         PieMenuSetup toolSetup;
-        int currentlyHighlighted;
         Transform shellTransform;
 
         [SetUp]
@@ -23,19 +22,28 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             shell = A.Fake<IPieMenuRendererShell>();
             toolSetup = new PieMenuSetup();
             toolSetup.menuEntries = new List<MenuEntry>();
+            toolSetup.pieMenuPieceNormalColor = Color.blue;
+            toolSetup.pieMenuPieceHighlighColor = Color.red;
             shellTransform = A.Fake<Transform>();
         }
 
-        void RenderSetup(int numberOfEntries)
+        void SetupToolSettings(int numberOfEntries)
         {
-            toolSetup.pieMenuPieceNormalColor = Color.blue;
+            
             for (int i = 0; i < numberOfEntries; i++)
             {
                 GeneralToolSettings toolSettings = new GeneralToolSettings { toolName = "Test Tool " + i };
-                toolSettings.iconTool = Sprite.Create(new Texture2D(0,0),Rect.zero,Vector2.zero);
+                toolSettings.iconTool = Sprite.Create(new Texture2D(0, 0), Rect.zero, Vector2.zero);
                 toolSetup.menuEntries.Add(new MenuEntry { toolSettings = toolSettings });
             }
+        }
 
+        //Spawn tests
+
+        void RenderSetup(int numberOfEntries)
+        {
+            SetupToolSettings(numberOfEntries);
+            int currentlyHighlighted = 0;
             core = new PieMenuRendererCore(toolSetup, shell, ref currentlyHighlighted);
 
             //Pie menu has to be directed to the camera
@@ -95,6 +103,94 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
         public void Render_Setup_With_100_Entries()
         {
             RenderSetup(100);
+        }
+
+        //Update Tests
+        void UpdateCore(int numberOfEntries, Vector3 localPositionOfCoursor, int expectedPieceToHiglight, int currentlyHighlighted)
+        {
+            int previosulyHiglighted = currentlyHighlighted;
+            SetupToolSettings(numberOfEntries);
+            core = new PieMenuRendererCore(toolSetup, shell, ref currentlyHighlighted);
+            Fake.ClearRecordedCalls(shell);
+            currentlyHighlighted = previosulyHiglighted;
+            A.CallTo(() => shell.GetLocalPositionOfCursor()).Returns(localPositionOfCoursor);
+
+            //The pointer position doesn't matter here, since the call to GetLocalPositionOfCursor is intercepted
+            core.Update(EditorTestUtilitys.GetFakeInputSource(Vector3.zero).Pointers[0], toolSetup, ref currentlyHighlighted);
+
+            Assert.AreEqual(currentlyHighlighted, expectedPieceToHiglight);
+
+            //If the same piece should be highlighted, nothing on the pieces should be changed
+            if (previosulyHiglighted == expectedPieceToHiglight)
+            {
+                for (int i = 0; i < numberOfEntries; i++)
+                {
+                    A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
+                            args =>
+                            args.Get<int>("id") == i).
+                            MustNotHaveHappened();
+
+                    A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
+                        args =>
+                        args.Get<int>("id") == i).
+                        MustNotHaveHappened();
+                }
+            }
+            else
+            {
+                for (int i = 0; i < numberOfEntries; i++)
+                {
+                    //The previously highlighted piece should be dehighlighted
+                    if (i == previosulyHiglighted)
+                    {
+                        A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
+                            args =>
+                            args.Get<int>("id") == i &&
+                            args.Get<Color>("color") == toolSetup.pieMenuPieceNormalColor).
+                            MustHaveHappenedOnceExactly();
+
+                        A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
+                            args =>
+                            args.Get<int>("id") == i &&
+                            args.Get<Vector3>("scale") == Vector3.one).
+                            MustHaveHappenedOnceExactly();
+                    }
+                    //The piece to highlight should be highlighted
+                    else if (i == expectedPieceToHiglight)
+                    {
+                        A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
+                            args =>
+                            args.Get<int>("id") == i &&
+                            args.Get<Color>("color") == toolSetup.pieMenuPieceHighlighColor).
+                            MustHaveHappenedOnceExactly();
+
+                        A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
+                            args =>
+                            args.Get<int>("id") == i &&
+                            args.Get<Vector3>("scale") == new Vector3(1.2f, 1.2f, 1)).
+                            MustHaveHappenedOnceExactly();
+                    }
+                    //All other pieces shouldn't be changed
+                    else
+                    {
+                        A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
+                            args =>
+                            args.Get<int>("id") == i).
+                            MustNotHaveHappened();
+
+                        A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
+                            args =>
+                            args.Get<int>("id") == i).
+                            MustNotHaveHappened();
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void update_core_with_3_entries()
+        {
+            UpdateCore(3,new Vector3(0,1,0),1,2);
         }
     }
 }
