@@ -113,7 +113,13 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             core = new PieMenuRendererCore(toolSetup, shell, ref currentlyHighlighted);
             Fake.ClearRecordedCalls(shell);
             currentlyHighlighted = previosulyHiglighted;
+
             A.CallTo(() => shell.GetLocalPositionOfCursor()).Returns(localPositionOfCoursor);
+            A.CallTo(() => shell.GetLocalScaleOfPiece(0)).Returns(new Vector3(1, 1, 1));
+            A.CallTo(() => shell.GetLocalScaleOfPiece(0)).WhenArgumentsMatch(args => args.Get<int>("id") == previosulyHiglighted).Returns(new Vector3(1.2f,1.2f,1));
+
+            Vector3 test = shell.GetLocalScaleOfPiece(currentlyHighlighted);
+            Vector3 test2 = shell.GetLocalScaleOfPiece(0);
 
             //The pointer position doesn't matter here, since the call to GetLocalPositionOfCursor is intercepted
             core.Update(EditorTestUtilitys.GetFakeInputSource(Vector3.zero).Pointers[0], toolSetup, ref currentlyHighlighted);
@@ -148,11 +154,11 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
                             args.Get<int>("id") == i &&
                             args.Get<Color>("color") == toolSetup.pieMenuPieceNormalColor).
                             MustHaveHappenedOnceExactly();
-
+                        //Previously highlighted should be scaled by 1/1.2 in x and y direction, in order to reverse the enlagment from highlighting
                         A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
                             args =>
                             args.Get<int>("id") == i &&
-                            args.Get<Vector3>("scale") == Vector3.one).
+                            args.Get<Vector3>("scale") == Vector3.Scale(shell.GetLocalScaleOfPiece(i), new Vector3(1/1.2f, 1/1.2f, 1))).
                             MustHaveHappenedOnceExactly();
                     }
                     //The piece to highlight should be highlighted
@@ -163,11 +169,11 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
                             args.Get<int>("id") == i &&
                             args.Get<Color>("color") == toolSetup.pieMenuPieceHighlighColor).
                             MustHaveHappenedOnceExactly();
-
+                        //New higlighted piece should be scaled by 1.2 in x and y direction
                         A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
                             args =>
                             args.Get<int>("id") == i &&
-                            args.Get<Vector3>("scale") == new Vector3(1.2f, 1.2f, 1)).
+                            args.Get<Vector3>("scale") == Vector3.Scale(shell.GetLocalScaleOfPiece(i), new Vector3(1.2f, 1.2f, 1))).
                             MustHaveHappenedOnceExactly();
                     }
                     //All other pieces shouldn't be changed
