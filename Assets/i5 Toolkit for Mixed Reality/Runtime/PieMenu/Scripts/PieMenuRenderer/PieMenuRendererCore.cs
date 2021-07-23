@@ -58,7 +58,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             return i;
         }
 
-        // Highlight the i'th piece on the PieMenu
+        //Highlight the i'th piece on the PieMenu
         void HighlightPiece(int i, Color highlightColor, Color normalColor, int numberEntries, ref int currentlyHighlighted)
         {
             if (i != currentlyHighlighted)
@@ -78,7 +78,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
-        // Place the icon from the menu entry with the number entryNumber on the correct position in the PieMenu
+        //Place the icon from the menu entry with the number entryNumber on the correct position in the PieMenu
         void PlaceIcon(int entryNumber, float menuRadius, List<MenuEntry> menuEntries)
         {
             //Place the icon in the middle of the piece
@@ -90,7 +90,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         }
 
 
-        // Calculate the new position of the pointer and highlight/dehighlight correspondingly
+        //Calculate the new position of the pointer and highlight/dehighlight correspondingly
         public void Update(IMixedRealityPointer pointer, PieMenuSetup toolSetup, ref int currentlyHighlighted)
         {
             shell.SetGlobalPositionOfMenuCursor(pointer.Position);
