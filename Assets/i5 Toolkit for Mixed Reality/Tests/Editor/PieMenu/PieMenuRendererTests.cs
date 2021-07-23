@@ -106,83 +106,37 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
         }
 
         //Update Tests
-        void UpdateCore(int numberOfEntries, Vector3 localPositionOfCoursor, int expectedPieceToHiglight, int currentlyHighlighted)
+        void UpdateCore(int numberOfEntries, Vector3 localPositionOfCoursor, int expectedPieceToHiglight)
         {
-            int previosulyHiglighted = currentlyHighlighted;
-            SetupToolSettings(numberOfEntries);
-            core = new PieMenuRendererCore(toolSetup, shell, ref currentlyHighlighted);
-            Fake.ClearRecordedCalls(shell);
-            currentlyHighlighted = previosulyHiglighted;
-
-            A.CallTo(() => shell.GetLocalPositionOfCursor()).Returns(localPositionOfCoursor);
-            A.CallTo(() => shell.GetLocalScaleOfPiece(0)).Returns(new Vector3(1, 1, 1));
-            A.CallTo(() => shell.GetLocalScaleOfPiece(0)).WhenArgumentsMatch(args => args.Get<int>("id") == previosulyHiglighted).Returns(new Vector3(1.2f,1.2f,1));
-
-            Vector3 test = shell.GetLocalScaleOfPiece(currentlyHighlighted);
-            Vector3 test2 = shell.GetLocalScaleOfPiece(0);
-
-            //The pointer position doesn't matter here, since the call to GetLocalPositionOfCursor is intercepted
-            core.Update(EditorTestUtilitys.GetFakeInputSource(Vector3.zero).Pointers[0], toolSetup, ref currentlyHighlighted);
-
-            Assert.AreEqual(currentlyHighlighted, expectedPieceToHiglight);
-
-            //If the same piece should be highlighted, nothing on the pieces should be changed
-            if (previosulyHiglighted == expectedPieceToHiglight)
+            for (int currentlyHighlightedItterator = 0; currentlyHighlightedItterator < numberOfEntries || (numberOfEntries == 0 && currentlyHighlightedItterator ==0); currentlyHighlightedItterator++)
             {
-                for (int i = 0; i < numberOfEntries; i++)
-                {
-                    A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
-                            args =>
-                            args.Get<int>("id") == i).
-                            MustNotHaveHappened();
+                int currentlyHighlighted = currentlyHighlightedItterator;
+                int previosulyHiglighted = currentlyHighlighted;
+                int higlhightDummy = 0;
+                core = new PieMenuRendererCore(toolSetup, shell, ref higlhightDummy);
+                Fake.ClearRecordedCalls(shell);
 
-                    A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
-                        args =>
-                        args.Get<int>("id") == i).
-                        MustNotHaveHappened();
-                }
-            }
-            else
-            {
-                for (int i = 0; i < numberOfEntries; i++)
+                A.CallTo(() => shell.GetLocalPositionOfCursor()).Returns(localPositionOfCoursor);
+                A.CallTo(() => shell.GetLocalScaleOfPiece(0)).Returns(new Vector3(1, 1, 1));
+                A.CallTo(() => shell.GetLocalScaleOfPiece(0)).WhenArgumentsMatch(args => args.Get<int>("id") == previosulyHiglighted).Returns(new Vector3(1.2f, 1.2f, 1));
+
+                Vector3 test = shell.GetLocalScaleOfPiece(currentlyHighlighted);
+                Vector3 test2 = shell.GetLocalScaleOfPiece(0);
+
+                //The pointer position doesn't matter here, since the call to GetLocalPositionOfCursor is intercepted
+                core.Update(EditorTestUtilitys.GetFakeInputSource(Vector3.zero).Pointers[0], toolSetup, ref currentlyHighlighted);
+
+                Assert.AreEqual(currentlyHighlighted, expectedPieceToHiglight,"The piece with number " + currentlyHighlighted + " was higlighted, but number " + expectedPieceToHiglight + " was expected.");
+
+                //If the same piece should be highlighted, nothing on the pieces should be changed
+                if (previosulyHiglighted == expectedPieceToHiglight)
                 {
-                    //The previously highlighted piece should be dehighlighted
-                    if (i == previosulyHiglighted)
+                    for (int i = 0; i < numberOfEntries; i++)
                     {
                         A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
-                            args =>
-                            args.Get<int>("id") == i &&
-                            args.Get<Color>("color") == toolSetup.pieMenuPieceNormalColor).
-                            MustHaveHappenedOnceExactly();
-                        //Previously highlighted should be scaled by 1/1.2 in x and y direction, in order to reverse the enlagment from highlighting
-                        A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
-                            args =>
-                            args.Get<int>("id") == i &&
-                            args.Get<Vector3>("scale") == Vector3.Scale(shell.GetLocalScaleOfPiece(i), new Vector3(1/1.2f, 1/1.2f, 1))).
-                            MustHaveHappenedOnceExactly();
-                    }
-                    //The piece to highlight should be highlighted
-                    else if (i == expectedPieceToHiglight)
-                    {
-                        A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
-                            args =>
-                            args.Get<int>("id") == i &&
-                            args.Get<Color>("color") == toolSetup.pieMenuPieceHighlighColor).
-                            MustHaveHappenedOnceExactly();
-                        //New higlighted piece should be scaled by 1.2 in x and y direction
-                        A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
-                            args =>
-                            args.Get<int>("id") == i &&
-                            args.Get<Vector3>("scale") == Vector3.Scale(shell.GetLocalScaleOfPiece(i), new Vector3(1.2f, 1.2f, 1))).
-                            MustHaveHappenedOnceExactly();
-                    }
-                    //All other pieces shouldn't be changed
-                    else
-                    {
-                        A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
-                            args =>
-                            args.Get<int>("id") == i).
-                            MustNotHaveHappened();
+                                args =>
+                                args.Get<int>("id") == i).
+                                MustNotHaveHappened();
 
                         A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
                             args =>
@@ -190,13 +144,92 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
                             MustNotHaveHappened();
                     }
                 }
+                else
+                {
+                    for (int i = 0; i < numberOfEntries; i++)
+                    {
+                        //The previously highlighted piece should be dehighlighted
+                        if (i == previosulyHiglighted)
+                        {
+                            A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
+                                args =>
+                                args.Get<int>("id") == i &&
+                                args.Get<Color>("color") == toolSetup.pieMenuPieceNormalColor).
+                                MustHaveHappenedOnceExactly();
+                            //Previously highlighted should be scaled by 1/1.2 in x and y direction, in order to reverse the enlagment from highlighting
+                            A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
+                                args =>
+                                args.Get<int>("id") == i &&
+                                args.Get<Vector3>("scale") == Vector3.Scale(shell.GetLocalScaleOfPiece(i), new Vector3(1 / 1.2f, 1 / 1.2f, 1))).
+                                MustHaveHappenedOnceExactly();
+                        }
+                        //The piece to highlight should be highlighted
+                        else if (i == expectedPieceToHiglight)
+                        {
+                            A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
+                                args =>
+                                args.Get<int>("id") == i &&
+                                args.Get<Color>("color") == toolSetup.pieMenuPieceHighlighColor).
+                                MustHaveHappenedOnceExactly();
+                            //New higlighted piece should be scaled by 1.2 in x and y direction
+                            A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
+                                args =>
+                                args.Get<int>("id") == i &&
+                                args.Get<Vector3>("scale") == Vector3.Scale(shell.GetLocalScaleOfPiece(i), new Vector3(1.2f, 1.2f, 1))).
+                                MustHaveHappenedOnceExactly();
+                        }
+                        //All other pieces shouldn't be changed
+                        else
+                        {
+                            A.CallTo(() => shell.SetColorForPiece(0, Color.black)).WhenArgumentsMatch(
+                                args =>
+                                args.Get<int>("id") == i).
+                                MustNotHaveHappened();
+
+                            A.CallTo(() => shell.SetLocalScaleOfPiece(0, Vector3.zero)).WhenArgumentsMatch(
+                                args =>
+                                args.Get<int>("id") == i).
+                                MustNotHaveHappened();
+                        }
+                    }
+                } 
             }
         }
 
+        //The mapping from the local cursor position to the expected piece to highlight was done graphicaly for these tests and not calculated dynamicaly, in order to prevent t odo the same calculation mistakes here as in the implementation
         [Test]
-        public void update_core_with_3_entries()
+        public void Update_Core_With_0_Entry()
         {
-            UpdateCore(3,new Vector3(0,1,0),1,2);
+            SetupToolSettings(0);
+            UpdateCore(0, new Vector3(0, 1, 0), 0);
+        }
+
+
+        [Test]
+        public void Update_Core_With_1_Entry()
+        {
+            SetupToolSettings(1);
+            UpdateCore(1, new Vector3(0, -1, 0), 0);
+            UpdateCore(1, new Vector3(0, 1, 0), 0);
+            UpdateCore(1, new Vector3(123, 56, 0), 0);
+        }
+
+        [Test]
+        public void Update_Core_With_2_Entries()
+        {
+            SetupToolSettings(2);
+            UpdateCore(2, new Vector3(0, -1, 0), 0);
+            UpdateCore(2, new Vector3(0, 1, 0), 1);
+        }
+
+
+        [Test]
+        public void Update_Core_With_3_Entries()
+        {
+            SetupToolSettings(3);
+            UpdateCore(3, new Vector3(1, 0, 0), 0);
+            UpdateCore(3, new Vector3(0, 1, 0), 1);
+            UpdateCore(3, new Vector3(-1, 0, 0), 2);
         }
     }
 }
