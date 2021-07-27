@@ -8,7 +8,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
     /// <summary>
     /// A collection of helper functions for virtual tool actions
     /// </summary>
-    public class ActionHelperFunctions : MonoBehaviour
+    public class ActionHelperFunctions
     {
         /// <summary>
         /// Iterates upwards in the hirachy of gameObject and returns the first GameObject that has a script of type typeToSearch attached. Returns null if nothing is found.

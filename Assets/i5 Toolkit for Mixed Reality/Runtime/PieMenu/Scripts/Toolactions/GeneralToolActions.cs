@@ -10,7 +10,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
     /// <summary>
     /// A collection of ToolActions that are helpfull for multiple tools
     /// </summary>
-    public class GeneralToolActions : ActionHelperFunctions
+    public class GeneralToolActions : MonoBehaviour
     {
         #region IconOverVisualisation
 
@@ -25,7 +25,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         public void SpawnCurrentIconOverObject(FocusEventData data)
         {
             GameObject objectToSpawnIconOver;
-            ViveWandVirtualTool virtualTool = GetVirtualTool(data.Pointer);
+            ViveWandVirtualTool virtualTool = ActionHelperFunctions.GetVirtualTool(data.Pointer);
 
             if (objectTransformer != null)
             {
@@ -44,7 +44,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                     Destroy(instantiatedIcon);
                 }
                 instantiatedIcon = Instantiate(highlightSprite);
-                instantiatedIcon.GetComponentInChildren<Image>().sprite = GetVirtualTool(data.Pointer).currentEntry.toolSettings.iconTool;
+                instantiatedIcon.GetComponentInChildren<Image>().sprite = ActionHelperFunctions.GetVirtualTool(data.Pointer).currentEntry.toolSettings.iconTool;
             }
         }
 
@@ -57,7 +57,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             if (instantiatedIcon != null)
             {
                 GameObject target;
-                ViveWandVirtualTool virtualTool = GetVirtualTool(data.Pointer);
+                ViveWandVirtualTool virtualTool = ActionHelperFunctions.GetVirtualTool(data.Pointer);
 
                 if (objectTransformer != null)
                 {
@@ -105,7 +105,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                         Vector3 topMiddle = minpoint + 0.5f * (maxpoint - minpoint);
                         topMiddle.y += 0.3f;
 
-                        RotateToCameraOnXZPlane(instantiatedIcon, topMiddle);
+                        ActionHelperFunctions.RotateToCameraOnXZPlane(instantiatedIcon, topMiddle);
                     }
                 }
             }
