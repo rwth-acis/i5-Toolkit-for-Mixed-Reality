@@ -20,7 +20,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// <returns></returns>
         public static GameObject GetGameobjectOfTypeFromHirachy(GameObject gameObject, Type typeToSearch, Type[] typesToExclude = null, bool checkAbove = false, bool checkBelow = false)
         {
-            IActionHelperFunctionsShell actionHelperFunctionsShell = new ActionHelperFunctionsShell();
+            ActionHelperFunctionsShell actionHelperFunctionsShell = new ActionHelperFunctionsShell();
             actionHelperFunctionsShell.gameObject = gameObject;
 
             ActionHelperFunctionsCore.GetGameobjectOfTypeFromHirachy(actionHelperFunctionsShell, typeToSearch, typesToExclude , checkAbove, checkBelow);

@@ -5,8 +5,8 @@ using UnityEngine;
 
 public interface IActionHelperFunctionsShell
 {
-    GameObject gameObject { get; set; }
     bool GameObjectsHasComponentOfType(Type type);
+    bool GameObjectIsOfType(Type type);
     bool GameObectIsNull();
     void GoToParentOfGameObject();
     void SetGameObjectNull();

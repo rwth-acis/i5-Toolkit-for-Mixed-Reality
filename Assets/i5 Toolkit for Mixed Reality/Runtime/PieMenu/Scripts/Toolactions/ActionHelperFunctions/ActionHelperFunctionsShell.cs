@@ -12,6 +12,11 @@ public class ActionHelperFunctionsShell : IActionHelperFunctionsShell
         return gameObject.GetComponentInChildren(type, true) != null;
     }
 
+    public bool GameObjectIsOfType(Type type)
+    {
+        return gameObject.GetComponent(type) != null;
+    }
+
     public bool GameObectIsNull()
     {
         return gameObject == null;
