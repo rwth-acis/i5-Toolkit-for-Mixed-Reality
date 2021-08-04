@@ -11,5 +11,7 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
         public string name;
 
         public Sprite thumbnail;
+
+        public GameObject model;
     }
 }

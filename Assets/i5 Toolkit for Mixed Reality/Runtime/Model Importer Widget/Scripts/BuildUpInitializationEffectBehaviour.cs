@@ -1,7 +1,4 @@
-﻿using i5.Toolkit.Core.Utilities.UnityWrappers;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace i5.Toolkit.MixedReality.ModelImporterWidget
 {

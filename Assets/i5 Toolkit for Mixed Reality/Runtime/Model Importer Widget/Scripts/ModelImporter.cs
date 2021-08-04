@@ -1,5 +1,5 @@
+using i5.Toolkit.Core.Experimental.UnityAdapters;
 using i5.Toolkit.Core.Utilities;
-using i5.Toolkit.Core.Utilities.UnityWrappers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -8,8 +8,6 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 {
     public class ModelImporter
     {
-        public IModelProvider CurrentlySelectedProvider { get; set; }
-
         public ITransformable TargetTransform { get; set; }
 
         public Bounds TargetBox { get; set; }
@@ -30,40 +28,30 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
             };
         }
 
-        public async Task ImportModelAsync(string modelId)
+        public async Task PresentModelAsync(GameObject newModel)
         {
             if (LastImportedObject != null && !LastImportedObject.transform.hasChanged)
             {
                 GameObject.Destroy(LastImportedObject);
             }
 
-            GameObject importedModel = await CurrentlySelectedProvider.ProvideModelAsync(modelId);
+            Vector3 center = TargetTransform.Position + TargetTransform.LocalScale.MultiplyComponentWise(TargetBox.center);
+            Vector3 size = TargetTransform.LocalScale.MultiplyComponentWise(TargetBox.size);
+            BoxVolume targetVolume = new BoxVolume(center, size);
 
-            Bounds overallBounds = ObjectBounds.GetComposedRendererBounds(importedModel);
-
-            importedModel.transform.position = 
-                TargetTransform.Position
-                + TargetTransform.LocalScale.MultiplyComponentWise(TargetBox.center)
-                - overallBounds.center;
-            importedModel.transform.rotation = TargetTransform.Rotation;
-
-            Vector3 realTargetBoxSize = TargetTransform.LocalScale.MultiplyComponentWise(TargetBox.size);
-
-            Vector3 scalingFactors = realTargetBoxSize.DivideComponentWiseBy(overallBounds.size);
-            float scalingFactor = scalingFactors.MinimumComponent();
-            importedModel.transform.localScale *= scalingFactor;
+            GameObjectUtils.PlaceInBox(newModel, targetVolume);
 
             if (InstantiationEffect != null)
             {
-                await InstantiationEffect.PlayInstantiationEffectAsync(importedModel);
+                await InstantiationEffect.PlayInstantiationEffectAsync(newModel);
             }
 
             foreach(IModelImportPostProcessor postProcessor in PostProcessors)
             {
-                postProcessor.PostProcessGameObject(importedModel);
+                postProcessor.PostProcessGameObject(newModel);
             }
 
-            LastImportedObject = importedModel;
+            LastImportedObject = newModel;
             LastImportedObject.transform.hasChanged = false;
         }
     }

@@ -6,13 +6,19 @@ using UnityEngine;
 public class ModelImporterWidgetTester : MonoBehaviour
 {
     [SerializeField] private ModelImporterBehaviour modelImporterUI;
+    [SerializeField] private PrefabCollection prefabCollection;
+    [SerializeField] private ModelListItemBehaviour modelListItem;
 
     // Update is called once per frame
     private async void Update()
     {
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            await modelImporterUI.ImportModelAsync();
+            await modelImporterUI.PresentModelAsync(GameObject.CreatePrimitive(PrimitiveType.Capsule));
+        }
+        else if (Input.GetKeyDown(KeyCode.F6))
+        {
+            modelListItem.Data = prefabCollection.ModelData[0];
         }
     }
 }
