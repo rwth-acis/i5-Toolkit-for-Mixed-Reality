@@ -162,5 +162,13 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             ActionHelperFunctionsCore.GetGameobjectOfTypeFromHirachy(shell, typeToSearch, typesToExclude, false, true);
             Assert.IsNull(shell.fakeGameObject);
         }
+
+        [Test]
+        public void Search_for_nonexisting_object_without_filter()
+        {
+            Type[] typesToExclude = new Type[] { typeof(string) };
+            ActionHelperFunctionsCore.GetGameobjectOfTypeFromHirachy(shell, typeof(char));
+            Assert.IsNull(shell.fakeGameObject);
+        }
     }
 }
