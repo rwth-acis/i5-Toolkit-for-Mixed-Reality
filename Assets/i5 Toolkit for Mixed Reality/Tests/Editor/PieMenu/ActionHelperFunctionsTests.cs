@@ -70,18 +70,28 @@ public class FakeActionHelperFunctionsShell : IActionHelperFunctionsShell
 public class ActionHelperFunctionsTests
 {
     //GetGameobjectOfTypeFromHirachy tests
+    FakeActionHelperFunctionsShell shell;
+    FakeGameObject entryObject;
 
-    [Test]
-    public void Search_for_existing_object_without_filter()
+    [SetUp]
+    public void Setup()
     {
-        //Can't actually be faked using FakeItEasy, because the type of proxy UnityEngine.GameObject is sealed
-        FakeGameObject entryObject = new FakeGameObject();
+        shell = new FakeActionHelperFunctionsShell();
+        entryObject = new FakeGameObject();
 
-        FakeActionHelperFunctionsShell shell = new FakeActionHelperFunctionsShell();
+        //Fake the hirachy. Can't be faked using FakeItEasy, because the type of proxy UnityEngine.GameObject is sealed
+        /*
+         O
+         |
+         O (MonoBehaiviour)
+         |____
+         |    |
+         O    O
+              |____
+              |    |
+              O    O (entryPoint)
+         */
 
-        Type typeToSearch = typeof(MonoBehaviour);
-
-        //Fake the hirachy
 
         FakeGameObject currentObject = entryObject;
         FakeGameObject searchedNode;
@@ -91,7 +101,7 @@ public class ActionHelperFunctionsTests
         currentObject.parent = parent;
         FakeGameObject sibling = new FakeGameObject();
         sibling.parent = parent;
-        parent.childs = new List<FakeGameObject>{sibling, currentObject };
+        parent.childs = new List<FakeGameObject> { sibling, currentObject };
 
         currentObject = parent;
 
@@ -109,9 +119,17 @@ public class ActionHelperFunctionsTests
         //Layer 0
         parent = new FakeGameObject();
         currentObject.parent = parent;
-        parent.childs = new List<FakeGameObject> {currentObject};
+        parent.childs = new List<FakeGameObject> { currentObject };
 
         shell.fakeGameObject = entryObject;
+    }
+
+    [Test]
+    public void Search_for_existing_object_without_filter()
+    {
+        Type typeToSearch = typeof(MonoBehaviour);
+
+        FakeGameObject searchedNode = entryObject.parent.parent;
 
         ActionHelperFunctionsCore.GetGameobjectOfTypeFromHirachy(shell, typeToSearch);
         Assert.AreEqual(shell.fakeGameObject, searchedNode);
