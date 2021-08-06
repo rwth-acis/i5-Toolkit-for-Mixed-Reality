@@ -29,7 +29,7 @@ public class ActionHelperFunctionsCore
                 {
                     foreach (Type type in typesToExclude)
                     {
-                        if (shell.GameObjectIsOfType(typeToSearch))
+                        if (shell.GameObjectIsOfType(type))
                         {
                             shell.SetGameObjectNull();
                             return;
