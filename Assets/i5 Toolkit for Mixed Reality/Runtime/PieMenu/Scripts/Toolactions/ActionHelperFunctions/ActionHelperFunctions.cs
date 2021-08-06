@@ -33,7 +33,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// </summary>
         /// <param name="pointer"></param>
         /// <returns></returns>
-            public static ViveWandVirtualTool GetVirtualTool(IMixedRealityPointer pointer)
+        public static ViveWandVirtualTool GetVirtualTool(IMixedRealityPointer pointer)
         {
             return pointer?.Controller?.Visualizer?.GameObjectProxy?.GetComponentInChildren<ViveWandVirtualTool>();
         }
@@ -96,8 +96,5 @@ namespace i5.Toolkit.MixedReality.PieMenu
         {
             return GetVirtualTool(inputSource)?.currentEntry.toolSettings.toolName;
         }
-
-        //Shell functions
-
     } 
 }
