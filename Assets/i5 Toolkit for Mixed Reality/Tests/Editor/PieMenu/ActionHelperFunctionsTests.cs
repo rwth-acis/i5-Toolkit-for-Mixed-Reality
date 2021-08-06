@@ -35,6 +35,16 @@ public class FakeGameObject
             return null;
         }
     }
+
+    public void addChilds(int number)
+    {
+        for (int i = 0; i < number; i++)
+        {
+            FakeGameObject child = new FakeGameObject();
+            child.parent = this;
+            childs.Add(child);
+        }
+    }
 }
 
 public class FakeActionHelperFunctionsShell : IActionHelperFunctionsShell
@@ -72,65 +82,64 @@ public class ActionHelperFunctionsTests
     //GetGameobjectOfTypeFromHirachy tests
     FakeActionHelperFunctionsShell shell;
     FakeGameObject entryObject;
+    FakeGameObject searchedNode;
+    Type typeToSearch = typeof(int);
 
     [SetUp]
     public void Setup()
     {
         shell = new FakeActionHelperFunctionsShell();
-        entryObject = new FakeGameObject();
+
 
         //Fake the hirachy. Can't be faked using FakeItEasy, because the type of proxy UnityEngine.GameObject is sealed
         /*
          O
          |
-         O (MonoBehaiviour)
+         O (int)
          |____
          |    |
-         O    O
+         O    O (string)
               |____
               |    |
               O    O (entryPoint)
+                   |_________________
+                   |   |             |
+                   O   O (string)    O
          */
 
 
-        FakeGameObject currentObject = entryObject;
-        FakeGameObject searchedNode;
-
-        //Layer 2
-        FakeGameObject parent = new FakeGameObject();
-        currentObject.parent = parent;
-        FakeGameObject sibling = new FakeGameObject();
-        sibling.parent = parent;
-        parent.childs = new List<FakeGameObject> { sibling, currentObject };
-
-        currentObject = parent;
+        //Layer 0
+        FakeGameObject currentNode = new FakeGameObject();
+        currentNode.addChilds(1);
 
         //Layer 1
-        parent = new FakeGameObject();
-        parent.type = typeof(MonoBehaviour); //The searched node
-        searchedNode = parent;
-        currentObject.parent = parent;
-        sibling = new FakeGameObject();
-        sibling.parent = parent;
-        parent.childs = new List<FakeGameObject> { sibling, currentObject };
+        currentNode = currentNode.childs[0];
+        currentNode.type = typeof(int);
+        currentNode.addChilds(2);
+        searchedNode = currentNode;
 
-        currentObject = parent;
+        //Layer 3
+        currentNode = currentNode.childs[1];
+        currentNode.type = typeof(string);
+        currentNode.addChilds(2);
 
-        //Layer 0
-        parent = new FakeGameObject();
-        currentObject.parent = parent;
-        parent.childs = new List<FakeGameObject> { currentObject };
+        //Layer 4
+        currentNode = currentNode.childs[1];
+        entryObject = currentNode;
+        currentNode.addChilds(3);
+
+        //Layer 5
+        currentNode = currentNode.childs[1];
+        currentNode.type = typeof(string);
 
         shell.fakeGameObject = entryObject;
     }
 
+
+
     [Test]
     public void Search_for_existing_object_without_filter()
     {
-        Type typeToSearch = typeof(MonoBehaviour);
-
-        FakeGameObject searchedNode = entryObject.parent.parent;
-
         ActionHelperFunctionsCore.GetGameobjectOfTypeFromHirachy(shell, typeToSearch);
         Assert.AreEqual(shell.fakeGameObject, searchedNode);
     }
