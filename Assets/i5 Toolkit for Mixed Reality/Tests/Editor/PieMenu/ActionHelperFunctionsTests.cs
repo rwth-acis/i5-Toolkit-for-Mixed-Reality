@@ -143,4 +143,20 @@ public class ActionHelperFunctionsTests
         ActionHelperFunctionsCore.GetGameobjectOfTypeFromHirachy(shell, typeToSearch);
         Assert.AreEqual(shell.fakeGameObject, searchedNode);
     }
+
+    [Test]
+    public void Search_for_existing_object_with_above_filter()
+    {
+        Type[] typesToExclude = new Type[]{ typeof(string) };
+        ActionHelperFunctionsCore.GetGameobjectOfTypeFromHirachy(shell, typeToSearch, typesToExclude, true);
+        Assert.IsNull(shell.fakeGameObject);
+    }
+
+    [Test]
+    public void Search_for_existing_object_with_below_filter()
+    {
+        Type[] typesToExclude = new Type[] { typeof(string) };
+        ActionHelperFunctionsCore.GetGameobjectOfTypeFromHirachy(shell, typeToSearch, typesToExclude, false, true);
+        Assert.IsNull(shell.fakeGameObject);
+    }
 }
