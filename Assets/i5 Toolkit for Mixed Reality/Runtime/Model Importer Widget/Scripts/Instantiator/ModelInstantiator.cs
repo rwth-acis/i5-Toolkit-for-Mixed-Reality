@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace i5.Toolkit.MixedReality.ModelImporterWidget
 {
-    public class ModelImporter
+    public class ModelInstantiator
     {
         public ITransformable TargetTransform { get; set; }
 
@@ -18,7 +18,9 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 
         public List<IModelImportPostProcessor> PostProcessors { get; set; }
 
-        public ModelImporter(ITransformable targetTransform, Bounds targetBox)
+        public bool IsBusy { get; private set; }
+
+        public ModelInstantiator(ITransformable targetTransform, Bounds targetBox)
         {
             TargetTransform = targetTransform;
             TargetBox = targetBox;
@@ -30,6 +32,14 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 
         public async Task PresentModelAsync(GameObject newModel)
         {
+            if (IsBusy)
+            {
+                i5Debug.LogWarning("Tried to create new object while the previous operation was still ongoing. Aborted second import operation.", this);
+                return;
+            }
+
+            IsBusy = true;
+
             if (LastImportedObject != null && !LastImportedObject.transform.hasChanged)
             {
                 GameObject.Destroy(LastImportedObject);
@@ -53,6 +63,8 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 
             LastImportedObject = newModel;
             LastImportedObject.transform.hasChanged = false;
+
+            IsBusy = false;
         }
     }
 }

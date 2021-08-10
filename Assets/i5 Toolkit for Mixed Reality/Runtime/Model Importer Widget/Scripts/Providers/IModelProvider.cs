@@ -6,7 +6,7 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 {
     public interface IModelProvider
     {
-        Task<ModelData[]> ListAvailableModelsAsync(int page, int itemsPerPage);
+        Task<ModelData[]> ListAvailableModelsAsync(int startIndex, int count = -1);
 
         Task<GameObject> ProvideModelAsync(string modelId);
     }

@@ -5,20 +5,20 @@ using UnityEngine;
 
 public class ModelImporterWidgetTester : MonoBehaviour
 {
-    [SerializeField] private ModelImporterBehaviour modelImporterUI;
+    [SerializeField] private ModelInstantiatorBehaviour modelInstantiator;
     [SerializeField] private PrefabCollection prefabCollection;
-    [SerializeField] private ModelListItemBehaviour modelListItem;
+    [SerializeField] private ModelImporterBehaviour modelImporter;
 
     // Update is called once per frame
     private async void Update()
     {
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            await modelImporterUI.PresentModelAsync(GameObject.CreatePrimitive(PrimitiveType.Capsule));
+            await modelInstantiator.PresentModelAsync(GameObject.CreatePrimitive(PrimitiveType.Capsule));
         }
         else if (Input.GetKeyDown(KeyCode.F6))
         {
-            modelListItem.Data = prefabCollection.ModelData[0];
+            modelImporter.ModelProvider = prefabCollection; 
         }
     }
 }

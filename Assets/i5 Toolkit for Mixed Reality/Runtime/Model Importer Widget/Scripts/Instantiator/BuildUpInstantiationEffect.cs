@@ -44,7 +44,7 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
                 Material[] replacement = new Material[renderers[i].materials.Length];
                 for (int matIndex = 0; matIndex < renderers[i].materials.Length; matIndex++)
                 {
-                    replacement[i] = EffectMaterial;
+                    replacement[matIndex] = EffectMaterial;
                 }
                 renderers[i].materials = replacement;
 

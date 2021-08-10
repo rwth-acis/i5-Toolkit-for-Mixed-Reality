@@ -1,6 +1,4 @@
 ﻿using i5.Toolkit.Core.Utilities;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -13,17 +11,19 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
         [SerializeField] private SpriteRenderer thumbnail;
         [SerializeField] private TextMeshPro nameLabel;
 
-        private ModelData data;
         private GameObject previewInstance;
 
-        public ModelData Data
+        public ModelData Data { get; private set; }
+
+        public int Index { get; private set; }
+
+        public ModelListViewBehaviour ParentListView { get; private set; }
+
+        public void SetUp(ModelListViewBehaviour parent, int index, ModelData data)
         {
-            get => data;
-            set
-            {
-                data = value;
-                UpdateView();
-            }
+            ParentListView = parent;
+            Data = data;
+            Index = index;
         }
 
         public void UpdateView()
@@ -47,7 +47,7 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
             }
             else
             {
-                previewInstance = Instantiate(data.model);
+                previewInstance = Instantiate(Data.model);
                 // calculate the box volume in which the object should be placed
                 Vector3 size = modelTargetBox.size.MultiplyComponentWise(modelTargetBox.transform.localScale);
                 Vector3 center = modelTargetBox.transform.position + modelTargetBox.center.MultiplyComponentWise(modelTargetBox.transform.localScale);
@@ -58,6 +58,11 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
                 // make it a child of the parent object
                 previewInstance.transform.parent = modelPreviewParent;
             }
+        }
+
+        public void OnSelect()
+        {
+            ParentListView.Select(Index);
         }
     }
 }

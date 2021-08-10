@@ -2,7 +2,7 @@
 
 namespace i5.Toolkit.MixedReality.ModelImporterWidget
 {
-    [RequireComponent(typeof(ModelImporterBehaviour))]
+    [RequireComponent(typeof(ModelInstantiatorBehaviour))]
     public abstract class InstantiationEffectBaseBehaviour : MonoBehaviour
     {
         protected IInstantiationEffect instantiationEffectLogic;
@@ -14,7 +14,7 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 
         protected virtual void Start()
         {
-            GetComponent<ModelImporterBehaviour>().ModelImporter.InstantiationEffect = instantiationEffectLogic;
+            GetComponent<ModelInstantiatorBehaviour>().ModelInstantiator.InstantiationEffect = instantiationEffectLogic;
         }
 
         protected abstract void InitializeEffect();
