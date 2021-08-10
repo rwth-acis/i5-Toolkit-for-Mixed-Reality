@@ -2466,6 +2466,52 @@ ScriptedImporter:
     400914: main/glTF Scene scene/RootNode (gltf orientation matrix)/RootNode (model
       correction matrix)/d8faef188c324d84b81c319025728041.fbx/glTF Node 3/RootNode/weeebo
       and tiggy/weeebo and tiggy_weebo manual bake_0/Transform
+    2100000: Material_585
+    2100002: round_table
+    2100004: curtain_rail
+    2100006: trees
+    2100008: Loveknot_Manual_Bake
+    2100010: boat_manual_bake
+    2100012: end_frame_manual_bake
+    2100014: seal_manual_bake
+    2100016: plant
+    2100018: Material_4040
+    2100020: Material_3394
+    2100022: propinquity_early_manual_bake
+    2100024: london_eye_manual_bake
+    2100026: simon_manual_bake
+    2100028: weebo_manual_bake
+    2100030: jag_manual_bake
+    2100032: skirting
+    2100034: Walls
+    2100036: Material_3993
+    2100038: Material_4028
+    2100040: skirting_0
+    2100042: Material_4195
+    2100044: Material_3550
+    2100046: corridor_volume
+    2100048: Walls_a
+    2100050: jake_manua_bake
+    2100052: scarlett_manual_bake
+    2100054: baked_curtain
+    2100056: eddie_manuel_bake
+    2100058: holly_manual_bake
+    2100060: squirrel_manual_bake
+    2100062: tess_manual_bake
+    2100064: tiggy_manual_bake
+    2100066: aston_manual_bake
+    2100068: propinquity_manual_bake
+    2100070: plant_pot
+    2100072: XXX_DO_NOT_RENDER
+    2100074: butterfly-baked
+    2100076: lens_flare
+    2100078: Material_49
+    2100080: door_manual_bake
+    2100082: dream_catcher
+    2100084: light_beam
+    2100086: projection_1
+    2100088: projection_2
+    2100090: material
     2300000: main/glTF Scene scene/RootNode (gltf orientation matrix)/RootNode (model
       correction matrix)/d8faef188c324d84b81c319025728041.fbx/glTF Node 3/RootNode/aston
       manual bake/aston manual bake_aston manual bake_0/MeshRenderer

@@ -13876,6 +13876,38 @@ ScriptedImporter:
     405038: main/glTF Scene scene/RootNode (gltf orientation matrix)/RootNode (model
       correction matrix)/88efce6f5c92417da4e239749222e6ca.fbx/RootNode/silla_low071/glTF
       Node 394/silla_low071_madera_mesas_sillas_0/Transform
+    2100000: suelo
+    2100002: techo
+    2100004: troncos_ventanas_puertas-madera
+    2100006: troncos_ventanas_puertas-metal
+    2100008: pared
+    2100010: ventana
+    2100012: remates
+    2100014: pared2
+    2100016: suelo2
+    2100018: madera
+    2100020: barandilla
+    2100022: estanteria-madera
+    2100024: estanteria-marco
+    2100026: cartel1
+    2100028: libEstanterias-hojas1
+    2100030: libEstanterias-lomos1
+    2100032: libEstanterias-hojas2
+    2100034: libEstanterias-lomos2
+    2100036: cartel2
+    2100038: cartel3
+    2100040: cartel4
+    2100042: cartel6
+    2100044: cartel7
+    2100046: madera_mesas_sillas
+    2100048: lampMesa-metal
+    2100050: lampMesa-tulipa
+    2100052: lampMesa-bombilla_emis
+    2100054: lampMesa-casquillo
+    2100056: lamparaTecho-metal
+    2100058: lamparaTecho-bombilla_emis
+    2100060: lamparaTecho-casquillo
+    2100062: cartel5
     2300000: main/glTF Scene scene/RootNode (gltf orientation matrix)/RootNode (model
       correction matrix)/88efce6f5c92417da4e239749222e6ca.fbx/RootNode/biblioteca/glTF
       Node 15/biblioteca_pared2_0/MeshRenderer

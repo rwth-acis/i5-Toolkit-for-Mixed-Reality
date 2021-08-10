@@ -274,6 +274,30 @@ ScriptedImporter:
       correction matrix)/root/GLTF_SceneRootNode/Wood_35/Transform
     400134: main/glTF Scene scene/RootNode (gltf orientation matrix)/RootNode (model
       correction matrix)/root/GLTF_SceneRootNode/Wood_35/glTF Node 66/Transform
+    2100000: Skybox.001
+    2100002: FireWood.001
+    2100004: Fire.001
+    2100006: Tabe
+    2100008: DarkStone
+    2100010: Emissive
+    2100012: WindowFrame
+    2100014: Glass
+    2100016: KitchenProps
+    2100018: Carpet
+    2100020: WandLeuchte
+    2100022: Emissive.001
+    2100024: Fireplace
+    2100026: SitzKissen
+    2100028: Chair
+    2100030: pillow
+    2100032: SmallProps
+    2100034: Regal
+    2100036: SmallTableBaked
+    2100038: DoorPic
+    2100040: Stohkissen
+    2100042: Floor
+    2100044: Concreate
+    2100046: Wood
     2300000: main/glTF Scene scene/RootNode (gltf orientation matrix)/RootNode (model
       correction matrix)/root/GLTF_SceneRootNode/AM97_064_obj_034.001_1/glTF Node
       7/MeshRenderer
