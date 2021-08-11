@@ -1,14 +1,14 @@
-﻿using Microsoft.MixedReality.Toolkit.UI;
+﻿using i5.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class EnvironmentDataDisplay : DataDisplay<EnvironmentData>
 {
-    [SerializeField] private TextMeshPro environmentNameLabel;
+    [SerializeField] private string environmentNameLabel;
     [SerializeField] private SpriteRenderer previewImage;
-    [SerializeField] private TextMeshPro environmentCreditField;
+    [SerializeField] private string environmentCreditField;
 
     private Interactable button;
 
@@ -41,7 +41,7 @@ public class EnvironmentDataDisplay : DataDisplay<EnvironmentData>
         {
             if(content.EnvironmentName != null)
             {
-                environmentNameLabel.text = content.EnvironmentName;
+                environmentNameLabel = content.EnvironmentName;
             }
             if (content.EnvironmentPreviewImage != null)
             {
@@ -49,7 +49,7 @@ public class EnvironmentDataDisplay : DataDisplay<EnvironmentData>
             }
             if (content.EnvironmentCredit != null)
             {
-                environmentCreditField.text = content.EnvironmentCredit;
+                environmentCreditField = content.EnvironmentCredit;
             }
         }
     }

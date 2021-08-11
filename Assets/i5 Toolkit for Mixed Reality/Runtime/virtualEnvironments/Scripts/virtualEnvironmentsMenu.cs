@@ -2,39 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
-using Photon.Pun;
-using Photon.Realtime;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using i5.Toolkit.Core.Utilities;
+
 /// <summary>
 /// Controls the menu which allows a user to select existing rooms (or navigate to the menu where a new room can be created)
 /// </summary>
-public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
+public class virtualEnvironmentsMenu : MonoBehaviour
 {
     [SerializeField] private EnvironmentListView environmentListView;
+    /// <summary>
+    /// The number of environment entries which are shown on one page
+    /// </summary>
+    [SerializeField] private int entriesPerPage;
     [SerializeField] private Interactable pageUpButton;
     [SerializeField] private Interactable pageDownButton;
-    [SerializeField] private Material[] environmentSkyboxes;
-    [SerializeField] private Sprite[] previewImages;
+    [SerializeField] private Material defaultSkybox;
+    [SerializeField] private Sprite defaultpreviewImage;
+    [SerializeField] private string defaultCredits;
+
+    private Material[] environmentSkyboxes;
+    private Sprite[] previewImages;
     [SerializeField] private string[] environmentNames;
-    [SerializeField] private GameObject[] environmentPrefabs;
-    [SerializeField] private string[] environmentCredits;
+    private GameObject[] environmentPrefabs;
+    private string[] environmentCredits;
     [SerializeField] private string[] environmentURLs;
+
     private Material currentSkybox;
     private GameObject currentPrefab;
     private bool coroutinesFinished = false;
     private string assetBundlesURL;
-    /// <summary>
-    /// The number of environment entries which are shown on one page
-    /// </summary>
-    public int entriesPerPage = 2;
+
     private List<EnvironmentData> environments = new List<EnvironmentData>();
+
     private int page = 0;
     private bool windowEnabled = true;
     private GameObject currentEnvironmentInstance;
+
     /// <summary>
     /// States whether the window is enabled
     /// If set to false, the window will remain visible but all interactable controls are disabled
@@ -53,14 +57,17 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
             pageDownButton.Enabled = value;
         }
     }
+
     public bool WindowOpen
     {
         get; private set;
     }
+
     /// <summary>
     /// Event which is invoked if the window is closed
     /// </summary>
     public event EventHandler WindowClosed;
+
     /// <summary>
     /// Initializes the component, makes sure that it is set up correctly
     /// </summary>
@@ -75,8 +82,16 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
             SpecialDebugMessages.LogMissingReferenceError(this, nameof(pageDownButton));
         }
 
+        environmentPrefabs = new GameObject[environmentURLs.Length];
+        previewImages = new Sprite[environmentURLs.Length];
+        environmentSkyboxes = new Material[environmentURLs.Length];
+        environmentCredits = new string[environmentURLs.Length];
+
+        previewImages[0] = defaultpreviewImage;
+        environmentSkyboxes[0] = defaultSkybox;
+        environmentCredits[0] = defaultCredits;
+
         assetBundlesURL = "file:///" + Application.dataPath + "/AssetBundles/";
-        StartCoroutine(GetAssetBundleObjects());
         if (UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
             StartCoroutine(GetAssetBundleObjects());
 
@@ -84,6 +99,7 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
 
         Close();
     }
+
     /// <summary>
     /// Called if a element of the room list view was selected by the user
     /// </summary>
@@ -107,6 +123,7 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
             }
         }
     }
+
     /// <summary>
     /// Called if the user pushes the page up button
     /// Swiches to the previous page
@@ -117,6 +134,7 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
         SetPageButtonStates();
         UpdateEnvironmentDisplay();
     }
+
     /// <summary>
     /// Called if the user pages the page down button
     /// Switches to the next page
@@ -127,6 +145,8 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
         SetPageButtonStates();
         UpdateEnvironmentDisplay();
     }
+
+
     /// <summary>
     /// Adapts the button states of the page up and page down buttons
     /// If the first page is shown, the up button is disabled and if the last page is shown, the down button is disabled
@@ -141,6 +161,7 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
         {
             pageUpButton.Enabled = true;
         }
+
         if (page == ((environments.Count - 1) / entriesPerPage)) // last page
         {
             pageDownButton.Enabled = false;
@@ -150,6 +171,8 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
             pageDownButton.Enabled = true;
         }
     }
+
+
     /// <summary>
     /// Updates the list view showing the environment lists (on the current page)
     /// </summary>
@@ -168,6 +191,7 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
             environmentListView.Items = new List<EnvironmentData>();
         }
     }
+
     /// <summary>
     /// Opens the window
     /// </summary>
@@ -177,12 +201,14 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
         WindowOpen = true;
         UpdateEnvironmentDisplay();
     }
+
     public void Open(Vector3 position, Vector3 eulerAngles)
     {
         Open();
         transform.localPosition = position;
         transform.localEulerAngles = eulerAngles;
     }
+
     /// <summary>
     /// Closes the window
     /// </summary>
@@ -192,9 +218,10 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
         WindowClosed?.Invoke(this, EventArgs.Empty);
         gameObject.SetActive(false);
     }
+
     IEnumerator GetAssetBundleObjects()
     {
-        for (int arrayIndex = 0; arrayIndex < environmentNames.Length; arrayIndex++)
+        for (int arrayIndex = 0; arrayIndex < environmentURLs.Length; arrayIndex++)
         {
             if (arrayIndex != 0)
             {
@@ -205,6 +232,7 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
                 AsyncOperation sentRequest = request.SendWebRequest();
                 while (!sentRequest.isDone)
                 { }
+
                 if (UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(request) != null)
                 {
                     AssetBundle bundle = UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(request);
@@ -218,6 +246,7 @@ public class virtualEnvironmentsMenu : MonoBehaviour, IWindow
                     }
                 }
             }
+
             if (previewImages[arrayIndex] != null && environmentSkyboxes[arrayIndex] != null)
             {
                 environments.Add(new EnvironmentData(environmentNames[arrayIndex], previewImages[arrayIndex], environmentSkyboxes[arrayIndex], environmentPrefabs[arrayIndex], environmentCredits[arrayIndex], environmentURLs[arrayIndex]));

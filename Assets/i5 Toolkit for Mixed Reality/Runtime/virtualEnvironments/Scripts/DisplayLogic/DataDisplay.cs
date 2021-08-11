@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataDisplay<DataType> : MonoBehaviour, IViewContainer
+public class DataDisplay<DataType> : MonoBehaviour
     where DataType : IListViewItemData
 {
     protected DataType content;
