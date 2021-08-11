@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit;
 namespace i5.Toolkit.MixedReality.PieMenu
 {
 
-    public class PieMenuManagerShell : MonoBehaviour, IPieMenuManagerShell, IMixedRealityInputActionHandler
+    public class PieMenuManagerShell : MonoBehaviour, IPieMenuManagerShell, IMixedRealityInputActionHandler, IMixedRealityGestureHandler, IMixedRealityHandJointHandler
     {
         [SerializeField]
         GameObject pieMenuPrefab;
@@ -23,6 +23,8 @@ namespace i5.Toolkit.MixedReality.PieMenu
             core = new PieMenuManagerCore();
             core.shell = this;
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputActionHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityGestureHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
         }
 
         // Deregisters all handlers, otherwise it will recive events even after deactivcation.
@@ -63,6 +65,30 @@ namespace i5.Toolkit.MixedReality.PieMenu
             core.MenuClose(eventData, instantiatedPieMenu != null, toolSetup, currentlyHighlighted, ref invokingSource);
         }
 
+        //Gesture events
+        void IMixedRealityGestureHandler.OnGestureCanceled(InputEventData eventData)
+        {
+            Debug.Log("Cancle");
+        }
 
+        void IMixedRealityGestureHandler.OnGestureCompleted(InputEventData eventData)
+        {
+            Debug.Log("Complete");
+        }
+
+        void IMixedRealityGestureHandler.OnGestureStarted(InputEventData eventData)
+        {
+            Debug.Log("Start");
+        }
+
+        void IMixedRealityGestureHandler.OnGestureUpdated(InputEventData eventData)
+        {
+            Debug.Log("Update");
+        }
+
+        void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<System.Collections.Generic.IDictionary<Microsoft.MixedReality.Toolkit.Utilities.TrackedHandJoint, Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose>> eventData)
+        {
+            Debug.Log(eventData.MixedRealityInputAction.Description);
+        }
     }
 }
