@@ -45,7 +45,7 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
                 }
 
                 // now we have an item and can use it
-                listItems[i].SetUp(this, i, dataItems[i]);
+                listItems[i].SetUp(this, i);
                 listItems[i].UpdateView();
             }
 

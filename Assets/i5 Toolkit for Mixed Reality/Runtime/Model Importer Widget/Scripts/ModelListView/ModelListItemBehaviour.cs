@@ -13,16 +13,15 @@ namespace i5.Toolkit.MixedReality.ModelImporterWidget
 
         private GameObject previewInstance;
 
-        public ModelData Data { get; private set; }
+        public ModelListViewBehaviour ParentListView { get; private set; }
 
         public int Index { get; private set; }
 
-        public ModelListViewBehaviour ParentListView { get; private set; }
+        public ModelData Data { get => ParentListView.DataItems[Index]; }
 
-        public void SetUp(ModelListViewBehaviour parent, int index, ModelData data)
+        public void SetUp(ModelListViewBehaviour parent, int index)
         {
             ParentListView = parent;
-            Data = data;
             Index = index;
         }
 
