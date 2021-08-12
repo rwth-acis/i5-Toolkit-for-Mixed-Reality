@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(ScrollingObjectCollection))]
-public class ScrollingObjectCollectionEvents : MonoBehaviour
+public class ScrollingObjectCollectionExtension : MonoBehaviour
 {
     private ScrollingObjectCollection scroller;
 
@@ -20,8 +20,17 @@ public class ScrollingObjectCollectionEvents : MonoBehaviour
         set
         {
             scrollingActiveCounter = value;
-            this.enabled = scrollingActiveCounter > 0;
+            //if (scrollingActiveCounter > 0)
+            //{
+            //    this.enabled = true;
+            //}
         }
+    }
+
+    private IEnumerator DelayedTurnoff()
+    {
+        yield return null;
+        this.enabled = false;
     }
 
     private void Awake()
@@ -31,7 +40,15 @@ public class ScrollingObjectCollectionEvents : MonoBehaviour
         scroller.OnTouchEnded.AddListener(OnTouchEnded);
         scroller.OnMomentumStarted.AddListener(OnMomentumStarted);
         scroller.OnMomentumEnded.AddListener(OnMomentumEnded);
-        this.enabled = false;
+        //this.enabled = false;
+    }
+
+    private void OnDestroy()
+    {
+        scroller.OnTouchStarted.RemoveListener(OnTouchStarted);
+        scroller.OnTouchEnded.RemoveListener(OnTouchEnded);
+        scroller.OnMomentumStarted.RemoveListener(OnMomentumStarted);
+        scroller.OnMomentumEnded.RemoveListener(OnMomentumEnded);
     }
 
     private void OnTouchStarted(GameObject sender)
@@ -46,16 +63,29 @@ public class ScrollingObjectCollectionEvents : MonoBehaviour
 
     private void OnMomentumStarted()
     {
+        Debug.Log("On Momentum Started");
         ScrollingActiveCounter++;
     }
 
     private void OnMomentumEnded()
     {
+        Debug.Log("On Momentum Ended");
         ScrollingActiveCounter--;
     }
 
     private void Update()
     {
+        Debug.Log("Update");
         OnScrollingUpdate.Invoke();
+
+        //if (scrollingActiveCounter == 0)
+        //{
+        //    this.enabled = false;
+        //}
+    }
+
+    public void ScrollByTier(int shift)
+    {
+        scroller.MoveByTiers(shift);
     }
 }
