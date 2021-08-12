@@ -42,34 +42,41 @@ public class ListView : MonoBehaviour
         // scrolling down
         else if (scrollingObjectCollection.FirstVisibleCellIndex > lastFirstVisible)
         {
-            int startIndex = (scrollingObjectCollection.FirstVisibleCellIndex - 3) % itemContainers.Length;
-            if (startIndex < 0)
+            for (int firstVisibleIndex = lastFirstVisible + 3; firstVisibleIndex <= scrollingObjectCollection.FirstVisibleCellIndex; firstVisibleIndex += 3)
             {
-                return;
-            }
+                int startIndex = (firstVisibleIndex - 3) % itemContainers.Length;
+                if (startIndex < 0)
+                {
+                    return;
+                }
 
-            Debug.Log("Scrolling down");
+                Debug.Log("Scrolling down");
 
-            for (int i = 0; i < 3; i++)
-            {
-                itemContainers[startIndex + i].transform.SetAsLastSibling();
-                itemContainers[startIndex + i].SetUp(this, scrollingObjectCollection.FirstVisibleCellIndex + 9 + i);
+                for (int i = 0; i < 3; i++)
+                {
+                    itemContainers[startIndex + i].transform.SetAsLastSibling();
+                    itemContainers[startIndex + i].SetUp(this, firstVisibleIndex + 9 + i);
+                }
+                gridCollection.transform.localPosition -= new Vector3(0, scrollingObjectCollection.CellHeight, 0);
             }
-            gridCollection.transform.localPosition -= new Vector3(0, scrollingObjectCollection.CellHeight, 0);
         }
         // scrolling up
         else
         {
-            int endIndex = (scrollingObjectCollection.FirstVisibleCellIndex + 2) % itemContainers.Length;
-
-            Debug.Log("Scrolling up");
-
-            for (int i = 0; i < 3; i++)
+            for (int firstVisibleIndex = lastFirstVisible - 3; firstVisibleIndex >= scrollingObjectCollection.FirstVisibleCellIndex; firstVisibleIndex -= 3)
             {
-                itemContainers[endIndex - i].transform.SetAsFirstSibling();
-                itemContainers[endIndex - i].SetUp(this, scrollingObjectCollection.FirstVisibleCellIndex - i - 1);
+
+                int endIndex = (scrollingObjectCollection.FirstVisibleCellIndex + 2) % itemContainers.Length;
+
+                Debug.Log("Scrolling up");
+
+                for (int i = 0; i < 3; i++)
+                {
+                    itemContainers[endIndex - i].transform.SetAsFirstSibling();
+                    itemContainers[endIndex - i].SetUp(this, scrollingObjectCollection.FirstVisibleCellIndex - i - 1);
+                }
+                gridCollection.transform.localPosition += new Vector3(0, scrollingObjectCollection.CellHeight, 0);
             }
-            gridCollection.transform.localPosition += new Vector3(0, scrollingObjectCollection.CellHeight, 0);
         }
 
         lastFirstVisible = scrollingObjectCollection.FirstVisibleCellIndex;
