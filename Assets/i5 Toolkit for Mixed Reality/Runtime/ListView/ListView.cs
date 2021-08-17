@@ -32,13 +32,17 @@ public class ListView : MonoBehaviour
         scrollEvents.OnScrollingUpdate.AddListener(OnScrollingUpdate);
         gridCollection.transform.localPosition = new Vector3(0, scrollingObjectCollection.CellHeight, 0);
         InitializeItems();
+        gridCollection.UpdateCollection();
+        scrollingObjectCollection.UpdateContent();
     }
 
     private void InitializeItems()
     {
         for (int i = 0; i < itemContainers.Length; i++)
         {
-            itemContainers[i].SetUp(this, i - CellsPerTier);
+            int index = i - CellsPerTier;
+            itemContainers[i].SetUp(this, index);
+            itemContainers[i].gameObject.SetActive(index >= 0);
         }
     }
 
@@ -63,8 +67,10 @@ public class ListView : MonoBehaviour
 
                 for (int i = 0; i < CellsPerTier; i++)
                 {
+                    int dataIndex = firstVisibleIndex + (CellsPerTier * TiersPerPage) + i;
                     itemContainers[startIndex + i].transform.SetAsLastSibling();
                     itemContainers[startIndex + i].SetUp(this, firstVisibleIndex + (CellsPerTier * TiersPerPage) + i);
+                    itemContainers[startIndex + i].gameObject.SetActive(dataIndex >= 0);
                 }
                 gridCollection.transform.localPosition -= new Vector3(0, scrollingObjectCollection.CellHeight, 0);
             }
@@ -81,8 +87,10 @@ public class ListView : MonoBehaviour
 
                 for (int i = 0; i < CellsPerTier; i++)
                 {
+                    int dataIndex = scrollingObjectCollection.FirstVisibleCellIndex - i - 1;
                     itemContainers[endIndex - i].transform.SetAsFirstSibling();
-                    itemContainers[endIndex - i].SetUp(this, scrollingObjectCollection.FirstVisibleCellIndex - i - 1);
+                    itemContainers[endIndex - i].SetUp(this, dataIndex);
+                    itemContainers[endIndex - i].gameObject.SetActive(dataIndex >= 0);
                 }
                 gridCollection.transform.localPosition += new Vector3(0, scrollingObjectCollection.CellHeight, 0);
             }
