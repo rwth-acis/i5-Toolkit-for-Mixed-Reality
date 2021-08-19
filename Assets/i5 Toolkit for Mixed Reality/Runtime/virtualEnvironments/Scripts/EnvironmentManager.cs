@@ -8,7 +8,7 @@ using i5.Toolkit.Core.Utilities;
 /// <summary>
 /// Controls the menu which allows a user to select existing rooms (or navigate to the menu where a new room can be created)
 /// </summary>
-public class virtualEnvironmentsMenu : MonoBehaviour
+public class EnvironmentManager : MonoBehaviour
 {
     [SerializeField] private EnvironmentListView environmentListView;
     /// <summary>
