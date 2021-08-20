@@ -18,5 +18,8 @@ namespace i5.Toolkit.MixedReality.PieMenu
         void SetTMPText(string key, string text);
         HashSet<IMixedRealityInputSource> GetInputSources();
         bool GameObjectProxyEqualsOwnObject(IMixedRealityControllerVisualizer visualizer);
+        void SetOwnSource();
+        void RegisterHandlers();
+        void UnregisterHandlers();
     }
 }

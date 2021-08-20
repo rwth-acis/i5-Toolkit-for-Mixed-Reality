@@ -14,11 +14,11 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
         public IMixedRealityInputSource ownSource { set; get; }
 
-        protected void ActivateDescriptionTexts()
+        protected void ActivateDescriptionTexts(bool activate = true)
         {
             string name = "ButtonDescriptions";
             shell.AddGameobjectToBuffer(name, name);
-            shell.SetGameObjectActive(name, true);
+            shell.SetGameObjectActive(name, activate);
             shell.RemoveGameobjectFromBuffer(name);
         }
 
@@ -26,17 +26,17 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// Disabel the description texts after descriptionShowTime seconds.
         /// </summary>
         /// <returns></returns>
-        protected IEnumerator DisableDescriptionsAfterShowTime()
+        public IEnumerator DisableDescriptionsAfterShowTime()
         {
             yield return new WaitForSeconds(shell.GetToolSetup().descriptionShowTime);
-            shell.SetGameObjectActive("ButtonDescriptions", false);
+            ActivateDescriptionTexts(false);
         }
 
         /// <summary>
         /// Coroutine to set the ownSourceVariable. Has to be done in a loop in a coroutine, because it can vary at which point the input source is registered in the InputSystem.
         /// </summary>
         /// <returns></returns>
-        protected IEnumerator SetOwnSource()
+        public IEnumerator SetOwnSource()
         {
             while (ownSource == null)
             {
@@ -98,6 +98,22 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 }
             }
             return null;
+        }
+
+        // Triggerd when an input action of type float changes its value. Used for the grip button.
+        public void OnInputChanged(InputEventData<float> eventData)
+        {
+            if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.gripPressAction)
+            {
+                if (eventData.InputData > 0.5)
+                {
+                    ServiceManager.GetService<ToolSetupService>().toolSetup.OnInputActionStartedGrip.Invoke(eventData);
+                }
+                else
+                {
+                    ServiceManager.GetService<ToolSetupService>().toolSetup.OnInputActionEndedGrip.Invoke(eventData);
+                }
+            }
         }
     }
 }
