@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0107d022e90da1747803e50be0e3c3e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  environmentListView: {fileID: 730428698}
+  environmentsDisplayManager: {fileID: 0}
   entriesPerPage: 2
   pageUpButton: {fileID: 1180832515}
   pageDownButton: {fileID: 1403927201}
@@ -244,9 +244,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 730428697}
-  - component: {fileID: 730428698}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Environments
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -266,20 +265,6 @@ Transform:
   m_Father: {fileID: 98129082}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &730428698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 730428696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c50f02f39a63424e8dd13f3b384b5ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 4062056348203518458, guid: 00f45bdd54b803648b00b26f27fb6508,
-    type: 3}
 --- !u!1 &884463669
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,7 +470,7 @@ PrefabInstance:
     - target: {fileID: 6293782215702940639, guid: aef27e91ffd80b8419fddd2e0229cb75,
         type: 3}
       propertyPath: m_Name
-      value: PressableRoundButton
+      value: UpButton
       objectReference: {fileID: 0}
     - target: {fileID: 8520609111362198630, guid: aef27e91ffd80b8419fddd2e0229cb75,
         type: 3}
@@ -759,7 +744,7 @@ PrefabInstance:
     - target: {fileID: 6293782215702940639, guid: aef27e91ffd80b8419fddd2e0229cb75,
         type: 3}
       propertyPath: m_Name
-      value: PressableRoundButton (1)
+      value: DownButton
       objectReference: {fileID: 0}
     - target: {fileID: 8520609111362198630, guid: aef27e91ffd80b8419fddd2e0229cb75,
         type: 3}

@@ -17,6 +17,8 @@ public class ListViewController<DataType, ItemType> : MonoBehaviour, IListViewCo
 {
     [SerializeField] protected GameObject itemPrefab;
 
+    [SerializeField] protected Vector3 displayOffset;
+
     [SerializeField] protected List<DataType> items = new List<DataType>();
 
     public event EventHandler<ListViewItemSelectedArgs> ItemSelected;
@@ -103,6 +105,29 @@ public class ListViewController<DataType, ItemType> : MonoBehaviour, IListViewCo
     public void Clear()
     {
         Items = new List<DataType>();
+    }
+
+
+    /// <summary>
+    /// Aligns the child objects of this transform
+    /// </summary>
+    private void Update()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).localPosition = displayOffset * i;
+        }
+    }
+
+    /// <summary>
+    /// Updates the alignment in edit mode if the offset is changed
+    /// </summary>
+    private void OnValidate()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).localPosition = displayOffset * i;
+        }
     }
 }
 

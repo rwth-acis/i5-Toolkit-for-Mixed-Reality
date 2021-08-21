@@ -8,9 +8,9 @@ using i5.Toolkit.Core.Utilities;
 /// <summary>
 /// Controls the menu which allows a user to select existing rooms (or navigate to the menu where a new room can be created)
 /// </summary>
-public class EnvironmentManager : MonoBehaviour
+public class VirtualEnvironmentsManager : MonoBehaviour
 {
-    [SerializeField] private EnvironmentDisplayManager environmentListView;
+    [SerializeField] private EnvironmentsDisplayManager environmentsDisplayManager;
     /// <summary>
     /// The number of environment entries which are shown on one page
     /// </summary>
@@ -95,7 +95,7 @@ public class EnvironmentManager : MonoBehaviour
         if (UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
             StartCoroutine(GetAssetBundleObjects());
 
-        environmentListView.ItemSelected += OnEnvironmentSelected;
+        environmentsDisplayManager.ItemSelected += OnEnvironmentSelected;
 
         //Close();
         UpdateEnvironmentDisplay();
@@ -108,19 +108,19 @@ public class EnvironmentManager : MonoBehaviour
     /// <param name="e">Arguments about the list view selection event</param>
     private void OnEnvironmentSelected(object sender, ListViewItemSelectedArgs e)
     {
-        if ((environmentListView.SeletedItem != null) && windowEnabled)
+        if ((environmentsDisplayManager.SeletedItem != null) && windowEnabled)
         {
-            if (environmentListView.SeletedItem.EnvironmentBackground != null)
+            if (environmentsDisplayManager.SeletedItem.EnvironmentBackground != null)
             {
-                RenderSettings.skybox = environmentListView.SeletedItem.EnvironmentBackground;
+                RenderSettings.skybox = environmentsDisplayManager.SeletedItem.EnvironmentBackground;
             }
             if (currentEnvironmentInstance != null)
             {
                 Destroy(currentEnvironmentInstance);
             }
-            if (environmentListView.SeletedItem.EnvironmentPrefab != null)
+            if (environmentsDisplayManager.SeletedItem.EnvironmentPrefab != null)
             {
-                currentEnvironmentInstance = Instantiate(environmentListView.SeletedItem.EnvironmentPrefab, environmentListView.SeletedItem.EnvironmentPrefab.transform.position, environmentListView.SeletedItem.EnvironmentPrefab.transform.rotation);
+                currentEnvironmentInstance = Instantiate(environmentsDisplayManager.SeletedItem.EnvironmentPrefab, environmentsDisplayManager.SeletedItem.EnvironmentPrefab.transform.position, environmentsDisplayManager.SeletedItem.EnvironmentPrefab.transform.rotation);
             }
         }
     }
@@ -185,11 +185,11 @@ public class EnvironmentManager : MonoBehaviour
             // make sure that it stays within the bounds of the room list
             int startIndex = Mathf.Min(page * entriesPerPage, environments.Count - 1);
             int length = Mathf.Min(environments.Count - startIndex, entriesPerPage);
-            environmentListView.Items = environments.GetRange(startIndex, length);
+            environmentsDisplayManager.Items = environments.GetRange(startIndex, length);
         }
         else
         {
-            environmentListView.Items = new List<EnvironmentData>();
+            environmentsDisplayManager.Items = new List<EnvironmentData>();
         }
     }
 
