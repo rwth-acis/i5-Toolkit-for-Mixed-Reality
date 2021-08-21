@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
-    public class ViveWandTeleporterShell : ViveWandShell, IViveWandTeleporterShell
+    public class ViveWandTeleporterShell : ViveWandShell
     {
         
 

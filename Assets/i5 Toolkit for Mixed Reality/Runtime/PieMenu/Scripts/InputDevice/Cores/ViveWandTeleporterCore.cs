@@ -16,7 +16,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             //Enable the button explain text
             ActivateDescriptionTexts();
 
-            SetText("GripText", "", ServiceManager.GetService<ToolSetupService>().toolSetup.textGrip);
+            SetText("GripText", "", shell.GetPieMenuSetup().textGrip);
 
             shell.DisableDescriptionTextCoroutine(false);
             //Waits descriptionShowTime befor disabling the descriptions
