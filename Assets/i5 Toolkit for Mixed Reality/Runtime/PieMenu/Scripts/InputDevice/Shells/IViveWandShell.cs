@@ -21,5 +21,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         void SetOwnSource();
         void RegisterHandlers();
         void UnregisterHandlers();
+        PieMenuSetup GetPieMenuSetup();
+        void SetIcon(string key, Sprite icon);
     }
 }

@@ -5,6 +5,7 @@ using i5.Toolkit.Core.ServiceCore;
 using TMPro;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
+using UnityEngine.UI;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
@@ -78,6 +79,16 @@ namespace i5.Toolkit.MixedReality.PieMenu
         public void OnInputChanged(InputEventData<float> eventData)
         {
             core.OnInputChanged(eventData);
+        }
+
+        public PieMenuSetup GetPieMenuSetup()
+        {
+            return ServiceManager.GetService<ToolSetupService>().toolSetup;
+        }
+
+        public void SetIcon(string key, Sprite icon)
+        {
+            gameObjectBuffer[key].GetComponentInChildren<Image>().sprite = icon;
         }
     }
 }
