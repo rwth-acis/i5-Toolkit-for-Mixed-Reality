@@ -154,8 +154,12 @@ MonoBehaviour:
   defaultCredits: Default
   environmentNames:
   - Default
+  - Winter Loft
+  - Modern Office
   environmentURLs:
-  - Default
+  - 
+  - winterloft
+  - modernoffice
 --- !u!65 &98129079
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -274,7 +278,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c50f02f39a63424e8dd13f3b384b5ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 100000, guid: fd15a3884f6eb8445a0ba40d641ebee5, type: 3}
+  itemPrefab: {fileID: 4062056348203518458, guid: 00f45bdd54b803648b00b26f27fb6508,
+    type: 3}
 --- !u!1 &884463669
 GameObject:
   m_ObjectHideFlags: 0
