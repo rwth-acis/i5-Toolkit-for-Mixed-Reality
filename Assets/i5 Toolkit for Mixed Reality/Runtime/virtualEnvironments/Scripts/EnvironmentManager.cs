@@ -10,7 +10,7 @@ using i5.Toolkit.Core.Utilities;
 /// </summary>
 public class EnvironmentManager : MonoBehaviour
 {
-    [SerializeField] private EnvironmentListView environmentListView;
+    [SerializeField] private EnvironmentDisplayManager environmentListView;
     /// <summary>
     /// The number of environment entries which are shown on one page
     /// </summary>
@@ -97,7 +97,7 @@ public class EnvironmentManager : MonoBehaviour
 
         environmentListView.ItemSelected += OnEnvironmentSelected;
 
-        Close();
+        //Close();
     }
 
     /// <summary>
@@ -185,6 +185,7 @@ public class EnvironmentManager : MonoBehaviour
             int startIndex = Mathf.Min(page * entriesPerPage, environments.Count - 1);
             int length = Mathf.Min(environments.Count - startIndex, entriesPerPage);
             environmentListView.Items = environments.GetRange(startIndex, length);
+            Debug.Log(environmentListView.Items);
         }
         else
         {

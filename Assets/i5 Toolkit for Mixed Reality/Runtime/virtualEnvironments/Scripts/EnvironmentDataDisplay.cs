@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class EnvironmentDataDisplay : DataDisplay<EnvironmentData>
 {
-    [SerializeField] private string environmentNameLabel;
+    [SerializeField] private TextMesh environmentNameLabel;
     [SerializeField] private SpriteRenderer previewImage;
-    [SerializeField] private string environmentCreditField;
+    [SerializeField] private TextMesh environmentCreditField;
 
     private Interactable button;
 
@@ -41,7 +41,7 @@ public class EnvironmentDataDisplay : DataDisplay<EnvironmentData>
         {
             if(content.EnvironmentName != null)
             {
-                environmentNameLabel = content.EnvironmentName;
+                environmentNameLabel.text = content.EnvironmentName;
             }
             if (content.EnvironmentPreviewImage != null)
             {
@@ -49,7 +49,7 @@ public class EnvironmentDataDisplay : DataDisplay<EnvironmentData>
             }
             if (content.EnvironmentCredit != null)
             {
-                environmentCreditField = content.EnvironmentCredit;
+                environmentCreditField.text = content.EnvironmentCredit;
             }
         }
     }
