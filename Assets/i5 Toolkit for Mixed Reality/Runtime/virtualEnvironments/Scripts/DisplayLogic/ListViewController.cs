@@ -1,4 +1,5 @@
 ﻿using i5.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,11 +16,15 @@ public class ListViewController<DataType, ItemType> : MonoBehaviour, IListViewCo
     where DataType : IListViewItemData
     where ItemType : ListViewItem<DataType>
 {
-    [SerializeField] protected GameObject itemPrefab;
-
+    [Header("Display Options")]
+    [SerializeField] protected GameObject displayPreviewPrefab;
     [SerializeField] protected Vector3 displayOffset;
-
+    [Range(1, 5)] public int entriesPerPage;
     [SerializeField] protected List<DataType> items = new List<DataType>();
+
+    [Header("Navigation Buttons")]
+    [SerializeField] public Interactable pageUpButton;
+    [SerializeField] public Interactable pageDownButton;
 
     public event EventHandler<ListViewItemSelectedArgs> ItemSelected;
 
@@ -39,7 +44,7 @@ public class ListViewController<DataType, ItemType> : MonoBehaviour, IListViewCo
 
     public GameObject ItemPrefab
     {
-        get => itemPrefab;
+        get => displayPreviewPrefab;
     }
 
     public int SelectedItemIndex { get; set; }
@@ -49,15 +54,15 @@ public class ListViewController<DataType, ItemType> : MonoBehaviour, IListViewCo
     private void Awake()
     {
         instances = new List<ItemType>();
-        if (itemPrefab == null)
+        if (displayPreviewPrefab == null)
         {
-            SpecialDebugMessages.LogMissingReferenceError(this, nameof(itemPrefab));
+            SpecialDebugMessages.LogMissingReferenceError(this, nameof(displayPreviewPrefab));
         }
         else
         {
-            if (itemPrefab.GetComponent<ItemType>() == null)
+            if (displayPreviewPrefab.GetComponent<ItemType>() == null)
             {
-                SpecialDebugMessages.LogComponentNotFoundError(this, nameof(ItemType), itemPrefab);
+                SpecialDebugMessages.LogComponentNotFoundError(this, nameof(ItemType), displayPreviewPrefab);
             }
         }
         if (Items == null)
@@ -70,10 +75,10 @@ public class ListViewController<DataType, ItemType> : MonoBehaviour, IListViewCo
     {
         for (int i = 0; i < Items.Count; i++)
         {
-            ItemType instanceAdapter = Instantiate(itemPrefab, transform).GetComponent<ItemType>();
+            ItemType instanceAdapter = Instantiate(displayPreviewPrefab, transform).GetComponent<ItemType>();
             if (instanceAdapter == null)
             {
-                SpecialDebugMessages.LogComponentNotFoundError(this, nameof(ItemType), itemPrefab);
+                SpecialDebugMessages.LogComponentNotFoundError(this, nameof(ItemType), displayPreviewPrefab);
             }
             else
             {

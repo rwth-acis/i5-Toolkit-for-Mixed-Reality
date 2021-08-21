@@ -1276,8 +1276,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environmentNameLabel: {fileID: 4060929588180161690}
-  previewImage: {fileID: 4060929588701321687}
   environmentCreditField: {fileID: 4060929587370873483}
+  environmentPreviewImage: {fileID: 4060929588701321687}
 --- !u!1 &4062159598139437892
 GameObject:
   m_ObjectHideFlags: 0

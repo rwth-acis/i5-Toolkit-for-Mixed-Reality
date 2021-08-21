@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class EnvironmentDataDisplay : DataDisplay<EnvironmentData>
 {
+    [Header("Environment Data Objects")]
     [SerializeField] private TextMesh environmentNameLabel;
-    [SerializeField] private SpriteRenderer previewImage;
     [SerializeField] private TextMesh environmentCreditField;
+    [SerializeField] private SpriteRenderer environmentPreviewImage;
 
     private Interactable button;
 
@@ -18,9 +19,9 @@ public class EnvironmentDataDisplay : DataDisplay<EnvironmentData>
         {
             SpecialDebugMessages.LogMissingReferenceError(this, nameof(environmentNameLabel));
         }
-        if (previewImage == null)
+        if (environmentPreviewImage == null)
         {
-            SpecialDebugMessages.LogMissingReferenceError(this, nameof(previewImage));
+            SpecialDebugMessages.LogMissingReferenceError(this, nameof(environmentPreviewImage));
         }
     }
 
@@ -45,7 +46,7 @@ public class EnvironmentDataDisplay : DataDisplay<EnvironmentData>
             }
             if (content.EnvironmentPreviewImage != null)
             {
-                previewImage.sprite = (Sprite)content.EnvironmentPreviewImage;
+                environmentPreviewImage.sprite = (Sprite)content.EnvironmentPreviewImage;
             }
             if (content.EnvironmentCredit != null)
             {

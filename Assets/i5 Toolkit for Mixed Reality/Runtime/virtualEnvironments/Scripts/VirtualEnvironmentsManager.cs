@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using i5.Toolkit.Core.Utilities;
 
@@ -10,23 +9,31 @@ using i5.Toolkit.Core.Utilities;
 /// </summary>
 public class VirtualEnvironmentsManager : MonoBehaviour
 {
+    [Space(10)]
     [SerializeField] private EnvironmentsDisplayManager environmentsDisplayManager;
-    /// <summary>
-    /// The number of environment entries which are shown on one page
-    /// </summary>
-    [SerializeField] private int entriesPerPage;
-    [SerializeField] private Interactable pageUpButton;
-    [SerializeField] private Interactable pageDownButton;
+
+    [Space(10)]
+    [Tooltip("The values of the default virtual environment. These should be equal to the initial values, such that the user can return to the standard settings.")]
+    [Header("Default Virtual Environment Values")]
     [SerializeField] private Material defaultSkybox;
-    [SerializeField] private Sprite defaultpreviewImage;
+    [SerializeField] private Sprite defaultPreviewImage;
     [SerializeField] private string defaultCredits;
 
-    private Material[] environmentSkyboxes;
-    private Sprite[] previewImages;
+    [Space(10)]
+    [Header("Environments Display Name")]
+    [Tooltip("The name of the virtual environment that should be displayed. Must be at least of size 1, where the first entry corresponds to the default choice.")]
     [SerializeField] private string[] environmentNames;
+
+    [Space(10)]
+    [Header("Environments Loading URL")]
+    [Tooltip("The URL is used to fetch the virtual environment as an asset bundle from either a server or a local folder. Must be at least of size 1, where the first entry corresponds to the default choice. Note: Leave the first entry empty.")]
+    [SerializeField] private string[] environmentURL;
+
+
     private GameObject[] environmentPrefabs;
     private string[] environmentCredits;
-    [SerializeField] private string[] environmentURLs;
+    private Material[] environmentSkyboxes;
+    private Sprite[] previewImages;
 
     private Material currentSkybox;
     private GameObject currentPrefab;
@@ -53,8 +60,8 @@ public class VirtualEnvironmentsManager : MonoBehaviour
         set
         {
             windowEnabled = value;
-            pageUpButton.Enabled = value;
-            pageDownButton.Enabled = value;
+            environmentsDisplayManager.pageUpButton.Enabled = value;
+            environmentsDisplayManager.pageDownButton.Enabled = value;
         }
     }
 
@@ -73,21 +80,21 @@ public class VirtualEnvironmentsManager : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        if (pageUpButton == null)
+        if (environmentsDisplayManager.pageUpButton == null)
         {
-            SpecialDebugMessages.LogMissingReferenceError(this, nameof(pageUpButton));
+            SpecialDebugMessages.LogMissingReferenceError(this, nameof(environmentsDisplayManager.pageUpButton));
         }
-        if (pageDownButton == null)
+        if (environmentsDisplayManager.pageDownButton == null)
         {
-            SpecialDebugMessages.LogMissingReferenceError(this, nameof(pageDownButton));
+            SpecialDebugMessages.LogMissingReferenceError(this, nameof(environmentsDisplayManager.pageDownButton));
         }
 
-        environmentPrefabs = new GameObject[environmentURLs.Length];
-        previewImages = new Sprite[environmentURLs.Length];
-        environmentSkyboxes = new Material[environmentURLs.Length];
-        environmentCredits = new string[environmentURLs.Length];
+        environmentPrefabs = new GameObject[environmentURL.Length];
+        previewImages = new Sprite[environmentURL.Length];
+        environmentSkyboxes = new Material[environmentURL.Length];
+        environmentCredits = new string[environmentURL.Length];
 
-        previewImages[0] = defaultpreviewImage;
+        previewImages[0] = defaultPreviewImage;
         environmentSkyboxes[0] = defaultSkybox;
         environmentCredits[0] = defaultCredits;
 
@@ -142,7 +149,7 @@ public class VirtualEnvironmentsManager : MonoBehaviour
     /// </summary>
     public void PageDown()
     {
-        page = Mathf.Min(page + 1, ((environments.Count - 1) / entriesPerPage));
+        page = Mathf.Min(page + 1, ((environments.Count - 1) / environmentsDisplayManager.entriesPerPage));
         SetPageButtonStates();
         UpdateEnvironmentDisplay();
     }
@@ -156,20 +163,20 @@ public class VirtualEnvironmentsManager : MonoBehaviour
     {
         if (page == 0) // first page
         {
-            pageUpButton.Enabled = false;
+            environmentsDisplayManager.pageUpButton.Enabled = false;
         }
         else
         {
-            pageUpButton.Enabled = true;
+            environmentsDisplayManager.pageUpButton.Enabled = true;
         }
 
-        if (page == ((environments.Count - 1) / entriesPerPage)) // last page
+        if (page == ((environments.Count - 1) / environmentsDisplayManager.entriesPerPage)) // last page
         {
-            pageDownButton.Enabled = false;
+            environmentsDisplayManager.pageDownButton.Enabled = false;
         }
         else
         {
-            pageDownButton.Enabled = true;
+            environmentsDisplayManager.pageDownButton.Enabled = true;
         }
     }
 
@@ -183,8 +190,8 @@ public class VirtualEnvironmentsManager : MonoBehaviour
         {
             // get the start index and length of the sub array to display
             // make sure that it stays within the bounds of the room list
-            int startIndex = Mathf.Min(page * entriesPerPage, environments.Count - 1);
-            int length = Mathf.Min(environments.Count - startIndex, entriesPerPage);
+            int startIndex = Mathf.Min(page * environmentsDisplayManager.entriesPerPage, environments.Count - 1);
+            int length = Mathf.Min(environments.Count - startIndex, environmentsDisplayManager.entriesPerPage);
             environmentsDisplayManager.Items = environments.GetRange(startIndex, length);
         }
         else
@@ -222,13 +229,13 @@ public class VirtualEnvironmentsManager : MonoBehaviour
 
     IEnumerator GetAssetBundleObjects()
     {
-        for (int arrayIndex = 0; arrayIndex < environmentURLs.Length; arrayIndex++)
+        for (int arrayIndex = 0; arrayIndex < environmentURL.Length; arrayIndex++)
         {
             if (arrayIndex != 0)
             {
                 currentSkybox = null;
                 currentPrefab = null;
-                string url = assetBundlesURL + environmentURLs[arrayIndex];
+                string url = assetBundlesURL + environmentURL[arrayIndex];
                 var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
                 AsyncOperation sentRequest = request.SendWebRequest();
                 while (!sentRequest.isDone)
@@ -250,7 +257,7 @@ public class VirtualEnvironmentsManager : MonoBehaviour
 
             if (previewImages[arrayIndex] != null && environmentSkyboxes[arrayIndex] != null)
             {
-                environments.Add(new EnvironmentData(environmentNames[arrayIndex], previewImages[arrayIndex], environmentSkyboxes[arrayIndex], environmentPrefabs[arrayIndex], environmentCredits[arrayIndex], environmentURLs[arrayIndex]));
+                environments.Add(new EnvironmentData(environmentNames[arrayIndex], previewImages[arrayIndex], environmentSkyboxes[arrayIndex], environmentPrefabs[arrayIndex], environmentCredits[arrayIndex], environmentURL[arrayIndex]));
             }
         }
         yield return null;
