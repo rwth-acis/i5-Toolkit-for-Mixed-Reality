@@ -4,6 +4,8 @@ using NUnit.Framework;
 using FakeItEasy;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace i5.Toolkit.MixedReality.Tests.PieMenu
 {
@@ -58,31 +60,30 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             return focusEvent;
         }
 
-        struct events
+        struct hoverEvents
         {
             public VirtualToolFocusEvent focusEventStart;
             public VirtualToolFocusEvent focusEventActive;
             public VirtualToolFocusEvent focusEventStop;
         }
 
-        private events CreateEvents()
+        private hoverEvents CreateHoverEvents()
         {
-            events Events = new events();
-            //Setup OnHoverStart
+            hoverEvents events = new hoverEvents();
             MenuEntry entry = new MenuEntry();
 
-            Events.focusEventStart = createEntryWithHoverEvent();
-            entry.toolSpecificevents.OnHoverOverTargetStart = Events.focusEventStart;
+            events.focusEventStart = createEntryWithHoverEvent();
+            entry.toolSpecificevents.OnHoverOverTargetStart = events.focusEventStart;
 
-            Events.focusEventActive = createEntryWithHoverEvent();
-            entry.toolSpecificevents.OnHoverOverTargetActive = Events.focusEventActive;
+            events.focusEventActive = createEntryWithHoverEvent();
+            entry.toolSpecificevents.OnHoverOverTargetActive = events.focusEventActive;
 
-            Events.focusEventStop = createEntryWithHoverEvent();
-            entry.toolSpecificevents.OnHoverOverTargetStop = Events.focusEventStop;
+            events.focusEventStop = createEntryWithHoverEvent();
+            entry.toolSpecificevents.OnHoverOverTargetStop = events.focusEventStop;
 
             A.CallTo(() => shell.currentEntry).Returns(entry);
 
-            return Events;
+            return events;
         }
 
         private void SetCallbackFunctionsReturnValues(bool oldFocusTargetIsNull, bool targetIsNull, bool targetEqualsOldTarget)
@@ -98,7 +99,7 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             core.ownSource = EditorTestUtilitys.GetFakeInputSource(Vector3.zero);
             SetCallbackFunctionsReturnValues(true,false,false);
 
-            events Events = CreateEvents();
+            hoverEvents Events = CreateHoverEvents();
 
             core.UpdateHoverEvents();
 
@@ -121,7 +122,7 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             core.ownSource = EditorTestUtilitys.GetFakeInputSource(Vector3.zero);
             SetCallbackFunctionsReturnValues(false, true, false);
 
-            events Events = CreateEvents();
+            hoverEvents Events = CreateHoverEvents();
 
             core.UpdateHoverEvents();
 
@@ -144,7 +145,7 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             core.ownSource = EditorTestUtilitys.GetFakeInputSource(Vector3.zero);
             SetCallbackFunctionsReturnValues(false, false, true);
 
-            events Events = CreateEvents();
+            hoverEvents Events = CreateHoverEvents();
 
             core.UpdateHoverEvents();
 
@@ -167,7 +168,7 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             core.ownSource = EditorTestUtilitys.GetFakeInputSource(Vector3.zero);
             SetCallbackFunctionsReturnValues(true, true, true);
 
-            events Events = CreateEvents();
+            hoverEvents Events = CreateHoverEvents();
 
             core.UpdateHoverEvents();
 
@@ -190,7 +191,7 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             core.ownSource = EditorTestUtilitys.GetFakeInputSource(Vector3.zero);
             SetCallbackFunctionsReturnValues(false, false, false);
 
-            events Events = CreateEvents();
+            hoverEvents Events = CreateHoverEvents();
 
             core.UpdateHoverEvents();
 
@@ -204,6 +205,136 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
 
             A.CallTo(() => shell.InvokeEvent<FocusEventData>(null, null)).WhenArgumentsMatch(args =>
                                                                                              args.Get<UnityEvent<FocusEventData>>("inputEvent") == Events.focusEventStop).
+                                                                                             MustHaveHappenedOnceExactly();
+        }
+
+        //Touchpad tests
+
+        struct TouchpadEvents
+        {
+            public InputActionUnityEvent touchpadUp;
+            public InputActionUnityEvent touchpadRight;
+            public InputActionUnityEvent touchpadDown;
+            public InputActionUnityEvent touchpadLeft;
+        }
+
+        private InputActionUnityEvent createEntryWithInputEvent()
+        {
+            InputActionUnityEvent inputEvent = A.Fake<InputActionUnityEvent>();
+            UnityEditor.Events.UnityEventTools.AddPersistentListener(inputEvent);
+            return inputEvent;
+        }
+
+        private TouchpadEvents CreateTouchpadEvents()
+        {
+            TouchpadEvents events = new TouchpadEvents();
+            MenuEntry entry = new MenuEntry();
+
+            events.touchpadUp = createEntryWithInputEvent();
+            entry.touchpadUpSettings.OnInputActionEndedTouchpadUp = events.touchpadUp;
+
+            events.touchpadRight = createEntryWithInputEvent();
+            entry.touchpadRightSettings.OnInputActionEndedTouchpadRight = events.touchpadRight;
+
+            events.touchpadDown = createEntryWithInputEvent();
+            entry.TouchpadDownSettings.OnInputActionEndedTouchpadDown = events.touchpadDown;
+
+            events.touchpadLeft = createEntryWithInputEvent();
+            entry.touchpadLeftSettings.OnInputActionEndedTouchpadLeft = events.touchpadLeft;
+
+            A.CallTo(() => shell.currentEntry).Returns(entry);
+
+            return events;
+        }
+
+        private TouchpadEvents SetUpForTouchpad(Vector2 thumbPosition)
+        {
+            A.CallTo(() => shell.thumbPosition).Returns(thumbPosition);
+            MixedRealityInputAction action = new MixedRealityInputAction(1, "touchpadAction", AxisType.Digital);
+            setup.touchpadPressAction = action;
+            InputEventData eventData = EditorTestUtilitys.GetFakeInputEventData(action, Vector3.zero);
+            core.ownSource = eventData.InputSource;
+
+            TouchpadEvents touchpadEvents = CreateTouchpadEvents();
+
+            core.OnActionEnded(eventData);
+
+            return touchpadEvents;
+        }
+
+        [Test]
+        public void Touchpad_up_test()
+        {
+            TouchpadEvents touchpadEvents = SetUpForTouchpad(Vector2.up);
+
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadUp).
+                                                                                             MustHaveHappenedOnceExactly();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadRight).
+                                                                                             MustNotHaveHappened();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadDown).
+                                                                                             MustNotHaveHappened();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadLeft).
+                                                                                             MustNotHaveHappened();
+        }
+
+        [Test]
+        public void Touchpad_right_test()
+        {
+            TouchpadEvents touchpadEvents = SetUpForTouchpad(Vector2.right);
+
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadUp).
+                                                                                             MustNotHaveHappened();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadRight).
+                                                                                             MustHaveHappenedOnceExactly();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadDown).
+                                                                                             MustNotHaveHappened();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadLeft).
+                                                                                             MustNotHaveHappened();
+        }
+
+        [Test]
+        public void Touchpad_down_test()
+        {
+            TouchpadEvents touchpadEvents = SetUpForTouchpad(Vector2.down);
+
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadUp).
+                                                                                             MustNotHaveHappened();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadRight).
+                                                                                             MustNotHaveHappened();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadDown).
+                                                                                             MustHaveHappenedOnceExactly();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadLeft).
+                                                                                             MustNotHaveHappened();
+        }
+
+        [Test]
+        public void Touchpad_left_test()
+        {
+            TouchpadEvents touchpadEvents = SetUpForTouchpad(Vector2.left);
+
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadUp).
+                                                                                             MustNotHaveHappened();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadRight).
+                                                                                             MustNotHaveHappened();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadDown).
+                                                                                             MustNotHaveHappened();
+            A.CallTo(() => shell.InvokeEvent<BaseInputEventData>(null, null)).WhenArgumentsMatch(args =>
+                                                                                             args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadLeft).
                                                                                              MustHaveHappenedOnceExactly();
         }
     }
