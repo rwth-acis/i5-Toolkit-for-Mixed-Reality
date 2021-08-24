@@ -47,7 +47,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
         public void SetupTool(MenuEntry currentEntry, IMixedRealityControllerVisualizer vizualizer)
         {
-            ViveWandVirtualTool virtualTool = vizualizer.GameObjectProxy.GetComponentInChildren<ViveWandVirtualTool>();
+            IViveWandToolShell virtualTool = vizualizer.GameObjectProxy.GetComponentInChildren<IViveWandToolShell>();
             virtualTool.SetupTool(currentEntry);
         }
 

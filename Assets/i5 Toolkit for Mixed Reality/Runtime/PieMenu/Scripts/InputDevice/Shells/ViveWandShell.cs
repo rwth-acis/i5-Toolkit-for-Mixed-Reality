@@ -21,6 +21,11 @@ namespace i5.Toolkit.MixedReality.PieMenu
             gameObjectBuffer[key].SetActive(active);
         }
 
+        public bool ToolSetupExists()
+        {
+            return ServiceManager.ServiceExists<ToolSetupService>();
+        }
+
         public PieMenuSetup GetToolSetup()
         {
             return ServiceManager.GetService<ToolSetupService>().toolSetup;
@@ -66,14 +71,14 @@ namespace i5.Toolkit.MixedReality.PieMenu
         }
 
         //MR events
-        public void RegisterHandlers()
+        public void RegisterHandler<T>() where T : UnityEngine.EventSystems.IEventSystemHandler
         {
-            CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<float>>(this);
+            CoreServices.InputSystem?.RegisterHandler<T>(this);
         }
 
-        public void UnregisterHandlers()
+        public void UnregisterHandler<T>() where T : UnityEngine.EventSystems.IEventSystemHandler
         {
-            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputHandler<float>>(this);
+            CoreServices.InputSystem?.UnregisterHandler<T>(this);
         }
 
         public void OnInputChanged(InputEventData<float> eventData)
