@@ -11,11 +11,8 @@ namespace i5.Toolkit.MixedReality.PieMenu
     {
         MenuEntry defaultEntry;
 
-
-
-
         /// <summary>
-        /// Activates the description texts for descriptionShowTime seconds.
+        /// Stes the right icons and description texts and activates the description texts for descriptionShowTime seconds.
         /// </summary>
         public void SetupTool(MenuEntry newEntry)
         {
@@ -79,8 +76,10 @@ namespace i5.Toolkit.MixedReality.PieMenu
             shell.RemoveGameobjectFromBuffer(canvasName);
         }
 
-        //Checks if the SetupService exists and if yes executes it. If not, waits a frame. This is only neccesarry in case the OneEnable of the tool
-        //is called on the same frame with the ServiceRegister (for example on the first frame when both are instantiated in the scene on default)
+        /// <summary>
+        ///Checks if the SetupService exists and if yes executes it. If not, waits a frame. This is only neccesarry in case the OneEnable of the tool
+        ///is called on the same frame with the ServiceRegister(for example on the first frame when both are instantiated in the scene on default).
+        /// </summary>
         public IEnumerator SetupToolWaitForService()
         {
             if (shell.ToolSetupExists())
@@ -94,6 +93,9 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
+        /// <summary>
+        /// Registers the MRTK handlers and setups the tool
+        /// </summary>
         public void OnEnable()
         {
             shell.SetOwnSource();
@@ -103,6 +105,9 @@ namespace i5.Toolkit.MixedReality.PieMenu
             ((IViveWandToolShell)shell).SetupToolWaitForService();
         }
 
+        /// <summary>
+        /// Unregisters the MRTK handlerss
+        /// </summary>
         public void OnDisable()
         {
             shell.UnregisterHandler<IMixedRealityInputActionHandler>();
@@ -110,6 +115,9 @@ namespace i5.Toolkit.MixedReality.PieMenu
             shell.UnregisterHandler<IMixedRealityInputHandler<float>>();
         }
 
+        /// <summary>
+        /// Upadtes OnHoverOverTargetStart, OnHoverOverTargetActive and OnHoverOverTargetStop.
+        /// </summary>
         public void UpdateHoverEvents()
         {
             //It can take 2 or 3 frames until ownSource is set, because the openVR device must first register itself in MRTK input service.
@@ -161,6 +169,10 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
+        /// <summary>
+        /// Invokes either OnInputActionEndedTrigger or one of the four touchpad events.
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnActionEnded(BaseInputEventData eventData)
         {
             if (IsInputSourceThis(eventData.InputSource))
@@ -230,6 +242,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
+        //When the event from the current entry has at least one persitent listener, it is invoked. Otherwise the event from the default entry is invoked
         private void InvokeCurrentOrDefaultEvent<T>(UnityEvent<T> fromCurrentEntry, UnityEvent<T> fromDefaultEntry, T eventData) where T: BaseEventData
         {
             IViveWandToolShell toolShell = (IViveWandToolShell)shell;
@@ -243,6 +256,10 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
+        /// <summary>
+        /// Updates the thumb position
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnInputChanged(InputEventData<Vector2> eventData)
         {
             if (eventData.MixedRealityInputAction == shell.GetToolSetup().touchpadTouchActionAction)

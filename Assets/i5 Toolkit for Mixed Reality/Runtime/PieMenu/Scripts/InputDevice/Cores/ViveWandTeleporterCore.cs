@@ -23,17 +23,19 @@ namespace i5.Toolkit.MixedReality.PieMenu
             shell.DisableDescriptionTextCoroutine(true);
         }
 
-        // Registers the handlers in the input system. Otherwise, they will recive events only when a pointer has this object in focus.
+        /// <summary>
+        /// Registers the handlers in the input system and setups the tool
+        /// </summary>
         public void OnEnable()
         {
-            //StartCoroutine(SetOwnSource());
             shell.SetOwnSource();
             shell.RegisterHandler<IMixedRealityInputHandler<float>>();
             SetupTool();
         }
-
-        // Deregisters all handlers, otherwise it will recive events even after deactivcation.
-        private void OnDisable()
+        /// <summary>
+        /// Deregisters all handlers, otherwise it will recive events even after deactivcation.
+        /// </summary>
+        public void OnDisable()
         {
             shell.UnregisterHandler<IMixedRealityInputHandler<float>>();
         }

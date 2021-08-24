@@ -14,6 +14,10 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
         public IMixedRealityInputSource ownSource { set; get; }
 
+        /// <summary>
+        /// Activates the GameObject the description texts are attached too.
+        /// </summary>
+        /// <param name="activate"></param>
         protected void ActivateDescriptionTexts(bool activate = true)
         {
             string name = "ButtonDescriptions";
@@ -100,7 +104,10 @@ namespace i5.Toolkit.MixedReality.PieMenu
             return null;
         }
 
-        // Triggerd when an input action of type float changes its value. Used for the grip button.
+        /// <summary>
+        /// Triggerd when an input action of type float changes its value. Used for the grip button.
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnInputChanged(InputEventData<float> eventData)
         {
             if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.gripPressAction)
