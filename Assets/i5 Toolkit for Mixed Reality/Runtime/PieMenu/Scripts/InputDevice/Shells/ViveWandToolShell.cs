@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
@@ -9,15 +11,17 @@ namespace i5.Toolkit.MixedReality.PieMenu
     {
 
         public MenuEntry currentEntry { get; set; }
+        //The last recorded position on the touchpad
+        public Vector2 thumbPosition { get; set; }
 
         public void SetupToolWaitForService()
         {
             StartCoroutine(((ViveWandToolCore)core).SetupToolWaitForService());
         }
 
-        public void InvokeEvent(InputActionUnityEvent inputeEvent, BaseInputEventData eventData)
+        public void InvokeEvent<T>(UnityEvent<T> inputEvent, T eventData) where T : BaseEventData
         {
-            inputeEvent?.Invoke(eventData);
+            inputEvent?.Invoke(eventData);
         }
 
         private void OnEnable()
@@ -30,6 +34,11 @@ namespace i5.Toolkit.MixedReality.PieMenu
         private void OnDisable()
         {
             ((ViveWandToolCore)core).OnDisable();
+        }
+
+        private void Update()
+        {
+            ((ViveWandToolCore)core).UpdateHoverEvents();
         }
 
         public void SetupTool(MenuEntry newEntry)
@@ -53,6 +62,42 @@ namespace i5.Toolkit.MixedReality.PieMenu
         void IMixedRealityInputHandler<Vector2>.OnInputChanged(InputEventData<Vector2> eventData)
         {
             ((ViveWandToolCore)core).OnInputChanged(eventData);
+        }
+
+        //Hover events
+        GameObject target;
+        GameObject oldTarget;
+
+        public void SetTarget(IPointerResult pointerResult)
+        {
+            target = pointerResult.CurrentPointerTarget;
+        }
+
+        public bool TargetEqualsOldTarget()
+        {
+            return target == oldTarget;
+        }
+
+        public FocusEventData GenerateFocusEventData()
+        {
+            FocusEventData data = new FocusEventData(EventSystem.current);
+            data.Initialize(core.ownSource.Pointers[0], oldTarget, target);
+            return data;
+        }
+
+        public bool OldFocusTargetIsNull()
+        {
+            return oldTarget == null;
+        }
+
+        public bool TargetIsNull()
+        {
+            return target == null;
+        }
+
+        public void SetOldTarget()
+        {
+            oldTarget = target;
         }
     }
 }

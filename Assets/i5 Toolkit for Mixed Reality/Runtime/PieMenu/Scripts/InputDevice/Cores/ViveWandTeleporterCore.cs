@@ -28,14 +28,14 @@ namespace i5.Toolkit.MixedReality.PieMenu
         {
             //StartCoroutine(SetOwnSource());
             shell.SetOwnSource();
-            shell.RegisterHandlers();
+            shell.RegisterHandler<IMixedRealityInputHandler<float>>();
             SetupTool();
         }
 
         // Deregisters all handlers, otherwise it will recive events even after deactivcation.
         private void OnDisable()
         {
-            shell.UnregisterHandlers();
+            shell.UnregisterHandler<IMixedRealityInputHandler<float>>();
         }
     }
 }

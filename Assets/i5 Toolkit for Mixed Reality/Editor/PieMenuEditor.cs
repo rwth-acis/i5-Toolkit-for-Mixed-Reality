@@ -115,10 +115,10 @@ namespace i5.Toolkit.MixedReality.PieMenu
                         {
                             foreach (var p in source.Pointers)
                             {
-                                ViveWandVirtualTool tool = ActionHelperFunctions.GetVirtualTool(p);
+                                ViveWandToolShell tool = ActionHelperFunctions.GetVirtualTool(p);
                                 if (tool != null)
                                 {
-                                    tool.thumbPosition = position;
+                                    //tool.thumbPosition = position;
                                     break;
                                 }
                             }

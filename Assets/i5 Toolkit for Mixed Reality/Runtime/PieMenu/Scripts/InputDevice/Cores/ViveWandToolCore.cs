@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
@@ -9,8 +11,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
     {
         MenuEntry defaultEntry;
 
-        //The last recorded position on the touchpad
-        public Vector2 thumbPosition;
+
 
 
         /// <summary>
@@ -109,6 +110,41 @@ namespace i5.Toolkit.MixedReality.PieMenu
             shell.UnregisterHandler<IMixedRealityInputHandler<float>>();
         }
 
+        public void UpdateHoverEvents()
+        {
+            //It can take 2 or 3 frames until ownSource is set, because the openVR device must first register itself in MRTK input service.
+            if(ownSource != null)
+            {
+                IViveWandToolShell toolShell = (IViveWandToolShell)shell;
+                MenuEntry currentEntry = toolShell.currentEntry;
+                toolShell.SetTarget(ownSource.Pointers[0].Result);
+
+                if (!toolShell.TargetEqualsOldTarget())
+                {
+                    if (!toolShell.OldFocusTargetIsNull())
+                    {
+                        //Hover stop
+                        InvokeCurrentOrDefaultEvent(currentEntry.toolSpecificevents.OnHoverOverTargetStop, defaultEntry.toolSpecificevents.OnHoverOverTargetStop, toolShell.GenerateFocusEventData());
+                    }
+
+                    if (!toolShell.TargetIsNull())
+                    {
+                        //Hover start
+                        InvokeCurrentOrDefaultEvent(currentEntry.toolSpecificevents.OnHoverOverTargetStart, defaultEntry.toolSpecificevents.OnHoverOverTargetStart, toolShell.GenerateFocusEventData());
+
+                        //Hover active
+                        InvokeCurrentOrDefaultEvent(currentEntry.toolSpecificevents.OnHoverOverTargetActive, defaultEntry.toolSpecificevents.OnHoverOverTargetActive, toolShell.GenerateFocusEventData());
+                    }
+                }
+                else if (!toolShell.TargetIsNull())
+                {
+                    //Hover active
+                    InvokeCurrentOrDefaultEvent(currentEntry.toolSpecificevents.OnHoverOverTargetActive, defaultEntry.toolSpecificevents.OnHoverOverTargetActive, toolShell.GenerateFocusEventData());
+                }
+                toolShell.SetOldTarget();
+            }
+        }
+
         //MRTK Events
 
         /// <summary>
@@ -141,7 +177,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 {
                     //The touchpad was released
                     //Touchad
-                    float angle = Vector2.SignedAngle(Vector2.right, thumbPosition);
+                    float angle = Vector2.SignedAngle(Vector2.right, ((IViveWandToolShell)shell).thumbPosition);
                     if (angle > -45 && angle <= 45)
                     {
                         //Right press
@@ -194,7 +230,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             }
         }
 
-        private void InvokeCurrentOrDefaultEvent(InputActionUnityEvent fromCurrentEntry, InputActionUnityEvent fromDefaultEntry, BaseInputEventData eventData)
+        private void InvokeCurrentOrDefaultEvent<T>(UnityEvent<T> fromCurrentEntry, UnityEvent<T> fromDefaultEntry, T eventData) where T: BaseEventData
         {
             IViveWandToolShell toolShell = (IViveWandToolShell)shell;
             if (fromCurrentEntry.GetPersistentEventCount() > 0)
@@ -211,7 +247,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         {
             if (eventData.MixedRealityInputAction == shell.GetToolSetup().touchpadTouchActionAction)
             {
-                thumbPosition = eventData.InputData;
+                ((IViveWandToolShell)shell).thumbPosition = eventData.InputData;
             }
         }
     }

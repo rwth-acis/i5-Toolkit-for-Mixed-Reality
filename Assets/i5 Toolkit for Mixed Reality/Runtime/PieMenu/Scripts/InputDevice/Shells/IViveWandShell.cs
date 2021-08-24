@@ -11,6 +11,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
     public interface IViveWandShell
     {
         void SetGameObjectActive(string key, bool active);
+        bool ToolSetupExists();
         PieMenuSetup GetToolSetup();
         void DisableDescriptionTextCoroutine(bool start);
         void AddGameobjectToBuffer(string name, string key);
@@ -19,8 +20,8 @@ namespace i5.Toolkit.MixedReality.PieMenu
         HashSet<IMixedRealityInputSource> GetInputSources();
         bool GameObjectProxyEqualsOwnObject(IMixedRealityControllerVisualizer visualizer);
         void SetOwnSource();
-        void RegisterHandlers();
-        void UnregisterHandlers();
+        void RegisterHandler<T>() where T : UnityEngine.EventSystems.IEventSystemHandler;
+        void UnregisterHandler<T>() where T : UnityEngine.EventSystems.IEventSystemHandler;
         PieMenuSetup GetPieMenuSetup();
         void SetIcon(string key, Sprite icon);
     }

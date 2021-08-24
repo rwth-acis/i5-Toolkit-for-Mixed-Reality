@@ -25,7 +25,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         public void SpawnCurrentIconOverObject(FocusEventData data)
         {
             GameObject objectToSpawnIconOver;
-            ViveWandVirtualTool virtualTool = ActionHelperFunctions.GetVirtualTool(data.Pointer);
+            ViveWandToolShell virtualTool = ActionHelperFunctions.GetVirtualTool(data.Pointer);
 
             if (objectTransformer != null)
             {
@@ -57,7 +57,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
             if (instantiatedIcon != null)
             {
                 GameObject target;
-                ViveWandVirtualTool virtualTool = ActionHelperFunctions.GetVirtualTool(data.Pointer);
+                ViveWandToolShell virtualTool = ActionHelperFunctions.GetVirtualTool(data.Pointer);
 
                 if (objectTransformer != null)
                 {
