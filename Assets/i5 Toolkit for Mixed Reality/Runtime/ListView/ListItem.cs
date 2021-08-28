@@ -33,6 +33,6 @@ public abstract class ListItem<T> : MonoBehaviour
 
     public virtual void UpdateView()
     {
-        Visible = Parent != null && Parent.DataSource != null && Parent.DataSource.ExistsAt(Index);
+        Visible = Parent != null && Parent.DataSource != null && Parent.DataSource.Exists(Index);
     }
 }

@@ -63,19 +63,16 @@ public class ScrollingObjectCollectionExtension : MonoBehaviour
 
     private void OnMomentumStarted()
     {
-        Debug.Log("On Momentum Started");
         ScrollingActiveCounter++;
     }
 
     private void OnMomentumEnded()
     {
-        Debug.Log("On Momentum Ended");
         ScrollingActiveCounter--;
     }
 
     private void Update()
     {
-        Debug.Log("Update");
         OnScrollingUpdate.Invoke();
 
         //if (scrollingActiveCounter == 0)

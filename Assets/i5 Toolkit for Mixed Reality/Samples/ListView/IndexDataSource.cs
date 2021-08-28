@@ -1,5 +1,10 @@
-﻿public class IndexDataSource : ListDataSource<int>
+﻿public class IndexDataSource : DataSource<int>
 {
+    public override bool Exists(int index)
+    {
+        return index >= 0;
+    }
+
     public override int GetAt(int index)
     {
         return index;

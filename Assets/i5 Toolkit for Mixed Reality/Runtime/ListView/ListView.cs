@@ -13,13 +13,13 @@ public class ListView<T> : MonoBehaviour
     private GridObjectCollection gridCollection;
     private ListItem<T>[] itemContainers;
     private int lastFirstVisible = 0;
-    private ListDataSource<T> dataSource;
+    private DataSource<T> dataSource;
 
     public int CellsPerTier { get => scrollingObjectCollection.CellsPerTier; }
 
     public int TiersPerPage { get => scrollingObjectCollection.TiersPerPage; }
 
-    public ListDataSource<T> DataSource
+    public DataSource<T> DataSource
     {
         get => dataSource;
         set
@@ -78,8 +78,6 @@ public class ListView<T> : MonoBehaviour
                 {
                     return;
                 }
-
-                Debug.Log("Scrolling down");
 
                 for (int i = 0; i < CellsPerTier; i++)
                 {

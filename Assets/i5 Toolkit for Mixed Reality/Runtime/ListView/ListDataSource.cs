@@ -1,13 +1,16 @@
-﻿public abstract class ListDataSource<T>
+﻿using System.Collections.Generic;
+
+public class ListDataSource<T> : DataSource<T>
 {
-    public delegate void ItemUpdatedHandler(int index);
+    public List<T> List { get; set; }
 
-    public event ItemUpdatedHandler ItemUpdated;
-
-    public abstract T GetAt(int index);
-
-    public virtual bool ExistsAt(int index)
+    public override bool Exists(int index)
     {
-        return index >= 0;
+        return index >= 0 && index < List.Count;
+    }
+
+    public override T GetAt(int index)
+    {
+        return List[index];
     }
 }
