@@ -1,25 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
-public class ListItem : MonoBehaviour
+public abstract class ListItem<T> : MonoBehaviour
 {
-    [SerializeField] private TextMeshPro label;
-
-    public ListView Parent { get; private set; }
+    public ListView<T> Parent { get; private set; }
 
     public int Index { get; private set; }
 
-    public void SetUp(ListView parent, int index)
+    public T ItemContent
+    {
+        get
+        {
+            return Parent.DataSource.GetAt(Index);
+        }
+    }
+
+    public virtual bool Visible
+    {
+        get => gameObject.activeSelf;
+        set
+        {
+            gameObject.SetActive(value);
+        }
+    }
+
+    public virtual void SetUp(ListView<T> parent, int index)
     {
         Parent = parent;
         Index = index;
         UpdateView();
     }
 
-    private void UpdateView()
+    public virtual void UpdateView()
     {
-        label.text = Index.ToString();
+        Visible = Parent != null && Parent.DataSource != null && Parent.DataSource.ExistsAt(Index);
     }
 }

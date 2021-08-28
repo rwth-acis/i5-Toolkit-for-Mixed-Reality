@@ -6,17 +6,28 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ListView : MonoBehaviour
+public class ListView<T> : MonoBehaviour
 {
     private ScrollingObjectCollection scrollingObjectCollection;
     private ScrollingObjectCollectionExtension scrollEvents;
     private GridObjectCollection gridCollection;
-    private ListItem[] itemContainers;
+    private ListItem<T>[] itemContainers;
     private int lastFirstVisible = 0;
+    private ListDataSource<T> dataSource;
 
     public int CellsPerTier { get => scrollingObjectCollection.CellsPerTier; }
 
     public int TiersPerPage { get => scrollingObjectCollection.TiersPerPage; }
+
+    public ListDataSource<T> DataSource
+    {
+        get => dataSource;
+        set
+        {
+            dataSource = value;
+            ResetCollection();
+        }
+    }
 
 
     private void Awake()
@@ -24,7 +35,7 @@ public class ListView : MonoBehaviour
         scrollingObjectCollection = GetComponent<ScrollingObjectCollection>();
         scrollEvents = GetComponent<ScrollingObjectCollectionExtension>();
         gridCollection = GetComponentInChildren<GridObjectCollection>();
-        itemContainers = GetComponentsInChildren<ListItem>(true);
+        itemContainers = GetComponentsInChildren<ListItem<T>>(true);
     }
 
     private void Start()
@@ -42,8 +53,13 @@ public class ListView : MonoBehaviour
         {
             int index = i - CellsPerTier;
             itemContainers[i].SetUp(this, index);
-            itemContainers[i].gameObject.SetActive(index >= 0);
         }
+    }
+
+    private void ResetCollection()
+    {
+        scrollingObjectCollection.MoveToIndex(0, false);
+        InitializeItems();
     }
 
     private void OnScrollingUpdate()

@@ -562,7 +562,6 @@ GameObject:
   - component: {fileID: 3979252333792436171}
   - component: {fileID: 9040214141148582639}
   - component: {fileID: 2218343998731882265}
-  - component: {fileID: 5036566396410005689}
   m_Layer: 0
   m_Name: ButtonListItem
   m_TagString: Untagged
@@ -1028,19 +1027,6 @@ MonoBehaviour:
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.032, y: 0.032}
   touchableCollider: {fileID: 6584957272205488288}
---- !u!114 &5036566396410005689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7072802976541456186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0269bd672db12c47a85efe289d510c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  label: {fileID: 988734399612592371}
 --- !u!1 &7702046364890058866
 GameObject:
   m_ObjectHideFlags: 0
