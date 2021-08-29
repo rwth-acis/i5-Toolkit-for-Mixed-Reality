@@ -7,4 +7,6 @@
     public abstract T GetAt(int index);
 
     public abstract bool Exists(int index);
+
+    public abstract int Length { get; }
 }

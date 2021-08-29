@@ -1,5 +1,7 @@
 ﻿public class IndexDataSource : DataSource<int>
 {
+    public override int Length => -1;
+
     public override bool Exists(int index)
     {
         return index >= 0;
