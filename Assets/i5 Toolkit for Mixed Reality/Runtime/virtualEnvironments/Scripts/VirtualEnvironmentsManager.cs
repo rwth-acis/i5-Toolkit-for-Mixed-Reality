@@ -106,6 +106,7 @@ public class VirtualEnvironmentsManager : MonoBehaviour
 
         //Close();
         UpdateEnvironmentDisplay();
+        SetPageButtonStates();
     }
 
     /// <summary>
