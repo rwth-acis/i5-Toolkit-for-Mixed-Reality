@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using i5.Toolkit.Core.Utilities;
+using UnityEngine.UI;
 
 /// <summary>
 /// Controls the menu which allows a user to select existing rooms (or navigate to the menu where a new room can be created)
@@ -29,7 +30,7 @@ public class VirtualEnvironmentsManager : MonoBehaviour
     [Tooltip("The URL is used to fetch the virtual environment as an asset bundle from either a server or a local folder. Must be at least of size 1, where the first entry corresponds to the default choice. Note: Leave the first entry empty.")]
     [SerializeField] private string[] environmentURL;
 
-
+    private Toggle setDefaultFromInspector;
     private GameObject[] environmentPrefabs;
     private string[] environmentCredits;
     private Material[] environmentSkyboxes;
