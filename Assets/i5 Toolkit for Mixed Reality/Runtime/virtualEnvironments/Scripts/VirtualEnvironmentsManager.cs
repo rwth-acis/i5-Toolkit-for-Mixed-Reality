@@ -12,13 +12,16 @@ public class VirtualEnvironmentsManager : MonoBehaviour
 {
     [Space(10)]
     [SerializeField] private EnvironmentsDisplayManager environmentsDisplayManager;
+    public EnvironmentLoadingInformation[] serverEnvironmentsFromInspector;
+    public EnvironmentLoadingInformation[] localEnvironmentsFromInspector;
 
     [Space(10)]
     [Tooltip("The values of the default virtual environment. These should be equal to the initial values, such that the user can return to the standard settings.")]
     [Header("Default Virtual Environment Values")]
-    [SerializeField] private Material defaultSkybox;
-    [SerializeField] private Sprite defaultPreviewImage;
-    [SerializeField] private string defaultCredits;
+    public Material defaultSkybox;
+    public GameObject defaultModel;
+    public Sprite defaultPreviewImage;
+    public string defaultCredits;
 
     [Space(10)]
     [Header("Environments Display Name")]
@@ -30,7 +33,7 @@ public class VirtualEnvironmentsManager : MonoBehaviour
     [Tooltip("The URL is used to fetch the virtual environment as an asset bundle from either a server or a local folder. Must be at least of size 1, where the first entry corresponds to the default choice. Note: Leave the first entry empty.")]
     [SerializeField] private string[] environmentURL;
 
-    private Toggle setDefaultFromInspector;
+
     private GameObject[] environmentPrefabs;
     private string[] environmentCredits;
     private Material[] environmentSkyboxes;

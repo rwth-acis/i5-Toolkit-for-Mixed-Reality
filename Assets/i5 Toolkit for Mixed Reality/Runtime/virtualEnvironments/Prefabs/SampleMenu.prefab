@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environmentsDisplayManager: {fileID: 967473592799551931}
-  defaultSkybox: {fileID: 2100000, guid: cdbb40e11399e4a17882ada20a1b896a, type: 2}
+  defaultSkybox: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   defaultPreviewImage: {fileID: 21300000, guid: 3605d1e8ef086184397ca356ab59e45c,
     type: 3}
   defaultCredits: Default

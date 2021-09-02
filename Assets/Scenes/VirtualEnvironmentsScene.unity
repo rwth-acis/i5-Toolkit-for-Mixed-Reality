@@ -854,11 +854,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 967473592799551931, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
-        type: 3}
-      propertyPath: entriesPerPage
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 2715459743482089453, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -874,11 +869,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SampleMenu
       objectReference: {fileID: 0}
-    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
-        type: 3}
-      propertyPath: defaultSkybox
-      value: 
-      objectReference: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 8284162244582425963, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: m_LocalPosition.x
