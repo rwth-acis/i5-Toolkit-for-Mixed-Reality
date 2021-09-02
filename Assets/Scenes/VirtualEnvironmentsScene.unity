@@ -869,6 +869,56 @@ PrefabInstance:
       propertyPath: m_Name
       value: SampleMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: environmentsFromInspector.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.data[0].Name
+      value: Winter Loft
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.data[0].LoadingPath
+      value: winterloft
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.data[1].Name
+      value: Winter Loft
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.data[1].LoadingPath
+      value: winterloft
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.data[0].LoadingPath
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.data[1].LoadingPath
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.data[2].LoadingPath
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425963, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: m_LocalPosition.x

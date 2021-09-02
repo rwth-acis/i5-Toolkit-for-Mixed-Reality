@@ -23,21 +23,6 @@ public class VirtualEnvironmentsManager : MonoBehaviour
     public Sprite defaultPreviewImage;
     public string defaultCredits;
 
-    [Space(10)]
-    [Header("Environments Display Name")]
-    [Tooltip("The name of the virtual environment that should be displayed. Must be at least of size 1, where the first entry corresponds to the default choice.")]
-    [SerializeField] private string[] environmentNames;
-
-    [Space(10)]
-    [Header("Environments Loading URL")]
-    [Tooltip("The URL is used to fetch the virtual environment as an asset bundle from either a server or a local folder. Must be at least of size 1, where the first entry corresponds to the default choice. Note: Leave the first entry empty.")]
-    [SerializeField] private string[] environmentURL;
-
-
-    private GameObject[] environmentPrefabs;
-    private string[] environmentCredits;
-    private Material[] environmentSkyboxes;
-    private Sprite[] previewImages;
 
     private Material currentSkybox;
     private GameObject currentPrefab;
@@ -93,22 +78,16 @@ public class VirtualEnvironmentsManager : MonoBehaviour
             SpecialDebugMessages.LogMissingReferenceError(this, nameof(environmentsDisplayManager.pageDownButton));
         }
 
-        environmentPrefabs = new GameObject[environmentURL.Length];
-        previewImages = new Sprite[environmentURL.Length];
-        environmentSkyboxes = new Material[environmentURL.Length];
-        environmentCredits = new string[environmentURL.Length];
-
-        previewImages[0] = defaultPreviewImage;
-        environmentSkyboxes[0] = defaultSkybox;
-        environmentCredits[0] = defaultCredits;
 
         assetBundlesURL = "file:///" + Application.dataPath + "/AssetBundles/";
         if (UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
-            StartCoroutine(GetAssetBundleObjects());
+            //TODO add this, if default environment is added from inspector 
+            //environments.Add(new EnvironmentData("Default", defaultPreviewImage, defaultSkybox, defaultModel, defaultCredits, "");
+            StartCoroutine(GetAssetBundleObjectsFromServer());
+            StartCoroutine(GetAssetBundleObjectsFromLocal());
 
         environmentsDisplayManager.ItemSelected += OnEnvironmentSelected;
 
-        //Close();
         UpdateEnvironmentDisplay();
         SetPageButtonStates();
     }
@@ -205,43 +184,23 @@ public class VirtualEnvironmentsManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Opens the window
-    /// </summary>
-    public void Open()
+ 
+    IEnumerator GetAssetBundleObjectsFromServer()
     {
-        gameObject.SetActive(true);
-        WindowOpen = true;
-        UpdateEnvironmentDisplay();
-    }
-
-    public void Open(Vector3 position, Vector3 eulerAngles)
-    {
-        Open();
-        transform.localPosition = position;
-        transform.localEulerAngles = eulerAngles;
-    }
-
-    /// <summary>
-    /// Closes the window
-    /// </summary>
-    public void Close()
-    {
-        WindowOpen = false;
-        WindowClosed?.Invoke(this, EventArgs.Empty);
-        gameObject.SetActive(false);
-    }
-
-    IEnumerator GetAssetBundleObjects()
-    {
-        for (int arrayIndex = 0; arrayIndex < environmentURL.Length; arrayIndex++)
+        for (int arrayIndex = 0; arrayIndex < serverEnvironmentsFromInspector.Length; arrayIndex++)
         {
+            string name = null;
+            Material loadedSkybox = null;
+            GameObject loadedModel = null;
+            Sprite loadedPreviewImage = null;
+            string loadedCredits = null;
+
             if (arrayIndex != 0)
             {
-                currentSkybox = null;
-                currentPrefab = null;
-                string url = assetBundlesURL + environmentURL[arrayIndex];
+                //TODO set to url variable
+                string url = assetBundlesURL + serverEnvironmentsFromInspector[arrayIndex].LoadingPath;
                 var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
+
                 AsyncOperation sentRequest = request.SendWebRequest();
                 while (!sentRequest.isDone)
                 { }
@@ -251,18 +210,62 @@ public class VirtualEnvironmentsManager : MonoBehaviour
                     AssetBundle bundle = UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(request);
                     if (bundle != null)
                     {
-                        environmentSkyboxes[arrayIndex] = bundle.LoadAllAssets<Material>()[0];
+                        name = serverEnvironmentsFromInspector[arrayIndex].Name;
+                        loadedSkybox = bundle.LoadAllAssets<Material>()[0];
                         if (bundle.LoadAllAssets<GameObject>().Length != 0)
-                            environmentPrefabs[arrayIndex] = bundle.LoadAllAssets<GameObject>()[0];
-                        previewImages[arrayIndex] = bundle.LoadAllAssets<Sprite>()[0];
-                        environmentCredits[arrayIndex] = bundle.LoadAllAssets<TextAsset>()[0].text;
+                            loadedModel = bundle.LoadAllAssets<GameObject>()[0];
+                        loadedPreviewImage = bundle.LoadAllAssets<Sprite>()[0];
+                        loadedCredits = bundle.LoadAllAssets<TextAsset>()[0].text;
                     }
                 }
             }
 
-            if (previewImages[arrayIndex] != null && environmentSkyboxes[arrayIndex] != null)
+            if (loadedPreviewImage != null && loadedSkybox != null)
             {
-                environments.Add(new EnvironmentData(environmentNames[arrayIndex], previewImages[arrayIndex], environmentSkyboxes[arrayIndex], environmentPrefabs[arrayIndex], environmentCredits[arrayIndex], environmentURL[arrayIndex]));
+                environments.Add(new EnvironmentData(name, loadedPreviewImage, loadedSkybox, loadedModel, loadedCredits, serverEnvironmentsFromInspector[arrayIndex].LoadingPath));
+            }
+        }
+        yield return null;
+    }
+
+    IEnumerator GetAssetBundleObjectsFromLocal()
+    {
+        for (int arrayIndex = 0; arrayIndex < localEnvironmentsFromInspector.Length; arrayIndex++)
+        {
+            string name = null;
+            Material loadedSkybox = null;
+            GameObject loadedModel = null;
+            Sprite loadedPreviewImage = null;
+            string loadedCredits = null;
+
+            if (arrayIndex != 0)
+            {
+                //TODO set to path variable
+                string url = assetBundlesURL + localEnvironmentsFromInspector[arrayIndex].LoadingPath;
+                var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
+
+                AsyncOperation sentRequest = request.SendWebRequest();
+                while (!sentRequest.isDone)
+                { }
+
+                if (UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(request) != null)
+                {
+                    AssetBundle bundle = UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(request);
+                    if (bundle != null)
+                    {
+                        name = serverEnvironmentsFromInspector[arrayIndex].Name;
+                        loadedSkybox = bundle.LoadAllAssets<Material>()[0];
+                        if (bundle.LoadAllAssets<GameObject>().Length != 0)
+                            loadedModel = bundle.LoadAllAssets<GameObject>()[0];
+                        loadedPreviewImage = bundle.LoadAllAssets<Sprite>()[0];
+                        loadedCredits = bundle.LoadAllAssets<TextAsset>()[0].text;
+                    }
+                }
+            }
+
+            if (loadedPreviewImage != null && loadedSkybox != null)
+            {
+                environments.Add(new EnvironmentData(name, loadedPreviewImage, loadedSkybox, loadedModel, loadedCredits, serverEnvironmentsFromInspector[arrayIndex].LoadingPath));
             }
         }
         yield return null;
