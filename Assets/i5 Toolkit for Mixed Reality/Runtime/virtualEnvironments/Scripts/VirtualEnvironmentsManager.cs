@@ -204,11 +204,11 @@ public class VirtualEnvironmentsManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Instantiates the selected virtual environment
+    /// Instantiates the selected virtual environment after removing the currently active environment. Returns the current instance of the 3D model as prefab.
     /// </summary>
     /// <param name="selectedEnvironment">The EnvironmentData Item that should be instantiated</param>
 
-    private void InstantiateObject(EnvironmentData selectedEnvironment)
+    private GameObject InstantiateObject(EnvironmentData selectedEnvironment)
     {
         if ((selectedEnvironment != null))
         {
@@ -228,5 +228,6 @@ public class VirtualEnvironmentsManager : MonoBehaviour
                 currentEnvironmentInstance = Instantiate(selectedEnvironment.EnvironmentPrefab, selectedEnvironment.EnvironmentPrefab.transform.position, selectedEnvironment.EnvironmentPrefab.transform.rotation);
             }
         }
+        return currentEnvironmentInstance;
     }
 }

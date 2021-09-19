@@ -882,7 +882,7 @@ PrefabInstance:
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
@@ -907,17 +907,53 @@ PrefabInstance:
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[0].LoadingPath
-      value: 3
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[1].LoadingPath
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[2].LoadingPath
-      value: 4
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.data[0].Name
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: defaultPreviewImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 74135f4defa13c94fb9c9ce7e9acdafa,
+        type: 3}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: defaultModel
+      value: 
+      objectReference: {fileID: 603213447}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: defaultCredits
+      value: Hey
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: defaultSkybox
+      value: 
+      objectReference: {fileID: 2100000, guid: 758b7113de211cb409d68f48bf50f7b1, type: 2}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: serverLoadingURL
+      value: http
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: localLoadingPath
+      value: fdfg
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425963, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
