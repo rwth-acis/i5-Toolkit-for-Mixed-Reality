@@ -18,14 +18,13 @@ public class VirtualEnvironmentsEditor : Editor
     private AnimBool serverLoadingSettings;
     private AnimBool localLoadingSettings;
 
-    private Material defaultSkybox;
-    private GameObject defaultModel;
-    private Sprite defaultPreviewImage;
-    private string defaultCredits;
+    private SerializedProperty defaultSkybox;
+    private SerializedProperty defaultModel;
+    private SerializedProperty defaultPreviewImage;
+    private SerializedProperty defaultCredits;
 
-    private string serverBaseUrl;
-
-    private string localBasePath;
+    private SerializedProperty serverBaseUrl;
+    private SerializedProperty localBasePath;
 
     public void OnEnable()
     {
@@ -38,6 +37,14 @@ public class VirtualEnvironmentsEditor : Editor
         localEnvironmentLoadingList = new ReorderableList(serializedObject, localEnvironmentsFromInspector, true, true, true, true);
         localEnvironmentLoadingList.drawElementCallback = DrawListItemsLocal;
         localEnvironmentLoadingList.drawHeaderCallback = DrawHeaderLocal;
+
+        defaultSkybox = serializedObject.FindProperty("defaultSkybox");
+        defaultModel = serializedObject.FindProperty("defaultModel");
+        defaultPreviewImage = serializedObject.FindProperty("defaultPreviewImage");
+        defaultCredits = serializedObject.FindProperty("defaultCredits");
+
+        serverBaseUrl = serializedObject.FindProperty("serverLoadingBaseURL");
+        localBasePath = serializedObject.FindProperty("localLoadingBasePath");
 
         defaultValues = new AnimBool(false);
         defaultValues.valueChanged.AddListener(Repaint);
@@ -52,21 +59,32 @@ public class VirtualEnvironmentsEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
+        //base.OnInspectorGUI();
 
         GUILayout.Label("Default Virtual Environment", EditorStyles.boldLabel);
 
-        defaultValues.target = EditorGUILayout.ToggleLeft("Set Default Evironment from Inspector", defaultValues.target);
+        defaultValues.target = EditorGUILayout.ToggleLeft("Set Default Environment from Inspector", defaultValues.target);
 
         if (EditorGUILayout.BeginFadeGroup(defaultValues.faded))
         {
             EditorGUI.indentLevel++;
 
-            defaultSkybox = (Material) EditorGUILayout.ObjectField("Default Skybox", null, typeof(Material), true);
-            defaultModel = (GameObject) EditorGUILayout.ObjectField("Default Model Prefab", null, typeof(GameObject), true);
-            defaultCredits = EditorGUILayout.TextField("Creator Credit", defaultCredits);
-            defaultPreviewImage = (Sprite) EditorGUILayout.ObjectField("Default Preview Image", null, typeof(Sprite), true);
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(defaultSkybox);
+            serializedObject.ApplyModifiedProperties();
 
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(defaultModel);
+            serializedObject.ApplyModifiedProperties();
+
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(defaultCredits);
+            serializedObject.ApplyModifiedProperties();
+
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(defaultPreviewImage);
+            serializedObject.ApplyModifiedProperties();
+     
 
             EditorGUI.indentLevel--;
         }
@@ -81,7 +99,10 @@ public class VirtualEnvironmentsEditor : Editor
         {
             EditorGUI.indentLevel++;
 
-            serverBaseUrl = EditorGUILayout.TextField("Base URL of Server", serverBaseUrl);
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(serverBaseUrl);
+            serializedObject.ApplyModifiedProperties();
+
             serializedObject.Update();
             serverEnvironmentLoadingList.DoLayoutList();
             serializedObject.ApplyModifiedProperties();
@@ -97,7 +118,10 @@ public class VirtualEnvironmentsEditor : Editor
         {
             EditorGUI.indentLevel++;
 
-            localBasePath = EditorGUILayout.TextField("Path to Root Folder", localBasePath);
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(localBasePath);
+            serializedObject.ApplyModifiedProperties();
+
             serializedObject.Update();
             localEnvironmentLoadingList.DoLayoutList();
             serializedObject.ApplyModifiedProperties();
