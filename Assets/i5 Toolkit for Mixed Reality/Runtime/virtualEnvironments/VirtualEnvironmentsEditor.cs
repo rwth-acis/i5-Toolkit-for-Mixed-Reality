@@ -7,7 +7,6 @@ using UnityEditorInternal;
 public class VirtualEnvironmentsEditor : Editor
 
 {
-
     private SerializedProperty serverEnvironmentsFromInspector;
     private ReorderableList serverEnvironmentLoadingList;
 
@@ -60,6 +59,8 @@ public class VirtualEnvironmentsEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
+
+        GUIStyle borders = new GUIStyle(EditorStyles.helpBox);
 
         GUILayout.Label("Default Virtual Environment", EditorStyles.boldLabel);
 
@@ -134,59 +135,23 @@ public class VirtualEnvironmentsEditor : Editor
 
     void DrawListItemsServer(Rect rect, int index, bool isActive, bool isFocused)
     {
-        SerializedProperty element = serverEnvironmentLoadingList.serializedProperty.GetArrayElementAtIndex(index);
+        SerializedProperty serverItemList = serverEnvironmentLoadingList.serializedProperty.GetArrayElementAtIndex(index);
 
-
-        // The 'level' property
-        // The label field for level (width 100, height of a single line)
         EditorGUI.LabelField(new Rect(rect.x, rect.y, 60, EditorGUIUtility.singleLineHeight), "Name");
-
-        // The property field for level. Since we do not need so much space in an int, width is set to 20, height of a single line.
-        EditorGUI.PropertyField(
-            new Rect(rect.x + 60, rect.y, 140, EditorGUIUtility.singleLineHeight),
-            element.FindPropertyRelative("Name"),
-            GUIContent.none
-        );
-
-        // The 'quantity' property
-        // The label field for quantity (width 100, height of a single line)
+        EditorGUI.PropertyField(new Rect(rect.x + 60, rect.y, 140, EditorGUIUtility.singleLineHeight), serverItemList.FindPropertyRelative("Name"), GUIContent.none);
         EditorGUI.LabelField(new Rect(rect.x + 200, rect.y, 100, EditorGUIUtility.singleLineHeight), "Loading Path");
-
-        // The property field for quantity (width 20, height of a single line)
-        EditorGUI.PropertyField(
-            new Rect(rect.x + 300, rect.y, 300, EditorGUIUtility.singleLineHeight),
-            element.FindPropertyRelative("LoadingPath"),
-            GUIContent.none
-        );
+        EditorGUI.PropertyField(new Rect(rect.x + 300, rect.y, 300, EditorGUIUtility.singleLineHeight), serverItemList.FindPropertyRelative("LoadingPath"), GUIContent.none);
 
     }
 
     void DrawListItemsLocal(Rect rect, int index, bool isActive, bool isFocused)
     {
-        SerializedProperty element = localEnvironmentLoadingList.serializedProperty.GetArrayElementAtIndex(index);
+        SerializedProperty localItemList = localEnvironmentLoadingList.serializedProperty.GetArrayElementAtIndex(index);
 
-
-        // The 'level' property
-        // The label field for level (width 100, height of a single line)
         EditorGUI.LabelField(new Rect(rect.x, rect.y, 60, EditorGUIUtility.singleLineHeight), "Name");
-
-        // The property field for level. Since we do not need so much space in an int, width is set to 20, height of a single line.
-        EditorGUI.PropertyField(
-            new Rect(rect.x + 60, rect.y, 140, EditorGUIUtility.singleLineHeight),
-            element.FindPropertyRelative("Name"),
-            GUIContent.none
-        );
-
-        // The 'quantity' property
-        // The label field for quantity (width 100, height of a single line)
+        EditorGUI.PropertyField(new Rect(rect.x + 60, rect.y, 140, EditorGUIUtility.singleLineHeight), localItemList.FindPropertyRelative("Name"), GUIContent.none);
         EditorGUI.LabelField(new Rect(rect.x + 200, rect.y, 100, EditorGUIUtility.singleLineHeight), "Loading Path");
-
-        // The property field for quantity (width 20, height of a single line)
-        EditorGUI.PropertyField(
-            new Rect(rect.x + 300, rect.y, 300, EditorGUIUtility.singleLineHeight),
-            element.FindPropertyRelative("LoadingPath"),
-            GUIContent.none
-        );
+        EditorGUI.PropertyField(new Rect(rect.x + 300, rect.y, 300, EditorGUIUtility.singleLineHeight), localItemList.FindPropertyRelative("LoadingPath"), GUIContent.none);
 
     }
 
