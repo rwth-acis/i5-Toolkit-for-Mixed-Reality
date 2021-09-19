@@ -25,6 +25,8 @@ public class VirtualEnvironmentsManager : MonoBehaviour
     public string defaultCredits;
 
     private bool coroutinesFinished = false;
+    private GameObject currentEnvironmentInstance;
+
 
     /// <summary>
     /// The base URL for loading from a server and the base path to the local folder, respectively.
@@ -37,7 +39,6 @@ public class VirtualEnvironmentsManager : MonoBehaviour
     /// </summary>
     public List<EnvironmentData> environments = new List<EnvironmentData>();
 
-
    
     /// <summary>
     /// Creates the environments list by first adding the default item and then loading the asset bundles from the server and the local disc, respectively.
@@ -49,6 +50,7 @@ public class VirtualEnvironmentsManager : MonoBehaviour
             if(defaultPreviewImage != null)
             {
                 environments.Add(new EnvironmentData("Default", defaultPreviewImage, defaultSkybox, defaultModel, defaultCredits, ""));
+                Debug.Log("Added the default virtual environment.");
             }
             else
             {
@@ -103,6 +105,7 @@ public class VirtualEnvironmentsManager : MonoBehaviour
                 {
                     name = serverEnvironmentsFromInspector[arrayIndex].Name;
                     loadedSkybox = bundle.LoadAllAssets<Material>()[0];
+
                     if (bundle.LoadAllAssets<GameObject>().Length != 0)
                     {
                         loadedModel = bundle.LoadAllAssets<GameObject>()[0];
@@ -111,6 +114,7 @@ public class VirtualEnvironmentsManager : MonoBehaviour
                     {
                         Debug.Log("AssetBundle " + name + " did not contain a 3D model as prefab. Loading AssetBundle without it.");
                     }
+
                     loadedPreviewImage = bundle.LoadAllAssets<Sprite>()[0];
                     loadedCredits = bundle.LoadAllAssets<TextAsset>()[0].text;
                 }
@@ -149,53 +153,80 @@ public class VirtualEnvironmentsManager : MonoBehaviour
             Sprite loadedPreviewImage = null;
             string loadedCredits = null;
 
-            if (arrayIndex != 0)
+            string url = "file:///" + localLoadingBasePath + localEnvironmentsFromInspector[arrayIndex].LoadingPath;
+            var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
+
+            AsyncOperation sentRequest = request.SendWebRequest();
+            while (!sentRequest.isDone)
+            { }
+
+            if (UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(request) != null)
             {
-                string url = "file:///" + localLoadingBasePath + localEnvironmentsFromInspector[arrayIndex].LoadingPath;
-                var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
+                AssetBundle bundle = UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(request);
 
-                AsyncOperation sentRequest = request.SendWebRequest();
-                while (!sentRequest.isDone)
-                { }
-
-                if (UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(request) != null)
+                if (bundle != null)
                 {
-                    AssetBundle bundle = UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(request);
+                    name = serverEnvironmentsFromInspector[arrayIndex].Name;
+                    loadedSkybox = bundle.LoadAllAssets<Material>()[0];
 
-                    if (bundle != null)
+                    if (bundle.LoadAllAssets<GameObject>().Length != 0)
                     {
-                        name = serverEnvironmentsFromInspector[arrayIndex].Name;
-                        loadedSkybox = bundle.LoadAllAssets<Material>()[0];
-                        if (bundle.LoadAllAssets<GameObject>().Length != 0)
-                        {
-                            loadedModel = bundle.LoadAllAssets<GameObject>()[0];
-                        }
-                        else
-                        {
-                            Debug.Log("AssetBundle " + name + " did not contain a 3D model as prefab. Loading AssetBundle without it.");
-                        }
-                        loadedPreviewImage = bundle.LoadAllAssets<Sprite>()[0];
-                        loadedCredits = bundle.LoadAllAssets<TextAsset>()[0].text;
+                        loadedModel = bundle.LoadAllAssets<GameObject>()[0];
                     }
                     else
                     {
-                        Debug.Log("Unable to fetch AssetBundle at index " + arrayIndex + "of the local item list!");
+                        Debug.Log("AssetBundle " + name + " did not contain a 3D model as prefab. Loading AssetBundle without it.");
                     }
-                }
-                else
-                {
-                    Debug.Log("Unable to fetch AssetBundle at index " + arrayIndex + "of the local item list!");
-                }
 
-                if (loadedPreviewImage != null && loadedSkybox != null)
-                {
-                    environments.Add(new EnvironmentData(name, loadedPreviewImage, loadedSkybox, loadedModel, loadedCredits, serverEnvironmentsFromInspector[arrayIndex].LoadingPath));
+                    loadedPreviewImage = bundle.LoadAllAssets<Sprite>()[0];
+                    loadedCredits = bundle.LoadAllAssets<TextAsset>()[0].text;
                 }
                 else
                 {
-                    Debug.Log("Unable to add the virtual environment form the AssetBundle at index " + arrayIndex + "of the local item list. Please make sure, that at least a skybox material and a preview image is contained in the bundle.");
+                    Debug.Log("Unable to fetch AssetBundle at index " + arrayIndex + "of the server item list!");
                 }
             }
-            yield return null;
+            else
+            {
+                Debug.Log("Unable to fetch AssetBundle at index " + arrayIndex + "of the server item list!");
+            }
+
+            if (loadedPreviewImage != null && (loadedSkybox != null || loadedModel != null))
+            {
+                environments.Add(new EnvironmentData(name, loadedPreviewImage, loadedSkybox, loadedModel, loadedCredits, serverEnvironmentsFromInspector[arrayIndex].LoadingPath));
+            }
+            else
+            {
+                Debug.Log("Unable to add the virtual environment form the AssetBundle at index " + arrayIndex + "of the local item list. Please make sure, that at least a skybox material or a 3D model as prefab and a preview image is contained in the bundle.");
+            }
         }
+        yield return null;
+    }
+
+    /// <summary>
+    /// Instantiates the selected virtual environment
+    /// </summary>
+    /// <param name="selectedEnvironment">The EnvironmentData Item that should be instantiated</param>
+
+    private void InstantiateObject(EnvironmentData selectedEnvironment)
+    {
+        if ((selectedEnvironment != null))
+        {
+            if (currentEnvironmentInstance != null)
+            {
+                Destroy(currentEnvironmentInstance);
+                Debug.Log("The currently active virtual environment is being removed.");
+            }
+
+            if (selectedEnvironment.EnvironmentBackground != null)
+            {
+                RenderSettings.skybox = selectedEnvironment.EnvironmentBackground;
+            }
+
+            if (selectedEnvironment.EnvironmentPrefab != null)
+            {
+                currentEnvironmentInstance = Instantiate(selectedEnvironment.EnvironmentPrefab, selectedEnvironment.EnvironmentPrefab.transform.position, selectedEnvironment.EnvironmentPrefab.transform.rotation);
+            }
+        }
+    }
 }
