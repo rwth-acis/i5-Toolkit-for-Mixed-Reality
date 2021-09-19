@@ -59,7 +59,7 @@ public class VirtualEnvironmentsEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        //base.OnInspectorGUI();
+        base.OnInspectorGUI();
 
         GUILayout.Label("Default Virtual Environment", EditorStyles.boldLabel);
 

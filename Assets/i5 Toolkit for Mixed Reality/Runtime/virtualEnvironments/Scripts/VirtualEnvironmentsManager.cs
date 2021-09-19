@@ -56,7 +56,6 @@ public class VirtualEnvironmentsManager : MonoBehaviour
 
             if (arrayIndex != 0)
             {
-                //TODO set to url variable
                 string url = serverLoadingBaseURL + serverEnvironmentsFromInspector[arrayIndex].LoadingPath;
                 var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
 
@@ -102,8 +101,7 @@ public class VirtualEnvironmentsManager : MonoBehaviour
 
             if (arrayIndex != 0)
             {
-                //TODO set to path variable
-                string url = localLoadingBasePath + localEnvironmentsFromInspector[arrayIndex].LoadingPath;
+                string url = "file:///" + localLoadingBasePath + localEnvironmentsFromInspector[arrayIndex].LoadingPath;
                 var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
 
                 AsyncOperation sentRequest = request.SendWebRequest();
