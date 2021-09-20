@@ -59,13 +59,13 @@ public class VirtualEnvironmentsEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
+        //base.OnInspectorGUI();
 
         GUIStyle borders = new GUIStyle(EditorStyles.helpBox);
 
         GUILayout.Label("Default Virtual Environment", EditorStyles.boldLabel);
 
-        defaultValues.target = EditorGUILayout.ToggleLeft("Set Default Environment from Inspector", defaultValues.target);
+        defaultValues.target = EditorGUILayout.Foldout(defaultValues.target, "Set Default Environment from Inspector");
 
         if (EditorGUILayout.BeginFadeGroup(defaultValues.faded))
         {
@@ -95,7 +95,7 @@ public class VirtualEnvironmentsEditor : Editor
         EditorGUILayout.Space();
         GUILayout.Label("Loading Settings", EditorStyles.boldLabel);
 
-        serverLoadingSettings.target = EditorGUILayout.ToggleLeft("Load Environments from Server", serverLoadingSettings.target);
+        serverLoadingSettings.target = EditorGUILayout.Foldout(serverLoadingSettings.target, "Load Environments from Server");
 
         if (EditorGUILayout.BeginFadeGroup(serverLoadingSettings.faded))
         {
@@ -114,7 +114,7 @@ public class VirtualEnvironmentsEditor : Editor
         EditorGUILayout.EndFadeGroup();
 
 
-        localLoadingSettings.target = EditorGUILayout.ToggleLeft("Load Environments from Local", localLoadingSettings.target);
+        localLoadingSettings.target = EditorGUILayout.Foldout(localLoadingSettings.target, "Load Environments from Local");
 
         if (EditorGUILayout.BeginFadeGroup(localLoadingSettings.faded))
         {
