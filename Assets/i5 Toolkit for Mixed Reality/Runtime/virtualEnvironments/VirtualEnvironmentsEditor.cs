@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEditorInternal;
+using VirtualEnvironments;
 
 [CustomEditor(typeof(VirtualEnvironmentsManager))]
 public class VirtualEnvironmentsEditor : Editor

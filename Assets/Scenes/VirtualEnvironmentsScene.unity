@@ -454,6 +454,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 603213447}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &794365507 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 967473592799551931, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+    type: 3}
+  m_PrefabInstance: {fileID: 8284162244679340497}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c50f02f39a63424e8dd13f3b384b5ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &884463669
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,6 +708,18 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+--- !u!114 &1466044044 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+    type: 3}
+  m_PrefabInstance: {fileID: 8284162244679340497}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0107d022e90da1747803e50be0e3c3e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1476862217
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,6 +878,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 967473592799551931, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: vem
+      value: 
+      objectReference: {fileID: 1466044044}
     - target: {fileID: 2715459743482089453, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -864,10 +893,35 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.002
       objectReference: {fileID: 0}
+    - target: {fileID: 4822309233604634543, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 794365507}
+    - target: {fileID: 4822309233604634543, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PageUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822309233969794573, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 794365507}
+    - target: {fileID: 4822309233969794573, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PageDown
+      objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425956, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: m_Name
       value: SampleMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425958, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
@@ -877,12 +931,12 @@ PrefabInstance:
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: serverEnvironmentsFromInspector.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
@@ -907,12 +961,12 @@ PrefabInstance:
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[0].LoadingPath
-      value: 
+      value: winterloft
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[1].LoadingPath
-      value: 3
+      value: artgallery
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
@@ -922,29 +976,29 @@ PrefabInstance:
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[0].Name
-      value: 
+      value: Winter Loft
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: defaultPreviewImage
       value: 
-      objectReference: {fileID: 21300000, guid: 74135f4defa13c94fb9c9ce7e9acdafa,
+      objectReference: {fileID: 21300000, guid: 3605d1e8ef086184397ca356ab59e45c,
         type: 3}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: defaultModel
       value: 
-      objectReference: {fileID: 603213447}
+      objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: defaultCredits
-      value: Hey
+      value: Default
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: defaultSkybox
       value: 
-      objectReference: {fileID: 2100000, guid: 758b7113de211cb409d68f48bf50f7b1, type: 2}
+      objectReference: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
       propertyPath: serverLoadingURL
@@ -954,6 +1008,16 @@ PrefabInstance:
         type: 3}
       propertyPath: localLoadingPath
       value: fdfg
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: localLoadingBasePath
+      value: C:\Users\julia\Documents\Github\i5-Toolkit-for-Mixed-Reality\Assets\AssetBundles\
+      objectReference: {fileID: 0}
+    - target: {fileID: 8284162244582425959, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.data[1].Name
+      value: Art Gallery
       objectReference: {fileID: 0}
     - target: {fileID: 8284162244582425963, guid: 9cf0a5b4b9ddc2a4e9ede78c291048e1,
         type: 3}
