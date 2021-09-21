@@ -6,7 +6,7 @@ using VirtualEnvironments;
 public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, EnvironmentSelectionItem>
 {
     private int page = 0;
-    [SerializeField] private VirtualEnvironmentsManager vem;
+    [SerializeField] private VirtualEnvironmentsManager virtualEnvironmentsManager;
     private GameObject currentEnvironmentInstance;
 
     public void Start()
@@ -32,7 +32,7 @@ public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, En
     /// </summary>
     public void PageDown()
     {
-        page = Mathf.Min(page + 1, ((vem.environments.Count - 1) / entriesPerPage));
+        page = Mathf.Min(page + 1, ((virtualEnvironmentsManager.environments.Count - 1) / entriesPerPage));
         SetPageButtonStates();
         UpdateEnvironmentDisplay();
     }
@@ -53,7 +53,7 @@ public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, En
             pageUpButton.Enabled = true;
         }
 
-        if (page == ((vem.environments.Count - 1) / entriesPerPage)) // last page
+        if (page == ((virtualEnvironmentsManager.environments.Count - 1) / entriesPerPage)) // last page
         {
             pageDownButton.Enabled = false;
         }
@@ -69,13 +69,13 @@ public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, En
     /// </summary>
     private void UpdateEnvironmentDisplay()
     {
-        if (vem.environments.Count > 0)
+        if (virtualEnvironmentsManager.environments.Count > 0)
         {
             // get the start index and length of the sub array to display
             // make sure that it stays within the bounds of the room list
-            int startIndex = Mathf.Min(page * entriesPerPage, vem.environments.Count - 1);
-            int length = Mathf.Min(vem.environments.Count - startIndex, entriesPerPage);
-            Items = vem.environments.GetRange(startIndex, length);
+            int startIndex = Mathf.Min(page * entriesPerPage, virtualEnvironmentsManager.environments.Count - 1);
+            int length = Mathf.Min(virtualEnvironmentsManager.environments.Count - startIndex, entriesPerPage);
+            Items = virtualEnvironmentsManager.environments.GetRange(startIndex, length);
         }
         else
         {
@@ -90,6 +90,6 @@ public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, En
     /// <param name="e">Arguments about the list view selection event</param>
     private void OnEnvironmentSelected(object sender, ListViewItemSelectedArgs e)
     {
-        vem.InstantiateEnvironment(SeletedItem);
+        virtualEnvironmentsManager.InstantiateEnvironment(SeletedItem);
     }
 }
