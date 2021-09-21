@@ -84,26 +84,12 @@ public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, En
     }
 
     /// <summary>
-    /// Called if a element of the room list view was selected by the user
+    /// Called if a element of the virtual environments list view was selected by the user
     /// </summary>
-    /// <param name="skybox">The selected skybox</param>
+    /// <param name="sender">The selected skybox</param>
     /// <param name="e">Arguments about the list view selection event</param>
     private void OnEnvironmentSelected(object sender, ListViewItemSelectedArgs e)
     {
-        if ((SeletedItem != null))
-        {
-            if (SeletedItem.EnvironmentBackground != null)
-            {
-                RenderSettings.skybox = SeletedItem.EnvironmentBackground;
-            }
-            if (currentEnvironmentInstance != null)
-            {
-                Destroy(currentEnvironmentInstance);
-            }
-            if (SeletedItem.EnvironmentPrefab != null)
-            {
-                currentEnvironmentInstance = Instantiate(SeletedItem.EnvironmentPrefab, SeletedItem.EnvironmentPrefab.transform.position, SeletedItem.EnvironmentPrefab.transform.rotation);
-            }
-        }
+        vem.InstantiateEnvironment(SeletedItem);
     }
 }
