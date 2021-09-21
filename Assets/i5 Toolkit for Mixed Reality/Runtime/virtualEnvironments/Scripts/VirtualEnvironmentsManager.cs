@@ -211,7 +211,7 @@ namespace VirtualEnvironments
         /// </summary>
         /// <param name="selectedEnvironment">The EnvironmentData Item that should be instantiated</param>
 
-        private GameObject InstantiateObject(EnvironmentData selectedEnvironment)
+        public GameObject InstantiateEnvironment(EnvironmentData selectedEnvironment)
         {
             if ((selectedEnvironment != null))
             {
