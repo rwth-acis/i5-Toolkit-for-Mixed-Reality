@@ -69,7 +69,7 @@ public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, En
     /// </summary>
     private void UpdateEnvironmentDisplay()
     {
-        if (virtualEnvironmentsManager.environments.Count > 0)
+        if (virtualEnvironmentsManager != null && virtualEnvironmentsManager.environments.Count < 0)
         {
             // get the start index and length of the sub array to display
             // make sure that it stays within the bounds of the room list

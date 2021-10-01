@@ -156,7 +156,7 @@ namespace VirtualEnvironments
                 Sprite loadedPreviewImage = null;
                 string loadedCredits = null;
 
-                string url = "file:///" + localLoadingBasePath + localEnvironmentsFromInspector[arrayIndex].LoadingPath;
+                string url = "file:///" + localLoadingBasePath + "/" + localEnvironmentsFromInspector[arrayIndex].LoadingPath;
                 var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
 
                 AsyncOperation sentRequest = request.SendWebRequest();
@@ -191,7 +191,7 @@ namespace VirtualEnvironments
                 }
                 else
                 {
-                    Debug.Log("Unable to fetch AssetBundle at index " + arrayIndex + "of the local item list!");
+                    Debug.Log("Unable to fetch AssetBundle at index " + arrayIndex + " of the local item list!");
                 }
 
                 if (loadedPreviewImage != null && (loadedSkybox != null || loadedModel != null))
@@ -200,7 +200,7 @@ namespace VirtualEnvironments
                 }
                 else
                 {
-                    Debug.Log("Unable to add the virtual environment form the AssetBundle at index " + arrayIndex + "of the local item list. Please make sure, that at least a skybox material or a 3D model as prefab and a preview image is contained in the bundle.");
+                    Debug.Log("Unable to add the virtual environment from the AssetBundle at index " + arrayIndex + " of the local item list. Please make sure, that at least a skybox material or a 3D model as prefab and a preview image is contained in the bundle.");
                 }
             }
             yield return null;
