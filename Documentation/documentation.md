@@ -1,5 +1,6 @@
 
 # Virtual Environments
+<img src="https://github.com/EmilieHK/i5-Toolkit-for-Mixed-Reality/blob/features/virtualEnvironments/Assets/Icons/virtualEnvironmentsLogoColor.png" width="200" height="200">
 
 ## Introduction
 
