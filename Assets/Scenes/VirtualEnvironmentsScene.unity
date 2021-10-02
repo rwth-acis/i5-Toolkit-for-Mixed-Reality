@@ -405,41 +405,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3004203464130212287, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
-        type: 3}
-      propertyPath: displayOffset.y
-      value: -3.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6209191282103825612, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 6209191282103825612, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.039
-      objectReference: {fileID: 0}
-    - target: {fileID: 6209191282103825612, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6209191282103825612, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.15
-      objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988320, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: m_Name
       value: SampleMenu
       objectReference: {fileID: 0}
-    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
-        type: 3}
-      propertyPath: localLoadingBasePath
-      value: D:\Documents\i5 Arbeit\i5-Toolkit-for-Mixed-Reality\Assets\AssetBundles
-      objectReference: {fileID: 0}
     - target: {fileID: 7147727109171719127, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -448,7 +418,7 @@ PrefabInstance:
     - target: {fileID: 7147727109171719127, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.549
       objectReference: {fileID: 0}
     - target: {fileID: 7147727109171719127, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
@@ -494,6 +464,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7147727109171719127, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.039593983
+      objectReference: {fileID: 0}
+    - target: {fileID: 7147727109171719127, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3041681
+      objectReference: {fileID: 0}
+    - target: {fileID: 7147727109171719127, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.78699064
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bec6e4cbcf101e14188de9b5fa9ed31e, type: 3}

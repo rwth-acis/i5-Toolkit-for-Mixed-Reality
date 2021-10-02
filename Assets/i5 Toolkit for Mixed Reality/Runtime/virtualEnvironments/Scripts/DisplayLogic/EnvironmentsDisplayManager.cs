@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Microsoft.MixedReality.Toolkit.UI;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VirtualEnvironments;
@@ -40,7 +41,6 @@ public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, En
         SetPageButtonStates();
         UpdateEnvironmentDisplay();
     }
-
 
     /// <summary>
     /// Adapts the button states of the page up and page down buttons

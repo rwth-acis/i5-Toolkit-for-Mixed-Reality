@@ -3548,6 +3548,7 @@ GameObject:
   - component: {fileID: 6209191282603988332}
   - component: {fileID: 6209191282603988322}
   - component: {fileID: 6209191282603988323}
+  - component: {fileID: 6954072178307666111}
   m_Layer: 0
   m_Name: SampleMenu
   m_TagString: Untagged
@@ -3617,6 +3618,19 @@ MonoBehaviour:
   defaultCredits: Default
   serverLoadingBaseURL: 
   localLoadingBasePath: D:\Documents\i5 Arbeit\i5-Toolkit-for-Mixed-Reality\Assets\AssetBundles
+--- !u!114 &6954072178307666111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6209191282603988320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd277503da7620e489f16b64d46cdcb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollapsableMenu: {fileID: 8364932166489314748}
 --- !u!1 &6209191282693679309
 GameObject:
   m_ObjectHideFlags: 0
@@ -3898,7 +3912,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8084482248329001491}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.53, y: 0.636, z: -0.014}
+  m_LocalPosition: {x: -0.53, y: 0.614, z: -0.014}
   m_LocalScale: {x: 7.001655, y: 3.866467, z: 1.5000015}
   m_Children:
   - {fileID: 1328695813128397756}
@@ -4065,8 +4079,8 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3004203464130212287}
-        m_MethodName: PageUp
+      - m_Target: {fileID: 6954072178307666111}
+        m_MethodName: manageWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4301,7 +4315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2808525872923659360
 Transform:
   m_ObjectHideFlags: 0
