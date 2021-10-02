@@ -93,7 +93,7 @@ namespace VirtualEnvironments
                 Sprite loadedPreviewImage = null;
                 string loadedCredits = null;
 
-                string url = serverLoadingBaseURL + serverEnvironmentsFromInspector[arrayIndex].LoadingPath;
+                string url = serverLoadingBaseURL + "/" + serverEnvironmentsFromInspector[arrayIndex].LoadingPath;
                 var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
 
                 AsyncOperation sentRequest = request.SendWebRequest();
