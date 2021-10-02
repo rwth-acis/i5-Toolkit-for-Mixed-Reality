@@ -3,7 +3,7 @@
 
 ## Introduction
 
-Mixed Reality applications often suffer from the same problem. Since the application should work with Augmented Reality, it should have no virtual background or surroundings as users will still be able to see the real work in addition to the augmentations provided by the AR device. However, this also means that when using the application on Virtual Reality devices, there will be no background or virtual environment to give users a sense of location, direction and possibly most important immersion. This is where the Virtual Environments feature comes in as an easy way to add virtual environments to your Mixed Reality or Virtual Reality application since it facilitates a user friendly interface to add virtual environment from local files or download them directly from a server. Additionally, the Virtual Environments manager is completely decoupled from the selection menu allowing for users to simply add the manager to their own menu designs. Loading of the environments is achieved via Asset Bundles which are, as the name suggests, bundles of Unity Assets. In our case this means the skybox, 3D models, materials, preview images, creator credits, etc. This way you can simply download or create your own bundles and add them as a new environment to your selection.
+Mixed Reality applications often suffer from the same problem. Since the application should work with Augmented Reality, it should have no virtual background or surroundings as users will still be able to see the real work in addition to the augmentations provided by the AR device. However, this also means that when using the application on Virtual Reality devices, there will be no background or virtual environment to give users a sense of location, direction and possibly most important immersion. This is where the Virtual Environments feature comes in as an easy way to add virtual environments to your Mixed Reality or Virtual Reality application since it facilitates a user friendly interface to add virtual environment from local files or download them directly from a server. Additionally, the Virtual Environments manager is completely decoupled from the selection menu allowing for users to simply add the manager to their own menu designs. Loading of the environments is achieved via [Asset Bundles](https://docs.unity3d.com/Manual/AssetBundlesIntro.html) which are, as the name suggests, bundles of Unity Assets. In our case this means the skybox, 3D models, materials, preview images, creator credits, etc. This way you can simply download or create your own bundles and add them as a new environment to your selection.
 
 ## User Manual
 
@@ -19,8 +19,38 @@ If you open the AssetBundles folder (either in Unity or the file explorer) you c
 
 You may add any number you like and if your setup looks as in the picture you can finally start the scene and experiment with the sample menu. By clicking onto the displayed menu pictures, the respective environment will be loaded. By clicking the up or down buttons on the menu, you can scroll through all the environments you added.![newsamplemenu](https://user-images.githubusercontent.com/19326682/134146854-bb09406d-a3b6-4d1e-a853-653740e75ce0.PNG)
 
-  
+### Advanced features of the sample menu
+#### Loading environments from a server
+The sample menu also provides many options to customize it and the display. Instead of loading the Virtual Environments from your local files you can also load them from a server by expanding the _Load Environments from Server_ foldout in the inspector of the _Virtual Environments Manager_ script. ![serverfoldout](https://user-images.githubusercontent.com/19326682/135719316-8c6eb3fa-8abf-4f69-afbc-ef175facb5ef.PNG)
+For example you can load the example environments also provided in the project from the following Server Base URL: `https://github.com/JulianStaab/virtual_environments/raw/master/AssetBundles` You can enter this URL into the _Server Loading Base URL_ field and add a new entry to the _Environments from Server_ list by again entering a custom display name in the _Name_ field and the name of the Asset Bundle in the _Loading Path_ field.
+![serverloading](https://user-images.githubusercontent.com/19326682/135719315-3b8490eb-00e6-43c6-82c7-2ac465eed51e.PNG)
+Now the declared environments are loaded from the server in addition to potential environments that are loaded locally.
+
+#### Changing menu display settings
+The _Sample Menu_ gameobject has a child called _Environments_ which contains only the _Environments Display Manager_ script. This script controls the display of the menu items for the sample menu. In the inspector of the script, users can easily modify the display settings of the provided sample menu. ![displaymanager](https://user-images.githubusercontent.com/19326682/135719495-7647d076-136b-4b32-b2ce-05b24036f7c5.PNG)
+The script provides the following customization options:
+
+- **Display Preview Prefab** 
+This is the menu item used to display the individually selectable environments. Users can replace this with their own menu items (usually buttons)
+
+- **Display Offset** 
+This vector controls the offset between the individual menu items and the style of display. A non-zero x-value would lead to a horizontal array of the menu item, while a non-zero y-value would make it a vertical display.
+
+- **Entries Per Page**
+This value toggles the amount of menu items displayed on one page of the menu.
+
+- **Page Up Button**
+This button allows users to scroll upwards through the menu. It can be replaced by a custom up-button.
+
+- **Page Down Button**
+This button allows users to scroll downwards through the menu. It can be replaced by a custom down-button.
+
+- **Virtual Environments Manager**
+This reference to the Virtual Environments Manager is used to instantiate the respective environment when it selected in the menu.
 
 ### Adding the feature to a custom menu
 
 If you already have a menu design or pre-built menu you can also just add the feature to that. To start, add the _Virtual Environments Manager_ to your menu gameobject. This script handles all the loading and instantiating of environments. What still has to be linked is the spawning of the environments with the button presses in your menu. You can for example do this by implementing an event which triggers whenever one of the buttons in your menu is clicked. In this event you can then call the _InstantiateEnvironment_ method of the _Virtual Environments Manager_ with the selected environment as a parameter. There is a basic implementation of this provided in the _EnvironmentsDisplayManager_.
+
+## Adding custom Virtual Environments
+Virtual Environments, as used in this feature, consist of three to five objects bundled in an [Asset Bundles](https://docs.unity3d.com/Manual/AssetBundlesIntro.html).
