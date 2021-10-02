@@ -32,19 +32,14 @@ The script provides the following customization options:
 
 - **Display Preview Prefab** 
 This is the menu item used to display the individually selectable environments. Users can replace this with their own menu items (usually buttons)
-
 - **Display Offset** 
 This vector controls the offset between the individual menu items and the style of display. A non-zero x-value would lead to a horizontal array of the menu item, while a non-zero y-value would make it a vertical display.
-
 - **Entries Per Page**
 This value toggles the amount of menu items displayed on one page of the menu.
-
 - **Page Up Button**
 This button allows users to scroll upwards through the menu. It can be replaced by a custom up-button.
-
 - **Page Down Button**
 This button allows users to scroll downwards through the menu. It can be replaced by a custom down-button.
-
 - **Virtual Environments Manager**
 This reference to the Virtual Environments Manager is used to instantiate the respective environment when it selected in the menu.
 
@@ -52,5 +47,12 @@ This reference to the Virtual Environments Manager is used to instantiate the re
 
 If you already have a menu design or pre-built menu you can also just add the feature to that. To start, add the _Virtual Environments Manager_ to your menu gameobject. This script handles all the loading and instantiating of environments. What still has to be linked is the spawning of the environments with the button presses in your menu. You can for example do this by implementing an event which triggers whenever one of the buttons in your menu is clicked. In this event you can then call the _InstantiateEnvironment_ method of the _Virtual Environments Manager_ with the selected environment as a parameter. There is a basic implementation of this provided in the _EnvironmentsDisplayManager_.
 
-## Adding custom Virtual Environments
-Virtual Environments, as used in this feature, consist of three to five objects bundled in an [Asset Bundles](https://docs.unity3d.com/Manual/AssetBundlesIntro.html).
+## Creating custom Virtual Environments
+Virtual Environments, as used in this feature, consist of 3-4 objects bundled in an [Asset Bundles](https://docs.unity3d.com/Manual/AssetBundlesIntro.html). Custom Virtual Environments, in order to work with this feature, must have the following form:
+
+- **Preview Image (as Sprite)** The preview image of the environment that will be displayed in the menu.
+- **Skybox (as Unity Skybox)** The skybox as a .mat file that replaces the current skybox when the environment is loaded.
+- **3D Model (as Unity Prefab) [optional]** The Unity Prefab of the 3D model(s) that will be instantiated when the environment is loaded. This is an optional object and your Asset Bundle will still work without this.
+- **Credits (as .txt file)** The credits to the creator of the Skybox, 3D model(s) and the preview image.
+
+Once you have these 3-4 objects assembled you can create an Asset Bundle from them following [these instructions](https://docs.unity3d.com/Manual/AssetBundles-Workflow.html). Afterwards, you can add your environment from the Asset Bundle as described above.
