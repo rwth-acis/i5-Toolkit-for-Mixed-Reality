@@ -14,6 +14,10 @@ public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, En
         UpdateEnvironmentDisplay();
         SetPageButtonStates();
         ItemSelected += OnEnvironmentSelected;
+        while(virtualEnvironmentsManager.environments.Count != (virtualEnvironmentsManager.serverEnvironmentsFromInspector.Length + virtualEnvironmentsManager.localEnvironmentsFromInspector.Length + 1))
+        {
+            UpdateEnvironmentDisplay();
+        }
     }
     /// <summary>
     /// Called if the user pushes the page up button
@@ -69,7 +73,7 @@ public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, En
     /// </summary>
     private void UpdateEnvironmentDisplay()
     {
-        if (virtualEnvironmentsManager != null && virtualEnvironmentsManager.environments.Count < 0)
+        if (virtualEnvironmentsManager != null && virtualEnvironmentsManager.environments.Count > 0)
         {
             // get the start index and length of the sub array to display
             // make sure that it stays within the bounds of the room list
