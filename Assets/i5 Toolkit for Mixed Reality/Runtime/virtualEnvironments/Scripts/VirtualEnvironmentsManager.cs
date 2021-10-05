@@ -13,7 +13,7 @@ namespace VirtualEnvironments
     public class VirtualEnvironmentsManager : MonoBehaviour
     {
         /// <summary>
-        /// Lists of asset bundles that are to be loaded. Contains information on the loading url and bundle name from both the server and local disk.
+        /// Lists of asset bundles that are to be loaded. Contains information on the loading URL and bundle name from both the server and local disk.
         /// </summary>
         public EnvironmentLoadingInformation[] serverEnvironmentsFromInspector;
         public EnvironmentLoadingInformation[] localEnvironmentsFromInspector;
@@ -85,7 +85,7 @@ namespace VirtualEnvironments
 
 
         /// <summary>
-        /// Using a Web-Request, the asset bundles referenced in the serverEnvironmentsFromInspector list are loaded containing the skybox material, the 3D model as prefab, the preview image as sprite anf the credits of the creator for all used assets. This environment data is added to the list of environment.
+        /// Using a Web-Request, the asset bundles referenced in the serverEnvironmentsFromInspector list are loaded containing the skybox material, the 3D model as prefab, the preview image as sprite and the credits of the creator for all used assets. This environment data is added to the list of environment.
         /// </summary>
         IEnumerator GetAssetBundleObjectsFromServer()
         {
@@ -149,7 +149,7 @@ namespace VirtualEnvironments
 
 
         /// <summary>
-        /// Using a Web-Request, the asset bundles referenced in the localEnvironmentsFromInspector list are loaded from the disk containing the skybox material, the 3D model as prefab, the preview image as sprite anf the credits of the creator for all used assets. This environment data is added to the list of environment.
+        /// Using a Web-Request, the asset bundles referenced in the localEnvironmentsFromInspector list are loaded from the disk containing the skybox material, the 3D model as prefab, the preview image as sprite and the credits of the creator for all used assets. This environment data is added to the list of environment.
         /// </summary>
         IEnumerator GetAssetBundleObjectsFromLocal()
         {
@@ -223,7 +223,7 @@ namespace VirtualEnvironments
                 if (currentEnvironmentInstance != null)
                 {
                     Destroy(currentEnvironmentInstance);
-                    Debug.Log("The currently active virtual environment is being removed.");
+                    Debug.Log("The currently active virtual environment is being changed.");
                 }
 
                 if (selectedEnvironment.EnvironmentBackground != null)
@@ -271,30 +271,51 @@ namespace VirtualEnvironments
         /// <summary>
         /// Allows the world space position of the currently instantiated 3D model to be set and changed, respectively.
         /// </summary>
-        /// <param name="position"> The world space position the currently instantiated 3D Model should be changed to.</param>
+        /// <param name="position"> The world space position the currently instantiated 3D model should be changed to.</param>
         public void SetCurrent3DModelPosition(Vector3 position)
         {
-            currentEnvironmentInstance.transform.position = position;
+            if(currentEnvironmentInstance != null)
+            {
+                currentEnvironmentInstance.transform.position = position;
+            }
+            else
+            {
+                Debug.Log("Currently, no 3D model is instantiated!");
+            }
         }
 
 
         /// <summary>
         /// Allows the local scale of the currently instantiated 3D model to be set and changed, respectively.
         /// </summary>
-        /// <param name="scale"> The local scale the currently instantiated 3D Model should be changed to.</param>
+        /// <param name="scale"> The local scale the currently instantiated 3D model should be changed to.</param>
         public void SetCurrent3DModelScale(Vector3 scale)
         {
-            currentEnvironmentInstance.transform.localScale = scale;
+            if (currentEnvironmentInstance != null)
+            {
+                currentEnvironmentInstance.transform.localScale = scale;
+            }
+            else
+            {
+                Debug.Log("Currently, no 3D model is instantiated!");
+            }
         }
 
 
         /// <summary>
         /// Allows the local rotation of the currently instantiated 3D model to be set and changed, respectively.
         /// </summary>
-        /// <param name="rotation"> The local rotation the currently instantiated 3D Model should be changed to.</param>
+        /// <param name="rotation"> The local rotation the currently instantiated 3D model should be changed to.</param>
         public void SetCurrent3DModelRotation(Quaternion rotation)
         {
-            currentEnvironmentInstance.transform.localRotation = rotation;
+            if (currentEnvironmentInstance != null)
+            {
+                currentEnvironmentInstance.transform.localRotation = rotation;
+            }
+            else
+            {
+                Debug.Log("Currently, no 3D model is instantiated!");
+            }
         }
 
 
