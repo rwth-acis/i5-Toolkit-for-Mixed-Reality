@@ -18,7 +18,8 @@ If you open the AssetBundles folder (either in Unity or the file explorer) you c
 
   
 
-You may add any number you like and if your setup looks as in the picture you can finally start the scene and experiment with the sample menu. By clicking onto the displayed menu pictures, the respective environment will be loaded. By clicking the up or down buttons on the menu, you can scroll through all the environments you added.![newsamplemenu](https://user-images.githubusercontent.com/19326682/134146854-bb09406d-a3b6-4d1e-a853-653740e75ce0.PNG)
+You may add any number you like and if your setup looks as in the picture you can finally start the scene and experiment with the sample menu. By clicking onto the displayed menu pictures, the respective environment will be loaded. By clicking the up or down buttons on the menu, you can scroll through all the environments you added.![vemenu](https://user-images.githubusercontent.com/19326682/136000286-41c9c030-2f6d-43ba-82e7-068caffb3379.PNG)
+
 
 ### Advanced features of the sample menu
 #### Loading environments from a server
