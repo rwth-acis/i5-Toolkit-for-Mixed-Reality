@@ -423,17 +423,17 @@ PrefabInstance:
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
-        type: 3}
-      propertyPath: serverEnvironmentsFromInspector.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
       propertyPath: localLoadingBasePath
-      value: 
+      value: c:\Users\USERNAME\Documents\MYPROJECTNAME\Assets\AssetBundles
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
@@ -443,12 +443,12 @@ PrefabInstance:
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[0].LoadingPath
-      value: 
+      value: winterloft
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[0].Name
-      value: 
+      value: Winter Loft
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
@@ -469,6 +469,26 @@ PrefabInstance:
         type: 3}
       propertyPath: serverEnvironmentsFromInspector.Array.data[0].LoadingPath
       value: winterloft
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.data[1].Name
+      value: Art Gallery
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.data[1].LoadingPath
+      value: artgallery
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.data[2].Name
+      value: Conference Room
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.data[2].LoadingPath
+      value: conferenceroom
       objectReference: {fileID: 0}
     - target: {fileID: 7147727109171719127, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
