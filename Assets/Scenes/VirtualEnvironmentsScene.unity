@@ -405,10 +405,70 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2452124139883966914, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4159674537255417209, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988320, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: m_Name
       value: SampleMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: localLoadingBasePath
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.data[1].LoadingPath
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.data[0].LoadingPath
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.data[0].Name
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: localEnvironmentsFromInspector.Array.data[1].Name
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: serverLoadingBaseURL
+      value: https://github.com/JulianStaab/virtual_environments/raw/master/AssetBundles
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.data[0].Name
+      value: Winter Loft
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: serverEnvironmentsFromInspector.Array.data[0].LoadingPath
+      value: winterloft
       objectReference: {fileID: 0}
     - target: {fileID: 7147727109171719127, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
@@ -479,6 +539,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.78699064
+      objectReference: {fileID: 0}
+    - target: {fileID: 8741443593026341352, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bec6e4cbcf101e14188de9b5fa9ed31e, type: 3}

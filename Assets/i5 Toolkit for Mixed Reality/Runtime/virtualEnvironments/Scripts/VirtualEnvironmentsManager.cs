@@ -99,7 +99,7 @@ namespace VirtualEnvironments
 
                 string url = serverLoadingBaseURL + "/" + serverEnvironmentsFromInspector[arrayIndex].LoadingPath;
                 var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
-
+                request.timeout = 15;
                 AsyncOperation sentRequest = request.SendWebRequest();
                 while (!sentRequest.isDone)
                 { }
@@ -163,10 +163,10 @@ namespace VirtualEnvironments
 
                 string url = "file:///" + localLoadingBasePath + "/" + localEnvironmentsFromInspector[arrayIndex].LoadingPath;
                 var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
-
+                request.timeout = 15;
                 AsyncOperation sentRequest = request.SendWebRequest();
                 while (!sentRequest.isDone)
-                { }
+                {}
 
                 if (UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(request) != null)
                 {
