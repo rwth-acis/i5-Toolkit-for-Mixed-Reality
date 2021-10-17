@@ -15,7 +15,7 @@ public class EnvironmentsDisplayManager : ListViewController<EnvironmentData, En
         UpdateEnvironmentDisplay();
         SetPageButtonStates();
         ItemSelected += OnEnvironmentSelected;
-        while(virtualEnvironmentsManager.environments.Count != (virtualEnvironmentsManager.serverEnvironmentsFromInspector.Length + virtualEnvironmentsManager.localEnvironmentsFromInspector.Length + 1))
+        if (virtualEnvironmentsManager.environments.Count != (virtualEnvironmentsManager.serverEnvironmentsFromInspector.Length + virtualEnvironmentsManager.localEnvironmentsFromInspector.Length))
         {
             UpdateEnvironmentDisplay();
         }

@@ -433,7 +433,7 @@ PrefabInstance:
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: localLoadingBasePath
-      value: c:\Users\USERNAME\Documents\MYPROJECTNAME\Assets\AssetBundles
+      value: C:\Users\julia\Documents\Github\i5-Toolkit-for-Mixed-Reality\Assets\AssetBundles
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
@@ -443,12 +443,12 @@ PrefabInstance:
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[0].LoadingPath
-      value: winterloft
+      value: conferenceroom
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[0].Name
-      value: Winter Loft
+      value: Conference Room
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
