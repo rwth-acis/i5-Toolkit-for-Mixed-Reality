@@ -162,9 +162,11 @@ namespace VirtualEnvironments
                 string loadedCredits = null;
 
                 string url = "file:///" + localLoadingBasePath + "/" + localEnvironmentsFromInspector[arrayIndex].LoadingPath;
-                Debug.Log(System.IO.Directory.Exists(url));
-                if (!System.IO.Directory.Exists(url))
+                if (!System.IO.Directory.Exists(localLoadingBasePath))
+                {
+                    Debug.Log("Your local system path does not exist");
                     continue;
+                } 
                 var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
                 request.timeout = 15;
                 AsyncOperation sentRequest = request.SendWebRequest();
