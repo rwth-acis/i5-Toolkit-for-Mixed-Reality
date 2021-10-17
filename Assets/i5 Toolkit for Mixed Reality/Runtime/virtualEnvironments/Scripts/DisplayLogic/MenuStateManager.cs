@@ -38,6 +38,7 @@ public class MenuStateManager : MonoBehaviour
     /// </summary>
     public void manageWindow()
     {
+        Debug.Log("Managing Window");
         if (windowIsOpen)
         {
             CloseWindow();
