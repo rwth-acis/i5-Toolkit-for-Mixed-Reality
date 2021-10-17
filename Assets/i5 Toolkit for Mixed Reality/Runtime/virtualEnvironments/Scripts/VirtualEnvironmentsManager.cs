@@ -141,7 +141,7 @@ namespace VirtualEnvironments
                 }
                 else
                 {
-                    Debug.Log("Unable to add the virtual environment form the AssetBundle at index " + arrayIndex + " of the server item list. Please make sure, that at least a skybox material and a preview image is contained in the bundle.");
+                    Debug.Log("Unable to add the virtual environment from the AssetBundle at index " + arrayIndex + " of the server item list. Please make sure, that at least a skybox material and a preview image is contained in the bundle.");
                 }
             }
             yield return null;
@@ -164,7 +164,7 @@ namespace VirtualEnvironments
                 string url = "file:///" + localLoadingBasePath + "/" + localEnvironmentsFromInspector[arrayIndex].LoadingPath;
                 if (!System.IO.Directory.Exists(localLoadingBasePath))
                 {
-                    Debug.Log("Your local system path does not exist");
+                    Debug.Log("Your local system path does not exist.");
                     continue;
                 } 
                 var request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(url, 0);
