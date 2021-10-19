@@ -1,6 +1,6 @@
 # Azure Spatial Anchor Helper
 
-![ASA Helper](resources/Logo.png)
+![ASA Helper](resources/ASALogo.png)
 
 This service is intended to abstract the usage of azure spatial anchors (ASA) and provide an easy to use interface to store and persist world anchors for augmented reality (AR) applications when using the i5 Toolkit for mixed reality.
 
