@@ -14,6 +14,14 @@ It is a foundation for new projects, kickstarting the development with already c
 The i5 Toolkit provides a series of modules and features that can be used in projects.
 
 <table style="text-align: center; vertical-align: middle">
+    <tr>
+        <td><a href="Documentation/resources/SpatialAnchor.md"><img src="Documentation/resources/ASALogo.png" alt="Spatial Anchor" style="width:200px"/><br/>Spatial Anchor</a></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
+<table style="text-align: center; vertical-align: middle">
 </table>
 
 ## Setup
