@@ -74,6 +74,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                     EditorGUILayout.HelpBox("The default behavior will always be used when the currently selected tool doesn't specify an action for a binding.", MessageType.Info);
                     EditorGUI.indentLevel++;
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.defaultEntry"), true);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("toolSetup.defaultEntryTeleporter"), true);
                     EditorGUI.indentLevel--;
                     break;
 
@@ -118,7 +119,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
                                 ViveWandToolShell tool = ActionHelperFunctions.GetVirtualTool(p);
                                 if (tool != null)
                                 {
-                                    //tool.thumbPosition = position;
+                                    tool.thumbPosition = position;
                                     break;
                                 }
                             }

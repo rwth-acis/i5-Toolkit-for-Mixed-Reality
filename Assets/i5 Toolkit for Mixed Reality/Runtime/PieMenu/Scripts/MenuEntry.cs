@@ -74,7 +74,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
     }
 
     /// <summary>
-    /// Contains everything needed to define a menu entry
+    /// Contains everything needed to define a menu entry for the tool
     /// </summary>
     [Serializable]
     public struct MenuEntry
@@ -96,6 +96,12 @@ namespace i5.Toolkit.MixedReality.PieMenu
 
 
         public ToolSpecificevents toolSpecificevents;
+    }
+
+    [Serializable]
+    public struct MenuEntryTeleporter
+    {
+        public GripSettings gripSettings;
     }
 
     [Serializable]

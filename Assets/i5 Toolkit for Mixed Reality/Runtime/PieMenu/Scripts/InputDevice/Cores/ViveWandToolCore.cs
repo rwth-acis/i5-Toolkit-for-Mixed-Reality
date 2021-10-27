@@ -16,7 +16,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// </summary>
         public void SetupTool(MenuEntry newEntry)
         {
-            MenuEntry currentEntry = ((ViveWandToolShell)shell).currentEntry;
+            MenuEntry currentEntry = ((IViveWandToolShell)shell).currentEntry;
 
             if (currentEntry.toolSpecificevents.OnToolDestroyed != null)
             {
@@ -46,12 +46,11 @@ namespace i5.Toolkit.MixedReality.PieMenu
             SetText("TouchpadUpText", newEntry.touchpadUpSettings.textTouchpadUp, defaultEntry.touchpadUpSettings.textTouchpadUp);
             SetText("TriggerText", newEntry.triggerSettings.textTrigger, defaultEntry.triggerSettings.textTrigger);
             SetText("GripText", newEntry.gripSettings.textGrip, defaultEntry.gripSettings.textGrip);
-            SetText("GripText", "", shell.GetPieMenuSetup().textGrip);
 
             shell.DisableDescriptionTextCoroutine(false);
             //Waits descriptionShowTime befor disabling the descriptions
             shell.DisableDescriptionTextCoroutine(true);
-            ((ViveWandToolShell)shell).currentEntry = newEntry;
+            ((IViveWandToolShell)shell).currentEntry = newEntry;
         }
 
         // Sets the icon on the coresponding canvas on the tool.

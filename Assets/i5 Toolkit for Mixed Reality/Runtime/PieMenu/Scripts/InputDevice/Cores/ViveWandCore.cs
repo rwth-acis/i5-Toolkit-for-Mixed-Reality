@@ -54,7 +54,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// </summary>
         /// <param name="gameobjectName"></param> The name of the object, the TMP is attached to
         /// <param name="text"></param> The text to be set
-        /// <param name="defaulText"></param> The default trext, that is used, if text is "".
+        /// <param name="defaulText"></param> The default text, that is used, if text is "".
         protected void SetText(string gameobjectName, string text, string defaulText)
         {
             shell.AddGameobjectToBuffer("ButtonDescriptions/" + gameobjectName, gameobjectName);
@@ -110,15 +110,30 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// <param name="eventData"></param>
         public void OnInputChanged(InputEventData<float> eventData)
         {
-            if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.gripPressAction)
+            bool isTool = this is ViveWandToolCore;
+            if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.gripPressAction)            
             {
                 if (eventData.InputData > 0.5)
                 {
-                    ServiceManager.GetService<ToolSetupService>().toolSetup.OnInputActionStartedGrip.Invoke(eventData);
+                    if (isTool)
+                    {
+                        ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry.gripSettings.OnInputActionStartedGrip.Invoke(eventData);
+                    }
+                    else
+                    {
+                        ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntryTeleporter.gripSettings.OnInputActionStartedGrip.Invoke(eventData);
+                    }
                 }
                 else
                 {
-                    ServiceManager.GetService<ToolSetupService>().toolSetup.OnInputActionEndedGrip.Invoke(eventData);
+                    if (isTool)
+                    {
+                        ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry.gripSettings.OnInputActionEndedGrip.Invoke(eventData);
+                    }
+                    else
+                    {
+                        ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntryTeleporter.gripSettings.OnInputActionEndedGrip.Invoke(eventData);
+                    }
                 }
             }
         }

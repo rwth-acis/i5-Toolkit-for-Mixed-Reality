@@ -32,9 +32,11 @@ namespace i5.Toolkit.MixedReality.PieMenu
         //The default entry for the virtual tool controller
         public MenuEntry defaultEntry;
 
+        public MenuEntryTeleporter defaultEntryTeleporter;
+
         //The grip actions and text for the teleporter
-        public string textGrip;
-        public InputActionUnityEvent OnInputActionStartedGrip;
-        public InputActionUnityEvent OnInputActionEndedGrip;
+        //public string textGrip;
+        //public InputActionUnityEvent OnInputActionStartedGrip;
+        //public InputActionUnityEvent OnInputActionEndedGrip;
     } 
 }
