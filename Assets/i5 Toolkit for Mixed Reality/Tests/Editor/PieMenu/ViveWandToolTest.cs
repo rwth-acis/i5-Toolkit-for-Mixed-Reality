@@ -29,31 +29,36 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             A.CallTo(() => shell.GetToolSetup()).Returns(setup);
         }
 
-        private void SetMenuEntryText(string key, MenuEntry entry)
+        private void CheckSetTextShellCallbacks(string key, string testText)
         {
-
+            //Only one SetTextCall for the TextField
+            A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key).MustHaveHappenedOnceExactly();
+            //The only SetTextCall for the TextField has to set the text to the testText
+            A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key && args.Get<string>("text") == testText).MustHaveHappenedOnceExactly();
         }
 
         [Test]
         public void Setup_tool_new_text()
         {
-            string testText = "ThisIsATestText";
-            string key = "TriggerText";
-
+            string[] keys = { "TouchpadRightText", "TouchpadDownText", "TouchpadLeftText", "TouchpadUpText", "TriggerText", "GripText"};
             MenuEntry newEntry = new MenuEntry();
+            string testText = "ThisIsATestText";
 
-                
-            newEntry.triggerSettings.textTrigger = testText;
-            //setup.defaultEntry.triggerSettings.textTrigger = "Trigger";
+            newEntry.touchpadRightSettings.textTouchpadRight = testText + keys[0];
+            newEntry.TouchpadDownSettings.textTouchpadDown = testText + keys[1];
+            newEntry.touchpadLeftSettings.textTouchpadLeft = testText + keys[2];
+            newEntry.touchpadUpSettings.textTouchpadUp = testText + keys[3];
+            newEntry.triggerSettings.textTrigger = testText + keys[4];
+            newEntry.gripSettings.textGrip = testText + keys[5];
+
             core.SetupTool(newEntry);
-
-            //Only one SetTextCall for the TextField
-            A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key).MustHaveHappenedOnceExactly();
-            //The only SetTextCall for the TextField has to set the text to the testText
-            A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key && args.Get<string>("text") == testText).MustHaveHappenedOnceExactly(); 
-            
-           
+            foreach (string key in keys)
+            {
+                CheckSetTextShellCallbacks(key, testText + key);
+            }
         }
+
+        
 
         [Test]
         public void TriggerTest()
