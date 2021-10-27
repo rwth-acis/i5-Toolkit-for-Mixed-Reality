@@ -8,6 +8,11 @@ using Microsoft.MixedReality.Toolkit.Input;
 
 namespace i5.Toolkit.MixedReality.Tests.PieMenu
 {
+    //class testEnumerable : IEnumerable
+    //{
+    //    IEnu
+    //}
+
     public class ViveWandTeleporterTest
     {
         ViveWandTeleporterCore core = new ViveWandTeleporterCore();
@@ -16,6 +21,16 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
         public void SetupToolTest()
         {
             IViveWandShell shell = A.Fake<IViveWandShell>();
+
+
+            //Link the fake shell with the vive wand core
+            A.CallTo(() => shell.DisableDescriptionTextCoroutine(false)).WhenArgumentsMatch(args => args.Get<bool>("start")).
+                                                                         Invokes(() =>
+                                                                         {
+                                                                             IEnumerator enumerator = core.DisableDescriptionsAfterShowTime();
+                                                                             while (enumerator.MoveNext()) ; //Needs to iterate over MoveNext() of the IEnumerator, otherwise the code inside isn't executed
+                                                                         });
+
             core.shell = shell;
             core.SetupTool();
             //The description texts must be activated
@@ -38,8 +53,8 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
                                                                         MustHaveHappenedOnceExactly();
 
             //The coroutine for deactivating the description texts again must be called
-            A.CallTo(() => shell.DisableDescriptionTextCoroutine(false)).WhenArgumentsMatch(args =>
-                                                                                            args.Get<bool>("start")).
+            A.CallTo(() => shell.SetGameObjectActive("", false)).WhenArgumentsMatch(args => args.Get<string>("key") == "ButtonDescriptions" &&
+                                                                                            !args.Get<bool>("active")).
                                                                                             MustHaveHappenedOnceExactly();
         }
     }
