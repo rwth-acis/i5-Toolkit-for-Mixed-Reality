@@ -82,7 +82,6 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
 
     public class ActionHelperFunctionsTests
     {
-        //GetGameobjectOfTypeFromHirachy tests
         FakeActionHelperFunctionsShell shell;
         FakeGameObject entryObject;
         FakeGameObject searchedNode;
@@ -169,6 +168,14 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             Type[] typesToExclude = new Type[] { typeof(string) };
             ActionHelperFunctionsCore.GetGameobjectOfTypeFromHirachy(shell, typeof(char));
             Assert.IsNull(shell.fakeGameObject);
+        }
+
+        [Test]
+        public void Search_for_existing_object_with_below_filter_of_non_existing_tpye()
+        {
+            Type[] typesToExclude = new Type[] { typeof(bool) }; //bool is not used in the hirachy
+            ActionHelperFunctionsCore.GetGameobjectOfTypeFromHirachy(shell, typeToSearch, typesToExclude,false,true);
+            Assert.AreEqual(shell.fakeGameObject, searchedNode);
         }
     }
 }
