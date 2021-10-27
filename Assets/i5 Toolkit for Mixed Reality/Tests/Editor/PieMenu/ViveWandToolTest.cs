@@ -23,8 +23,36 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             core = new ViveWandToolCore();
             core.shell = shell;
 
+            var test = (IViveWandToolShell)core.shell;
+
             setup = new PieMenuSetup();
             A.CallTo(() => shell.GetToolSetup()).Returns(setup);
+        }
+
+        private void SetMenuEntryText(string key, MenuEntry entry)
+        {
+
+        }
+
+        [Test]
+        public void Setup_tool_new_text()
+        {
+            string testText = "ThisIsATestText";
+            string key = "TriggerText";
+
+            MenuEntry newEntry = new MenuEntry();
+
+                
+            newEntry.triggerSettings.textTrigger = testText;
+            //setup.defaultEntry.triggerSettings.textTrigger = "Trigger";
+            core.SetupTool(newEntry);
+
+            //Only one SetTextCall for the TextField
+            A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key).MustHaveHappenedOnceExactly();
+            //The only SetTextCall for the TextField has to set the text to the testText
+            A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key && args.Get<string>("text") == testText).MustHaveHappenedOnceExactly(); 
+            
+           
         }
 
         [Test]
