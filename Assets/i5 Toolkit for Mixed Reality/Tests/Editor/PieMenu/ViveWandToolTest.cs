@@ -37,10 +37,12 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key && args.Get<string>("text") == testText).MustHaveHappenedOnceExactly();
         }
 
+        readonly string[] keys = { "TouchpadRightText", "TouchpadDownText", "TouchpadLeftText", "TouchpadUpText", "TriggerText", "GripText" };
+
         [Test]
-        public void Setup_tool_new_text()
+        public void Setup_tool_new_text_no_default_text()
         {
-            string[] keys = { "TouchpadRightText", "TouchpadDownText", "TouchpadLeftText", "TouchpadUpText", "TriggerText", "GripText"};
+            
             MenuEntry newEntry = new MenuEntry();
             string testText = "ThisIsATestText";
 
@@ -58,7 +60,18 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             }
         }
 
-        
+        [Test]
+        public void Setup_tool_no_text()
+        {
+            core.SetupTool(new MenuEntry());
+            foreach (string key in keys)
+            {
+                //Because the text in new Entry is empty and in the default entry also, the textGameObject must be disabled
+                A.CallTo(() => shell.SetGameObjectActive("",false)).WhenArgumentsMatch(args => args.Get<string>("key") == key && 
+                                                                                              !args.Get<bool>("active"))
+                                                                                              .MustHaveHappenedOnceExactly();
+            }
+        }
 
         [Test]
         public void TriggerTest()

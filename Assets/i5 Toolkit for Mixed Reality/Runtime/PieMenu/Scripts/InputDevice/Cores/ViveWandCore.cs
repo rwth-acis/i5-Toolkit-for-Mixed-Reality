@@ -59,11 +59,11 @@ namespace i5.Toolkit.MixedReality.PieMenu
         {
             shell.AddGameobjectToBuffer("ButtonDescriptions/" + gameobjectName, gameobjectName);
             shell.SetGameObjectActive(gameobjectName, true);
-            if (text != "")
+            if (text != "" && text != null)
             {
                 shell.SetTMPText(gameobjectName,text);
             }
-            else if (defaulText != "")
+            else if (defaulText != "" && defaulText != null)
             {
                 shell.SetTMPText(gameobjectName, defaulText);
             }
