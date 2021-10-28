@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.IO;
+using UnityEngine;
 
 namespace VirtualEnvironments
 {
@@ -10,10 +12,16 @@ namespace VirtualEnvironments
         public Material SkyboxMaterial;
         public GameObject EnvironmentModelPrefab;
         public Sprite PreviewImageSprite;
-        public string CreatorCredits;
+        public TextAsset CreatorCredits;
 
         public string PathToTargetFolder;
 
+        public TextAsset ConvertStringToTxt(String content, String name, String path)
+        {
+            File.WriteAllText(path + name + "Credits.txt", content);
+            return Resources.Load(path + name + "Credits.txt") as TextAsset;
+        }
 
     }
+
 }

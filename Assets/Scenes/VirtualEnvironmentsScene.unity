@@ -416,6 +416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def68c0fa14beed4dad3cc07823d3b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnvironmentName: Hello
   SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   EnvironmentModelPrefab: {fileID: 6209191282603988320, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
     type: 3}

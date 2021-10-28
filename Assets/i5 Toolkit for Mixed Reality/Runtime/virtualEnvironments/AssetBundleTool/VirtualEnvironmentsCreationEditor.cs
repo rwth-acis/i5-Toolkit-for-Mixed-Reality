@@ -1,10 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using UnityEditor.AnimatedValues;
-using UnityEditorInternal;
 using VirtualEnvironments;
-using System;
-using System.IO;
 
 [CustomEditor(typeof(VirtualEnvironmentsCreationTool))]
 [CanEditMultipleObjects]
@@ -20,6 +16,8 @@ public class VirtualEnvironmentsCreationEditor : Editor
 
     private SerializedProperty PathToTargetFolder;
 
+    private VirtualEnvironmentsCreationTool _target;
+
     public void OnEnable()
     {
         EnvironmentName = serializedObject.FindProperty("EnvironmentName");
@@ -28,13 +26,11 @@ public class VirtualEnvironmentsCreationEditor : Editor
         PreviewImageSprite = serializedObject.FindProperty("PreviewImageSprite");
         CreatorCredits = serializedObject.FindProperty("CreatorCredits");
         PathToTargetFolder = serializedObject.FindProperty("PathToTargetFolder");
+        _target = (VirtualEnvironmentsCreationTool) target;
     }
 
-    //TODO BUTTON
     public override void OnInspectorGUI()
     {
-        //base.OnInspectorGUI();
-
         GUIStyle borders = new GUIStyle(EditorStyles.helpBox);
         GUILayout.Label("Bundle Information", EditorStyles.boldLabel);
 
@@ -69,27 +65,55 @@ public class VirtualEnvironmentsCreationEditor : Editor
         serializedObject.ApplyModifiedProperties();
 
         EditorGUI.indentLevel--;
+
+        EditorGUILayout.Space();
+
+        if (GUILayout.Button("Build AssetBundle"))
+        {
+            OnButtonPressed();
+        }
     }
 
-    public TextAsset ConvertStringToTxt(String content, String name, String path)
+    public void MarkAsAssetBundleComponent(Material skybox, GameObject prefab, Sprite preview, TextAsset credits)
     {
-        File.WriteAllText(path + name + "Credits.txt", content);
-        return Resources.Load(path + name + "Credits.txt") as TextAsset;
-    }
+        string skyboxPath = null;
+        string prefabPath = null;
+        string previewPath = null;
+        string creditsPath = null;
 
-    public void MarkAsAssetBundleComponent(Material skybox, GameObject prefab, Sprite preview, TextAsset credits, String path)
-    {
-        //File.Move(skybox., path);
-        //var skyboxPath = AssetDatabase.GUIDToAssetPath(skybox);
-        //var assetName = AssetDatabase.LoadMainAssetAtPath(path).name;
-        //AssetDatabase.MoveAsset(path, $"Assets/Scenes/{assetName}.unity");
-        //UnityEngine.Object[] components = { skybox, prefab, preview, credits };
-        //BuildPipeline.BuildAssetBundle(skybox, components, path, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
-        //Selection.objects = components;
+        if (skybox != null)
+        {
+            skyboxPath = AssetDatabase.GetAssetPath(skybox);
+            AssetImporter.GetAtPath(skyboxPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+        }
+
+        if (prefab != null)
+        {
+            prefabPath = AssetDatabase.GetAssetPath(prefab);
+            AssetImporter.GetAtPath(prefabPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+        }
+
+        if (preview != null)
+        {
+            previewPath = AssetDatabase.GetAssetPath(preview);
+            AssetImporter.GetAtPath(previewPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+        }
+
+        if (credits != null)
+        {
+            creditsPath = AssetDatabase.GetAssetPath(credits);
+            AssetImporter.GetAtPath(creditsPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+        }
     }
 
     public void OnButtonPressed()
     {
-        //AssembleAssetBundleComponents(SkyboxMaterial, EnvironmentModelPrefab, PreviewImageSprite, ConvertStringToTxt(CreatorCredits, PathToTargetFolder), PathToTargetFolder);
+        MarkAsAssetBundleComponent(_target.SkyboxMaterial, _target.EnvironmentModelPrefab, _target.PreviewImageSprite, _target.CreatorCredits);
+        BuildAssetBundles(_target.PathToTargetFolder);
+    }
+
+    static void BuildAssetBundles(string path)
+    {
+        BuildPipeline.BuildAssetBundles(path, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
     }
 }
