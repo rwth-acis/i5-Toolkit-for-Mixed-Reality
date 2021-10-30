@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using VirtualEnvironments;
+using System.IO;
+using System;
 
 [CustomEditor(typeof(VirtualEnvironmentsCreationTool))]
 [CanEditMultipleObjects]
@@ -18,6 +20,7 @@ public class VirtualEnvironmentsCreationEditor : Editor
 
     private VirtualEnvironmentsCreationTool _target;
 
+
     public void OnEnable()
     {
         EnvironmentName = serializedObject.FindProperty("EnvironmentName");
@@ -28,6 +31,7 @@ public class VirtualEnvironmentsCreationEditor : Editor
         PathToTargetFolder = serializedObject.FindProperty("PathToTargetFolder");
         _target = (VirtualEnvironmentsCreationTool) target;
     }
+
 
     public override void OnInspectorGUI()
     {
@@ -74,46 +78,145 @@ public class VirtualEnvironmentsCreationEditor : Editor
         }
     }
 
-    public void MarkAsAssetBundleComponent(Material skybox, GameObject prefab, Sprite preview, TextAsset credits)
+
+    /// <summary>
+    /// The selected components of the Virtual Environment are labelled with with the environment name and thus marked to be bundled together. Returns whether this step was successful.
+    /// </summary>
+    /// <param name="skybox">The skybox material of the environment.</param>
+    /// <param name="prefab">The 3D model of the environment.</param>
+    /// <param name="preview">The preview image of the environment.</param>
+    /// <param name="credits">The credits of the creators of the environment components.</param>
+    public bool MarkAsAssetBundleComponent(Material skybox, GameObject prefab, Sprite preview, TextAsset credits)
     {
-        string skyboxPath = null;
-        string prefabPath = null;
-        string previewPath = null;
-        string creditsPath = null;
+        String skyboxPath = null;
+        String prefabPath = null;
+        String previewPath = null;
+        String creditsPath = null;
 
         if (skybox != null)
         {
             skyboxPath = AssetDatabase.GetAssetPath(skybox);
-            AssetImporter.GetAtPath(skyboxPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+            if(AssetImporter.GetAtPath(skyboxPath) == null)
+            {
+                Debug.Log("The selected skybox is not stored on your disk. Make sure it has a valid path.");
+                return false;
+            }
+            else
+            {
+                AssetImporter.GetAtPath(skyboxPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+            }
         }
 
         if (prefab != null)
         {
             prefabPath = AssetDatabase.GetAssetPath(prefab);
-            AssetImporter.GetAtPath(prefabPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+            if (AssetImporter.GetAtPath(prefabPath) == null)
+            {
+                Debug.Log("The selected prefab of the 3D model is not stored on your disk. Make sure it has a valid path.");
+                return false;
+            }
+            else
+            {
+                AssetImporter.GetAtPath(prefabPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+            }
         }
 
         if (preview != null)
         {
             previewPath = AssetDatabase.GetAssetPath(preview);
-            AssetImporter.GetAtPath(previewPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+            if (AssetImporter.GetAtPath(previewPath) == null)
+            {
+                Debug.Log("The selected preview image is not stored on your disk. Make sure it has a valid path.");
+                return false;
+            }
+            else
+            {
+                AssetImporter.GetAtPath(previewPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+            }
         }
 
         if (credits != null)
         {
             creditsPath = AssetDatabase.GetAssetPath(credits);
-            AssetImporter.GetAtPath(creditsPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+            if (AssetImporter.GetAtPath(creditsPath) == null)
+            {
+                Debug.Log("The selected text file of the credits is not stored on your disk. Make sure it has a valid path.");
+            }
+            else
+            {
+                AssetImporter.GetAtPath(creditsPath).SetAssetBundleNameAndVariant(_target.EnvironmentName, "");
+            }
+        }
+        return true;
+    }
+
+
+    /// <summary>
+    /// Once the build button has been pressed, it is checked whether all necessary components have been selected. If this is the case, the selected assets are labelled and then bundled in an AssetBundle if the labelling was successful.
+    /// </summary>
+    public void OnButtonPressed()
+    {
+        if(_target.SkyboxMaterial == null ||_target.PreviewImageSprite == null || _target.CreatorCredits == null)
+        {
+            Debug.Log("No Asset Bundle has been created. Make sure that all necessary components have been added. See the documentation of the Virtual Environment Feature for this.");
+        }
+        else
+        {
+            bool buildAssetBundle = MarkAsAssetBundleComponent(_target.SkyboxMaterial, _target.EnvironmentModelPrefab, _target.PreviewImageSprite, _target.CreatorCredits);
+            if (buildAssetBundle)
+            {
+                BuildAssetBundles(_target.PathToTargetFolder);
+                CleanUpEditor();
+            }
+            else
+            {
+                Debug.Log("No Asset Bundle has been created. Make sure that all necessary components that have been added are stored on your local disk.");
+            }
         }
     }
 
-    public void OnButtonPressed()
-    {
-        MarkAsAssetBundleComponent(_target.SkyboxMaterial, _target.EnvironmentModelPrefab, _target.PreviewImageSprite, _target.CreatorCredits);
-        BuildAssetBundles(_target.PathToTargetFolder);
-    }
 
+    /// <summary>
+    /// We build all AssetBundles based on the previously assigned labels. Afterwards the Assets are refreshed.
+    /// </summary>
+    /// <param name="path">The path of where the AssetBundle is to be stored.</param>
     static void BuildAssetBundles(string path)
     {
         BuildPipeline.BuildAssetBundles(path, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
+        AssetDatabase.Refresh();
+    }
+
+
+    /// <summary>
+    /// The Editor is emptied, such that the user has to reselect components for another AssetBundle.
+    /// </summary>
+    public void CleanUpEditor()
+    {
+        _target.EnvironmentName = null;
+        _target.SkyboxMaterial = null;
+        _target.EnvironmentModelPrefab = null;
+        _target.PreviewImageSprite = null;
+        _target.CreatorCredits = null;
+
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(EnvironmentName);
+        serializedObject.ApplyModifiedProperties();
+
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(SkyboxMaterial);
+        serializedObject.ApplyModifiedProperties();
+
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(EnvironmentModelPrefab);
+        serializedObject.ApplyModifiedProperties();
+
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(PreviewImageSprite);
+        serializedObject.ApplyModifiedProperties();
+
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(CreatorCredits);
+        serializedObject.ApplyModifiedProperties();
+
     }
 }

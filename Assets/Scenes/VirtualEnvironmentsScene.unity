@@ -398,32 +398,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2023671934 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6209191282603988320, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
-    type: 3}
-  m_PrefabInstance: {fileID: 6209191282565792213}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2023671935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2023671934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: def68c0fa14beed4dad3cc07823d3b01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnvironmentName: MyEnvironment
-  SkyboxMaterial: {fileID: 0}
-  EnvironmentModelPrefab: {fileID: 6209191282603988320, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
-    type: 3}
-  PreviewImageSprite: {fileID: 21300000, guid: 856f7cd2d8f5460428166a4a8ee93fbb, type: 3}
-  CreatorCredits: {fileID: 4900000, guid: 79ea39e7bd15e954cb24de1ce70e14c1, type: 3}
-  PathToTargetFolder: D:\Documents\i5 Arbeit\i5-Toolkit-for-Mixed-Reality\Assets\i5
-    Toolkit for Mixed Reality\Runtime\virtualEnvironments\AssetBundleTool
 --- !u!1001 &6209191282565792213
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -454,12 +428,13 @@ PrefabInstance:
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: serverEnvironmentsFromInspector.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: localLoadingBasePath
-      value: D:\Documents\i5 Arbeit\i5-Toolkit-for-Mixed-Reality\Assets\AssetBundles
+      value: D:\Documents\i5 Arbeit\i5-Toolkit-for-Mixed-Reality\Assets\i5 Toolkit
+        for Mixed Reality\Runtime\virtualEnvironments\AssetBundleTool\EnvironmentBundles
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
@@ -469,12 +444,12 @@ PrefabInstance:
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[0].LoadingPath
-      value: artgallery
+      value: sampleenvironment
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: localEnvironmentsFromInspector.Array.data[0].Name
-      value: Art Gallery
+      value: Sample
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
@@ -484,7 +459,7 @@ PrefabInstance:
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
       propertyPath: serverLoadingBaseURL
-      value: https://github.com/JulianStaab/virtual_environments/raw/master/AssetBundles
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6209191282603988323, guid: bec6e4cbcf101e14188de9b5fa9ed31e,
         type: 3}
