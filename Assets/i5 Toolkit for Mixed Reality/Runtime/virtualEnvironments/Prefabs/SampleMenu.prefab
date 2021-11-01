@@ -3672,6 +3672,7 @@ GameObject:
   - component: {fileID: 6209191282603988322}
   - component: {fileID: 6209191282603988323}
   - component: {fileID: 6954072178307666111}
+  - component: {fileID: 6189227056116356070}
   m_Layer: 0
   m_Name: SampleMenu
   m_TagString: Untagged
@@ -3754,6 +3755,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CollapsableMenu: {fileID: 8364932166489314748}
+--- !u!114 &6189227056116356070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6209191282603988320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def68c0fa14beed4dad3cc07823d3b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnvironmentName: SampleEnvironment
+  PathToTargetFolder: D:\Documents\i5 Arbeit\i5-Toolkit-for-Mixed-Reality\Assets\i5
+    Toolkit for Mixed Reality\Runtime\virtualEnvironments\AssetBundleTool\EnvironmentBundles
+  SkyboxMaterial: {fileID: 2100000, guid: 2996bf83527f2334aab14dd9ddbea420, type: 2}
+  EnvironmentModelPrefab: {fileID: 0}
+  PreviewImageSprite: {fileID: 21300000, guid: 56fd37287e037d74984879e0a6379b4d, type: 3}
+  CreatorCredits: {fileID: 4900000, guid: 79ea39e7bd15e954cb24de1ce70e14c1, type: 3}
 --- !u!1 &6209191282693679309
 GameObject:
   m_ObjectHideFlags: 0
