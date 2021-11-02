@@ -78,5 +78,49 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
                                                                                             MustHaveHappenedOnceExactly();
         }
 
+        [Test]
+        public void Set_own_source_test()
+        {
+            IViveWandShell shell = A.Fake<IViveWandShell>();
+            HashSet<IMixedRealityInputSource> inputSources = new HashSet<IMixedRealityInputSource>();
+            A.CallTo(() => shell.GetInputSources()).Returns(inputSources);
+            core.shell = shell;
+
+            //Setup inputsource that is not the one from the vive wand
+            IMixedRealityInputSource otherSource = A.Fake<IMixedRealityInputSource>();
+            IMixedRealityPointer[] pointerArray = new IMixedRealityPointer[1];
+            pointerArray[0] = A.Fake<IMixedRealityPointer>();
+            A.CallTo(() => otherSource.Pointers).Returns(pointerArray);
+
+            inputSources.Add(otherSource);
+
+            //Setup inputsource form the vive wand
+            IMixedRealityInputSource ownSource = A.Fake<IMixedRealityInputSource>();
+            pointerArray = new IMixedRealityPointer[1];
+            pointerArray[0] = A.Fake<IMixedRealityPointer>();
+            A.CallTo(() => ownSource.Pointers).Returns(pointerArray);
+
+            A.CallTo(() => shell.GameObjectProxyEqualsOwnObject(null)).WhenArgumentsMatch(args =>
+                                                                                          args.Get<IMixedRealityControllerVisualizer>("visualizer") == ownSource.Pointers[0].Controller.Visualizer).
+                                                                                          Returns(true);
+            
+            //First try to set the input source, before the own source is avaible
+            IEnumerator enumerator = core.SetOwnSource();
+            enumerator.MoveNext();
+            //This must not yield a result
+            Assert.IsNull(core.ownSource);
+
+            inputSources.Add(ownSource);
+
+
+
+
+
+            //Next try, after the own input source was added. This time, the inputsource should be set correctly
+            enumerator.MoveNext();
+            enumerator.MoveNext();
+            Assert.IsTrue(core.ownSource == ownSource);
+        }
+
     }
 }
