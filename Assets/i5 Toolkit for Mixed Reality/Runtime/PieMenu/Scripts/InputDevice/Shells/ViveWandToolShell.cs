@@ -19,11 +19,6 @@ namespace i5.Toolkit.MixedReality.PieMenu
             StartCoroutine(((ViveWandToolCore)core).SetupToolWaitForService());
         }
 
-        public void InvokeEvent<T>(UnityEvent<T> inputEvent, T eventData) where T : BaseEventData
-        {
-            inputEvent?.Invoke(eventData);
-        }
-
         private void OnEnable()
         {
             core = new ViveWandToolCore();

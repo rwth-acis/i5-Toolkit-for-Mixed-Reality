@@ -111,28 +111,30 @@ namespace i5.Toolkit.MixedReality.PieMenu
         public void OnInputChanged(InputEventData<float> eventData)
         {
             bool isTool = this is ViveWandToolCore;
-            if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == ServiceManager.GetService<ToolSetupService>().toolSetup.gripPressAction)            
+            if (IsInputSourceThis(eventData.InputSource) && eventData.MixedRealityInputAction == shell.GetPieMenuSetup().gripPressAction)
             {
                 if (eventData.InputData > 0.5)
                 {
                     if (isTool)
                     {
-                        ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry.gripSettings.OnInputActionStartedGrip.Invoke(eventData);
+                        shell.InvokeEvent(shell.GetPieMenuSetup().defaultEntry.gripSettings.OnInputActionStartedGrip, eventData);
                     }
                     else
                     {
-                        ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntryTeleporter.gripSettings.OnInputActionStartedGrip.Invoke(eventData);
+                        shell.InvokeEvent(shell.GetPieMenuSetup().defaultEntryTeleporter.gripSettings.OnInputActionStartedGrip,eventData);
                     }
                 }
                 else
                 {
                     if (isTool)
                     {
-                        ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntry.gripSettings.OnInputActionEndedGrip.Invoke(eventData);
+                        shell.InvokeEvent(shell.GetPieMenuSetup().defaultEntry.gripSettings.OnInputActionEndedGrip, eventData);
+
+
                     }
                     else
                     {
-                        ServiceManager.GetService<ToolSetupService>().toolSetup.defaultEntryTeleporter.gripSettings.OnInputActionEndedGrip.Invoke(eventData);
+                        shell.InvokeEvent(shell.GetPieMenuSetup().defaultEntryTeleporter.gripSettings.OnInputActionEndedGrip, eventData);
                     }
                 }
             }

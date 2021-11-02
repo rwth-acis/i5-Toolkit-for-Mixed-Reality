@@ -6,6 +6,8 @@ using TMPro;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
@@ -89,6 +91,11 @@ namespace i5.Toolkit.MixedReality.PieMenu
         public void SetIcon(string key, Sprite icon)
         {
             gameObjectBuffer[key].GetComponentInChildren<Image>().sprite = icon;
+        }
+
+        public void InvokeEvent<T>(UnityEvent<T> inputEvent, T eventData) where T : BaseEventData
+        {
+            inputEvent?.Invoke(eventData);
         }
     }
 }

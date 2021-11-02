@@ -5,6 +5,8 @@ using i5.Toolkit.Core.ServiceCore;
 using TMPro;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
@@ -23,5 +25,6 @@ namespace i5.Toolkit.MixedReality.PieMenu
         void UnregisterHandler<T>() where T : UnityEngine.EventSystems.IEventSystemHandler;
         PieMenuSetup GetPieMenuSetup();
         void SetIcon(string key, Sprite icon);
+        void InvokeEvent<T>(UnityEvent<T> inputEvent, T eventData) where T : BaseEventData;
     }
 }

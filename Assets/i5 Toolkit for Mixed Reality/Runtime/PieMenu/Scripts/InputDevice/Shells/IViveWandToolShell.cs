@@ -11,7 +11,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
     {
         MenuEntry currentEntry { get; set; }
         void SetupToolWaitForService();
-        void InvokeEvent<T>(UnityEvent<T> inputEvent, T eventData) where T:BaseEventData; 
+        
         void SetupTool(MenuEntry newEntry);
 
         //Methods for managing the hover events
