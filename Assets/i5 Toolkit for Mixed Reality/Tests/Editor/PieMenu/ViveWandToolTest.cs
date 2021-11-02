@@ -391,5 +391,11 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
                                                                                              args.Get<UnityEvent<BaseInputEventData>>("inputEvent") == touchpadEvents.touchpadLeft).
                                                                                              MustHaveHappenedOnceExactly();
         }
-    }
+
+        [Test]
+        public void Grip_input_changed()
+        {
+            ViveWandTeleporterTest.gripTest(true);
+        }
+     }
 }
