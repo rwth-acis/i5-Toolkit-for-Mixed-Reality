@@ -17,7 +17,6 @@ namespace i5.Toolkit.MixedReality.PieMenu
             ActivateDescriptionTexts();
 
             SetText("GripText", "", shell.GetPieMenuSetup().defaultEntryTeleporter.gripSettings.textGrip);
-
             shell.DisableDescriptionTextCoroutine(false);
             //Waits descriptionShowTime befor disabling the descriptions
             shell.DisableDescriptionTextCoroutine(true);

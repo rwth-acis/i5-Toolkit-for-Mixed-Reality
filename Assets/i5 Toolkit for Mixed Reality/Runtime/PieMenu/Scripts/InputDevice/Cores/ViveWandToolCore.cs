@@ -83,12 +83,12 @@ namespace i5.Toolkit.MixedReality.PieMenu
         {
             if (shell.ToolSetupExists())
             {
-                SetupTool(shell.GetToolSetup().defaultEntry);
+                SetupTool(shell.GetPieMenuSetup().defaultEntry);
             }
             else
             {
                 yield return null;
-                SetupTool(shell.GetToolSetup().defaultEntry);
+                SetupTool(shell.GetPieMenuSetup().defaultEntry);
             }
         }
 
@@ -161,7 +161,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         public void OnActionStarted(BaseInputEventData eventData)
         {
             IViveWandToolShell toolShell = (IViveWandToolShell)shell;
-            if (eventData.MixedRealityInputAction == shell.GetToolSetup().triggerInputAction && IsInputSourceThis(eventData.InputSource))
+            if (eventData.MixedRealityInputAction == shell.GetPieMenuSetup().triggerInputAction && IsInputSourceThis(eventData.InputSource))
             {
                 //On Trigger event
                 InvokeCurrentOrDefaultEvent(toolShell.currentEntry.triggerSettings.OnInputActionStartedTrigger, defaultEntry.triggerSettings.OnInputActionStartedTrigger, eventData);
@@ -179,12 +179,12 @@ namespace i5.Toolkit.MixedReality.PieMenu
                 IViveWandToolShell toolShell = (IViveWandToolShell)shell;
                 MenuEntry currentEntry = toolShell.currentEntry;
 
-                if (eventData.MixedRealityInputAction == shell.GetToolSetup().triggerInputAction)
+                if (eventData.MixedRealityInputAction == shell.GetPieMenuSetup().triggerInputAction)
                 {
                     //The trigger was released
                     toolShell.InvokeEvent(toolShell.currentEntry.triggerSettings.OnInputActionEndedTrigger, eventData);
                 }
-                else if ((eventData.MixedRealityInputAction == shell.GetToolSetup().touchpadPressAction))
+                else if ((eventData.MixedRealityInputAction == shell.GetPieMenuSetup().touchpadPressAction))
                 {
                     //The touchpad was released
                     //Touchad
@@ -261,7 +261,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// <param name="eventData"></param>
         public void OnInputChanged(InputEventData<Vector2> eventData)
         {
-            if (eventData.MixedRealityInputAction == shell.GetToolSetup().touchpadTouchActionAction)
+            if (eventData.MixedRealityInputAction == shell.GetPieMenuSetup().touchpadTouchActionAction)
             {
                 ((IViveWandToolShell)shell).thumbPosition = eventData.InputData;
             }

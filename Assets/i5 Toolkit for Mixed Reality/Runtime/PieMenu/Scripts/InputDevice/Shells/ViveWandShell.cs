@@ -26,11 +26,6 @@ namespace i5.Toolkit.MixedReality.PieMenu
             return ServiceManager.ServiceExists<ToolSetupService>();
         }
 
-        public PieMenuSetup GetToolSetup()
-        {
-            return ServiceManager.GetService<ToolSetupService>().toolSetup;
-        }
-
         public void DisableDescriptionTextCoroutine(bool start)
         {
             if (start)

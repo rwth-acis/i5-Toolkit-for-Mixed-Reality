@@ -32,7 +32,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// <returns></returns>
         public IEnumerator DisableDescriptionsAfterShowTime()
         {
-            yield return new WaitForSeconds(shell.GetToolSetup().descriptionShowTime);
+            yield return new WaitForSeconds(shell.GetPieMenuSetup().descriptionShowTime);
             ActivateDescriptionTexts(false);
         }
 

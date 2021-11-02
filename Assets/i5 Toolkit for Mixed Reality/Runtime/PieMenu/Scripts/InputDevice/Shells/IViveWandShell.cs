@@ -12,7 +12,6 @@ namespace i5.Toolkit.MixedReality.PieMenu
     {
         void SetGameObjectActive(string key, bool active);
         bool ToolSetupExists();
-        PieMenuSetup GetToolSetup();
         void DisableDescriptionTextCoroutine(bool start);
         void AddGameobjectToBuffer(string name, string key);
         bool RemoveGameobjectFromBuffer(string key);
