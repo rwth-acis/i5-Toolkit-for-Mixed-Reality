@@ -26,15 +26,23 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             var test = (IViveWandToolShell)core.shell;
 
             setup = new PieMenuSetup();
-            A.CallTo(() => shell.GetToolSetup()).Returns(setup);
+            A.CallTo(() => shell.GetPieMenuSetup()).Returns(setup);
         }
 
         private void CheckSetTextShellCallbacks(string key, string testText)
         {
+            //TextObject must be set active
+            A.CallTo(() => shell.SetGameObjectActive("", false)).WhenArgumentsMatch(args =>
+                                                                                    args.Get<string>("key") == key &&
+                                                                                    args.Get<bool>("active")).
+                                                                                    MustHaveHappenedOnceExactly();
             //Only one SetTextCall for the TextField
-            A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key).MustHaveHappenedOnceExactly();
+            A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key).
+                                                                        MustHaveHappenedOnceExactly();
             //The only SetTextCall for the TextField has to set the text to the testText
-            A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key && args.Get<string>("text") == testText).MustHaveHappenedOnceExactly();
+            A.CallTo(() => shell.SetTMPText("", "")).WhenArgumentsMatch(args => args.Get<string>("key") == key && 
+                                                                                args.Get<string>("text") == testText).
+                                                                                MustHaveHappenedOnceExactly();
         }
 
         readonly string[] keys = { "TouchpadRightText", "TouchpadDownText", "TouchpadLeftText", "TouchpadUpText", "TriggerText", "GripText" };
