@@ -1,6 +1,6 @@
 
 # Virtual Environments
-<img src="https://github.com/EmilieHK/i5-Toolkit-for-Mixed-Reality/blob/features/virtualEnvironments/Assets/Icons/virtualEnvironmentsLogoColor.png" width="200" height="200">
+<img src="https://github.com/EmilieHK/i5-Toolkit-for-Mixed-Reality/blob/features/virtualEnvironments/Assets/i5%20Toolkit%20for%20Mixed%20Reality/Runtime/virtualEnvironments/Icons/virtualEnvironmentsLogoColor.png" width="200" height="200">
 
 ## Introduction
 
@@ -57,4 +57,8 @@ Virtual Environments, as used in this feature, consist of 3-4 objects bundled in
 - **3D Model (as Unity Prefab) [optional]** The Unity Prefab of the 3D model(s) that will be instantiated when the environment is loaded. This is an optional object and your Asset Bundle will still work without this.
 - **Credits (as .txt file)** The credits to the creator of the Skybox, 3D model(s) and the preview image.
 
-Once you have these 3-4 objects assembled you can create an Asset Bundle from them following [these instructions](https://docs.unity3d.com/Manual/AssetBundles-Workflow.html). Afterwards, you can add your environment from the Asset Bundle as described above.
+Once you have these 3-4 objects assembled you can create an Asset Bundle from them by either using our _VirtualEnvironmentsCreationTool_ which is included in this toolkit (making the creation of custom virtual environments very easy) or by following [these instructions](https://docs.unity3d.com/Manual/AssetBundles-Workflow.html). If you choose to use our _VirtualEnvironmentsCreationTool_ just select the _SampleMenu_ in the VirtualEnvironmentsScene and find the _VirtualEnvironmentsCreationTool_ script attached to it.
+![abct](https://user-images.githubusercontent.com/19326682/140026898-72a04573-e179-40d0-824d-5c683a66c513.PNG)
+
+Under _Bundle Information_ you can enter your custom environments name as _Environment Name_ and the path to the folder where your environment should be saved as _Path To Target Folder_. Then, under _Virtual Environment Components_ you can add your previously selected/created objects as listed above into the respective fields. As mentioned above, you are not required to enter a 3D Model into the _Environment Model Prefab_ field. Press the _Build AssetBundle_ button just below to build the an asset bundle from the selected objects which you will then be able to find in the specified folder you entered as the _Path To Target Folder_.
+Afterwards, you can add your environment from the Asset Bundle as described above.
