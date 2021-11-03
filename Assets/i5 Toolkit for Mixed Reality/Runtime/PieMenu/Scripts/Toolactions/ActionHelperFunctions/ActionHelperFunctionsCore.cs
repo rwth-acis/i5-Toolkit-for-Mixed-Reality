@@ -3,45 +3,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionHelperFunctionsCore
+namespace i5.Toolkit.MixedReality.PieMenu
 {
-    public static void GetGameobjectOfTypeFromHirachy(IActionHelperFunctionsShell shell, Type typeToSearch, Type[] typesToExclude = null, bool checkAbove = false, bool checkBelow = false)
+    public class ActionHelperFunctionsCore
     {
-        //If wished, check if any of the children of the target is of a type that should be excluded
-        if (typesToExclude != null && checkBelow)
+        public static void GetGameobjectOfTypeFromHirachy(IActionHelperFunctionsShell shell, Type typeToSearch, Type[] typesToExclude = null, bool checkAbove = false, bool checkBelow = false)
         {
-            foreach (Type type in typesToExclude)
+            //If wished, check if any of the children of the target is of a type that should be excluded
+            if (typesToExclude != null && checkBelow)
             {
-                if (shell.GameObjectsHasComponentOfType(type))
+                foreach (Type type in typesToExclude)
                 {
-                    shell.SetGameObjectNull();
-                    return;
-                }
-            }
-        }
-
-        if (!shell.GameObectIsNull())
-        {
-            while (!shell.GameObectIsNull() && !shell.GameObjectIsOfType(typeToSearch))
-            {
-                //If wished, check if the current object (i.e. a object above in the hirachy of the original target) is of a type that should be excluded
-                if (typesToExclude != null && checkAbove)
-                {
-                    foreach (Type type in typesToExclude)
+                    if (shell.GameObjectsHasComponentOfType(type))
                     {
-                        if (shell.GameObjectIsOfType(type))
-                        {
-                            shell.SetGameObjectNull();
-                            return;
-                        }
+                        shell.SetGameObjectNull();
+                        return;
                     }
                 }
-
-                shell.GoToParentOfGameObject();
             }
-            if (!shell.GameObectIsNull() && shell.GameObjectIsOfType(typeToSearch))
+
+            if (!shell.GameObectIsNull())
             {
-                return;
+                while (!shell.GameObectIsNull() && !shell.GameObjectIsOfType(typeToSearch))
+                {
+                    //If wished, check if the current object (i.e. a object above in the hirachy of the original target) is of a type that should be excluded
+                    if (typesToExclude != null && checkAbove)
+                    {
+                        foreach (Type type in typesToExclude)
+                        {
+                            if (shell.GameObjectIsOfType(type))
+                            {
+                                shell.SetGameObjectNull();
+                                return;
+                            }
+                        }
+                    }
+
+                    shell.GoToParentOfGameObject();
+                }
+                if (!shell.GameObectIsNull() && shell.GameObjectIsOfType(typeToSearch))
+                {
+                    return;
+                }
             }
         }
     }

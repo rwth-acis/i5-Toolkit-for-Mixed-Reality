@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FakeItEasy;
+using i5.Toolkit.MixedReality.PieMenu;
 
 namespace i5.Toolkit.MixedReality.Tests.PieMenu
 {

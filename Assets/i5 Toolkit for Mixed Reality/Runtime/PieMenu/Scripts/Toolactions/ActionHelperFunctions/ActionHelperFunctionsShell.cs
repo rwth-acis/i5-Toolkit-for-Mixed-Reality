@@ -3,32 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class ActionHelperFunctionsShell : IActionHelperFunctionsShell
+namespace i5.Toolkit.MixedReality.PieMenu
 {
-    public GameObject gameObject { get; set; }
-
-    public bool GameObjectsHasComponentOfType(Type type)
+    public class ActionHelperFunctionsShell : IActionHelperFunctionsShell
     {
-        return gameObject.GetComponentInChildren(type, true) != null;
-    }
+        public GameObject gameObject { get; set; }
 
-    public bool GameObjectIsOfType(Type type)
-    {
-        return gameObject.GetComponent(type) != null;
-    }
+        public bool GameObjectsHasComponentOfType(Type type)
+        {
+            return gameObject.GetComponentInChildren(type, true) != null;
+        }
 
-    public bool GameObectIsNull()
-    {
-        return gameObject == null;
-    }
+        public bool GameObjectIsOfType(Type type)
+        {
+            return gameObject.GetComponent(type) != null;
+        }
 
-    public void GoToParentOfGameObject()
-    {
-        gameObject = gameObject.transform.parent?.gameObject;
-    }
+        public bool GameObectIsNull()
+        {
+            return gameObject == null;
+        }
 
-    public void SetGameObjectNull()
-    {
-        gameObject = null;
+        public void GoToParentOfGameObject()
+        {
+            gameObject = gameObject.transform.parent?.gameObject;
+        }
+
+        public void SetGameObjectNull()
+        {
+            gameObject = null;
+        }
     }
 }
