@@ -17,8 +17,8 @@
       "_appTitle": "i5 Toolkit for Mixed Reality Documentation",
       "_appFooter": "i5 Toolkit for Mixed Reality Documentation",
       "_enableSearch": true,
-      "_appLogoPath": "resources/Logos/Logo_whiteBg.svg",
-      "_appFaviconPath":  "resources/Logos/Logo_whiteBg.svg"
+      "_appLogoPath": "https://raw.githubusercontent.com/rwth-acis/i5-Toolkit-for-Mixed-Reality/master/Logos/Logo%20wide.svg",
+      "_appFaviconPath":  "https://raw.githubusercontent.com/rwth-acis/i5-Toolkit-for-Mixed-Reality/master/Logos/Logo%20wide.svg"
     },
     "content": [
       {
