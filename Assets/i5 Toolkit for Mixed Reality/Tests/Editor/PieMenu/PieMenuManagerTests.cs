@@ -32,7 +32,6 @@ namespace i5.Toolkit.MixedReality.Tests.PieMenu
             {
                 toolSetup.menuEntries.Add(new MenuEntry { toolSettings = new GeneralToolSettings { toolName = "Test Tool " + i } });
             }
-            
         }
 
         #region Menu Open

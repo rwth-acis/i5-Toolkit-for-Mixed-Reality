@@ -129,8 +129,6 @@ namespace i5.Toolkit.MixedReality.PieMenu
                     if (isTool)
                     {
                         shell.InvokeEvent(shell.GetPieMenuSetup().defaultEntry.gripSettings.OnInputActionEndedGrip, eventData);
-
-
                     }
                     else
                     {
