@@ -1,13 +1,12 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit;
-using i5.Toolkit.Core.ServiceCore;
-using TMPro;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// Implements the shared functionalitys for the ViveWand tool and teleporter: handeling the description texts, the input source reference and the grip button
+    /// </summary>
     public abstract class ViveWandCore
     {
         public IViveWandShell shell;

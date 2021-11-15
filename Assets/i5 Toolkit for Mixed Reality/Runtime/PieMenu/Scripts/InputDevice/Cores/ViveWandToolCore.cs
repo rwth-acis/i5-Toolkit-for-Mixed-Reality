@@ -1,18 +1,20 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// Implements the functionality of the ViveWand tool: setup of the description texts and icons, handeling the touchpad and the trigger, and the hover events.
+    /// </summary>
     public class ViveWandToolCore : ViveWandCore
     {
         MenuEntry defaultEntry;
 
         /// <summary>
-        /// Stes the right icons and description texts and activates the description texts for descriptionShowTime seconds.
+        /// Sets the right icons and description texts and activates the description texts for descriptionShowTime seconds.
         /// </summary>
         public void SetupTool(MenuEntry newEntry)
         {

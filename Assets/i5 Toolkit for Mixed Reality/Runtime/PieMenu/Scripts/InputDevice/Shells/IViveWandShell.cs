@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using i5.Toolkit.Core.ServiceCore;
-using TMPro;
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// The needed callback functions for the ViveWandCore.
+    /// </summary>
     public interface IViveWandShell
     {
         void SetGameObjectActive(string key, bool active);
@@ -21,8 +20,8 @@ namespace i5.Toolkit.MixedReality.PieMenu
         HashSet<IMixedRealityInputSource> GetInputSources();
         bool GameObjectProxyEqualsOwnObject(IMixedRealityControllerVisualizer visualizer);
         void SetOwnSource();
-        void RegisterHandler<T>() where T : UnityEngine.EventSystems.IEventSystemHandler;
-        void UnregisterHandler<T>() where T : UnityEngine.EventSystems.IEventSystemHandler;
+        void RegisterHandler<T>() where T : IEventSystemHandler;
+        void UnregisterHandler<T>() where T : IEventSystemHandler;
         PieMenuSetup GetPieMenuSetup();
         void SetIcon(string key, Sprite icon);
         void InvokeEvent<T>(UnityEvent<T> inputEvent, T eventData) where T : BaseEventData;

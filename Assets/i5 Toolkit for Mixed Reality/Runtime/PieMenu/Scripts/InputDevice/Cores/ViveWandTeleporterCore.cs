@@ -6,6 +6,9 @@ using i5.Toolkit.Core.ServiceCore;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// Implements the setup of the description texts for the teleporter.
+    /// </summary>
     public class ViveWandTeleporterCore : ViveWandCore
     {
         /// <summary>
@@ -23,7 +26,7 @@ namespace i5.Toolkit.MixedReality.PieMenu
         }
 
         /// <summary>
-        /// Registers the handlers in the input system and setups the tool
+        /// Registers the handlers in the input system and setups the tool.
         /// </summary>
         public void OnEnable()
         {

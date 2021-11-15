@@ -7,6 +7,9 @@ using UnityEngine.EventSystems;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// The needed callback functions for the ViveWandToolCore.
+    /// </summary>
     public interface IViveWandToolShell : IViveWandShell
     {
         MenuEntry currentEntry { get; set; }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using i5.Toolkit.Core.ServiceCore;
 using TMPro;
@@ -11,9 +10,13 @@ using UnityEngine.EventSystems;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// The implementation of the callback functions for the ViveWandCore.
+    /// </summary>
     public class ViveWandShell : MonoBehaviour, IViveWandShell, IMixedRealityInputHandler<float>
     {
-        Dictionary<string, GameObject> gameObjectBuffer = new Dictionary<string, GameObject>();
+        //Buffers Gameobjects for the ViveWandCore to operate on.
+        private Dictionary<string, GameObject> gameObjectBuffer = new Dictionary<string, GameObject>();
         protected ViveWandCore core;
 
         //Callback methods
@@ -68,12 +71,12 @@ namespace i5.Toolkit.MixedReality.PieMenu
         }
 
         //MR events
-        public void RegisterHandler<T>() where T : UnityEngine.EventSystems.IEventSystemHandler
+        public void RegisterHandler<T>() where T : IEventSystemHandler
         {
             CoreServices.InputSystem?.RegisterHandler<T>(this);
         }
 
-        public void UnregisterHandler<T>() where T : UnityEngine.EventSystems.IEventSystemHandler
+        public void UnregisterHandler<T>() where T : IEventSystemHandler
         {
             CoreServices.InputSystem?.UnregisterHandler<T>(this);
         }

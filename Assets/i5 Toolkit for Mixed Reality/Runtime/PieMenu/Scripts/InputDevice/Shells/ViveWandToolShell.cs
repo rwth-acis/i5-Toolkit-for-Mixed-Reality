@@ -7,6 +7,10 @@ using UnityEngine.EventSystems;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// This needs to be added the ViveWand prefab, to use the ViveWand tool functionality. Connects the ViveWandTeleporterCore with the Unity environment and implemts
+    /// the needed callback functions.
+    /// </summary>
     public class ViveWandToolShell : ViveWandShell, IViveWandToolShell, IMixedRealityInputActionHandler, IMixedRealityInputHandler<Vector2>
     {
 
