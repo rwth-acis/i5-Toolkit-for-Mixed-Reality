@@ -6,6 +6,9 @@ using i5.Toolkit.Core.ServiceCore;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// Registers the saved toolSetup in the ServiceManager for the PieMenu components to retrive. Also registers the command stack service.
+    /// </summary>
     public class PieMenuServiceBootstraper : BaseServiceBootstrapper
     {
         public PieMenuSetup toolSetup;
