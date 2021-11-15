@@ -5,6 +5,9 @@ using System;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// The needed callback functions for the ActionHelperFunctions core.
+    /// </summary>
     public class ActionHelperFunctionsShell : IActionHelperFunctionsShell
     {
         public GameObject gameObject { get; set; }

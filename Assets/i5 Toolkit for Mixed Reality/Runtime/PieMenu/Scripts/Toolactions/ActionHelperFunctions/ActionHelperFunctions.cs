@@ -14,9 +14,10 @@ namespace i5.Toolkit.MixedReality.PieMenu
         /// Iterates upwards in the hirachy of gameObject and returns the first GameObject that has a script of type typeToSearch attached. Returns null if nothing is found.
         /// </summary>
         /// <param name="gameObject"></param> The gameObject on which the search should start
+        /// <param name="typeToSearch"></param> The searched types
         /// <param name="typesToExclude"></param> Can be used as a filter. A GameObject can be ignored if it has a object contianed in typesToExclude above or below it
         /// <param name="checkAbove"></param> Check above in the hirachy for filterd types
-        /// <param name="checkBelow"></param>Check below in the hirachy for filterd types
+        /// <param name="checkBelow"></param> Check below in the hirachy for filterd types
         /// <returns></returns>
         public static GameObject GetGameobjectOfTypeFromHirachy(GameObject gameObject, Type typeToSearch, Type[] typesToExclude = null, bool checkAbove = false, bool checkBelow = false)
         {

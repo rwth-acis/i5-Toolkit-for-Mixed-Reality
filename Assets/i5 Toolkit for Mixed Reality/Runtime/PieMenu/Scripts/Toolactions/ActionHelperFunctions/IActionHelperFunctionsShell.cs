@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// The needed callback functions for the ActionHelperFunctions core.
+    /// </summary>
     public interface IActionHelperFunctionsShell
     {
         bool GameObjectsHasComponentOfType(Type type);
