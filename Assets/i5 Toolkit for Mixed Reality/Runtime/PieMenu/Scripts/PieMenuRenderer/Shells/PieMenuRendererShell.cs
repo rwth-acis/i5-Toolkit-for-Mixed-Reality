@@ -7,7 +7,10 @@ using i5.Toolkit.Core.ServiceCore;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
-
+    /// <summary>
+    /// This needs to be added to the scene, in order to use the the PieMenuRenderer. Connects the PieMenuRendererCore with
+    /// the Unity environment and implements the needed callback functions.
+    /// </summary>
     public class PieMenuRendererShell : MonoBehaviour, IPieMenuRendererShell
     {
         PieMenuRendererCore core;

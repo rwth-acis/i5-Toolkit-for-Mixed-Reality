@@ -8,7 +8,7 @@ using i5.Toolkit.Core.ServiceCore;
 namespace i5.Toolkit.MixedReality.PieMenu
 {
     /// <summary>
-    /// Handels all visual parts of the PieMenu
+    /// Implements the functions needed to handels all visual parts of the PieMenu.
     /// </summary>
     public class PieMenuRendererCore
     {
