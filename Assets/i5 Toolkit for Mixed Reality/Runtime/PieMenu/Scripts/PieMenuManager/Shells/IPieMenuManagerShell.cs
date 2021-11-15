@@ -5,6 +5,9 @@ using Microsoft.MixedReality.Toolkit.Input;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// The needed callback functions for the PieMenuManagerCore
+    /// </summary>
     public interface IPieMenuManagerShell
     {
         void InstantiatePieMenu(Vector3 position, Quaternion rotation, IMixedRealityPointer pointer);

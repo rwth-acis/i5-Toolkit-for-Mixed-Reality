@@ -2,6 +2,9 @@
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
+    /// <summary>
+    /// The needed callback functions for the PieMenuManagerShell
+    /// </summary>
     public interface IPieMenuManagerCore
     {
         IPieMenuManagerShell shell { get; set; }

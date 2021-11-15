@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit;
 namespace i5.Toolkit.MixedReality.PieMenu
 {
     /// <summary>
-    /// Manages the input events to open and close the pie menu
+    /// Implements the functionality for handeling the input events to open and close the pie menu. Needs a PieMenuManagerShell to be connected with the Unity environment.
     /// </summary>
     public class PieMenuManagerCore : IPieMenuManagerCore
     {

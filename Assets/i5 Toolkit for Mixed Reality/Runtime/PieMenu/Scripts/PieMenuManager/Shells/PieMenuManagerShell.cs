@@ -5,8 +5,11 @@ using Microsoft.MixedReality.Toolkit;
 
 namespace i5.Toolkit.MixedReality.PieMenu
 {
-
-    public class PieMenuManagerShell : MonoBehaviour, IPieMenuManagerShell, IMixedRealityInputActionHandler, IMixedRealityGestureHandler, IMixedRealityHandJointHandler
+    /// <summary>
+    /// This needs to be added to the scene, in order to use the the PieMenu. Connects the PieMenuManagerCore with the Unity environment and implements the needed callback functions.
+    /// Requires that a ToolSetupService is registered in the Servicemanager.
+    /// </summary>
+    public class PieMenuManagerShell : MonoBehaviour, IPieMenuManagerShell, IMixedRealityInputActionHandler
     {
         [SerializeField]
         GameObject pieMenuPrefab;
@@ -23,8 +26,6 @@ namespace i5.Toolkit.MixedReality.PieMenu
             core = new PieMenuManagerCore();
             core.shell = this;
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputActionHandler>(this);
-            CoreServices.InputSystem?.RegisterHandler<IMixedRealityGestureHandler>(this);
-            CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
         }
 
         // Deregisters all handlers, otherwise it will recive events even after deactivcation.
@@ -63,32 +64,6 @@ namespace i5.Toolkit.MixedReality.PieMenu
             ToolSetupService toolSetup = ServiceManager.GetService<ToolSetupService>();
             int currentlyHighlighted = instantiatedPieMenu != null ? instantiatedPieMenu.GetComponent<IPieMenuRendererShell>().getCurrentlyHighlighted() : -1;
             core.MenuClose(eventData, instantiatedPieMenu != null, toolSetup, currentlyHighlighted, ref invokingSource);
-        }
-
-        //Gesture events
-        void IMixedRealityGestureHandler.OnGestureCanceled(InputEventData eventData)
-        {
-            Debug.Log("Cancle");
-        }
-
-        void IMixedRealityGestureHandler.OnGestureCompleted(InputEventData eventData)
-        {
-            Debug.Log("Complete");
-        }
-
-        void IMixedRealityGestureHandler.OnGestureStarted(InputEventData eventData)
-        {
-            Debug.Log("Start");
-        }
-
-        void IMixedRealityGestureHandler.OnGestureUpdated(InputEventData eventData)
-        {
-            Debug.Log("Update");
-        }
-
-        void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<System.Collections.Generic.IDictionary<Microsoft.MixedReality.Toolkit.Utilities.TrackedHandJoint, Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose>> eventData)
-        {
-            Debug.Log(eventData.MixedRealityInputAction.Description);
         }
     }
 }
