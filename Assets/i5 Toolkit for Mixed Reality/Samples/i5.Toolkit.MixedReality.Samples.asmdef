@@ -1,0 +1,18 @@
+{
+    "name": "NewAssembly",
+    "references": [
+        "i5.Toolkit.Core.Runtime",
+        "i5.Toolkit.MixedReality.Runtime",
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.SDK"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

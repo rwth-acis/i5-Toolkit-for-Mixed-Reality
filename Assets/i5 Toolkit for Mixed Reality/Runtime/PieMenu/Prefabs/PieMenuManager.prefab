@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2627656606189857573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6642489127180809174}
+  - component: {fileID: 1511928166512116513}
+  - component: {fileID: 8821610706099530504}
+  - component: {fileID: 3689149351989424705}
+  m_Layer: 0
+  m_Name: PieMenuManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6642489127180809174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2627656606189857573}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.7123375, y: 2.2147348, z: -0.5614636}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1511928166512116513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2627656606189857573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57c1bd2430a5d84f884fe659586905f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolSetup:
+    triggerInputAction:
+      id: 0
+      description: 
+      axisConstraint: 0
+    touchpadTouchActionAction:
+      id: 0
+      description: 
+      axisConstraint: 0
+    touchpadPressAction:
+      id: 0
+      description: 
+      axisConstraint: 0
+    gripPressAction:
+      id: 0
+      description: 
+      axisConstraint: 0
+    menuAction:
+      id: 0
+      description: 
+      axisConstraint: 0
+    pieMenuPieceNormalColor: {r: 0, g: 0, b: 0, a: 0}
+    pieMenuPieceHighlighColor: {r: 0, g: 0, b: 0, a: 0}
+    descriptionShowTime: 0
+    menuEntries: []
+    defaultEntry:
+      toolSettings:
+        iconTool: {fileID: 0}
+        toolName: 
+      triggerSettings:
+        textTrigger: 
+        OnInputActionStartedTrigger:
+          m_PersistentCalls:
+            m_Calls: []
+        OnInputActionEndedTrigger:
+          m_PersistentCalls:
+            m_Calls: []
+      gripSettings:
+        textGrip: 
+        OnInputActionStartedGrip:
+          m_PersistentCalls:
+            m_Calls: []
+        OnInputActionEndedGrip:
+          m_PersistentCalls:
+            m_Calls: []
+      touchpadUpSettings:
+        textTouchpadUp: 
+        iconTouchpadUp: {fileID: 0}
+        OnInputActionEndedTouchpadUp:
+          m_PersistentCalls:
+            m_Calls: []
+      touchpadRightSettings:
+        textTouchpadRight: 
+        iconTouchpadRight: {fileID: 0}
+        OnInputActionEndedTouchpadRight:
+          m_PersistentCalls:
+            m_Calls: []
+      TouchpadDownSettings:
+        textTouchpadDown: 
+        iconTouchpadDown: {fileID: 0}
+        OnInputActionEndedTouchpadDown:
+          m_PersistentCalls:
+            m_Calls: []
+      touchpadLeftSettings:
+        textTouchpadLeft: 
+        iconTouchpadLeft: {fileID: 0}
+        OnInputActionEndedTouchpadLeft:
+          m_PersistentCalls:
+            m_Calls: []
+      toolSpecificevents:
+        OnToolCreated:
+          m_PersistentCalls:
+            m_Calls: []
+        OnToolDestroyed:
+          m_PersistentCalls:
+            m_Calls: []
+        OnHoverOverTargetStart:
+          m_PersistentCalls:
+            m_Calls: []
+        OnHoverOverTargetActive:
+          m_PersistentCalls:
+            m_Calls: []
+        OnHoverOverTargetStop:
+          m_PersistentCalls:
+            m_Calls: []
+    textGrip: 
+    OnInputActionStartedGrip:
+      m_PersistentCalls:
+        m_Calls: []
+    OnInputActionEndedGrip:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &8821610706099530504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2627656606189857573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d06fffcae02927244b989639db4a97a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightSprite: {fileID: 4521950659112143869, guid: db57ff4ff63901f4eaeb3d9a1a1255e2,
+    type: 3}
+  objectTransformer: {fileID: 0}
+--- !u!114 &3689149351989424705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2627656606189857573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4525f48205fb9f04c8ec809d45fb10a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pieMenuPrefab: {fileID: 7545145203548608985, guid: b7e4659a8535b6b47a2ce302473d5c95,
+    type: 3}

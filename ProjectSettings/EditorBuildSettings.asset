@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/i5 Toolkit for Mixed Reality/Tests/Runtime/PieMenu/PieMenuTestScene.unity
+    guid: 6d1d310e72ecc494a8f646d1aa4856ea
   m_configObjects: {}

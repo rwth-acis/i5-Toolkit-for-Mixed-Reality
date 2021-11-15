@@ -73,3 +73,6 @@ crashlytics-build.properties
 /**/obj/
 reference
 /Documentation/api
+
+#CodeCoverage
+/CodeCoverage/*
