@@ -16,9 +16,9 @@ public class DemoMainMenu : MenuBase {
 
     }
 
-    public void CreateCube() {
-        GameObject createdCube = Instantiate(objectToCreate, new Vector3(gameObject.transform.position.x - 0.3f, gameObject.transform.position.y, gameObject.transform.position.z), Quaternion.Euler(0, 0, 0));
-        createdCube.SetActive(true);
+    public void CreateObject() {
+        GameObject createdObject = Instantiate(objectToCreate, new Vector3(gameObject.transform.position.x - 0.3f, gameObject.transform.position.y, gameObject.transform.position.z), Quaternion.Euler(0, 0, 0));
+        createdObject.SetActive(true);
     }
 
     public override void Initialize() {

@@ -2,6 +2,7 @@
 using i5.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
     [CreateAssetMenu(menuName = "i5 Mixed Reality Toolkit/Menu Placement Service")]
     public class MenuPlacementService : ScriptableObject, IService {
 
+        #region Enums
         public enum MenuPlacementServiceMode {
             Automatic,
             Manual,
@@ -23,28 +25,128 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             Adjustment
         }
 
+        private enum DefaultMode {
+            Automatic,
+            Manual
+        }
+        #endregion
+
+        #region Serizalize Fields
         //Use to switch between the floating and campact version
         [Header("Menus")]
         [Tooltip("Drag the menu objects here. If you don't want to use one type of them, just leave it.")]
         [SerializeField] private MenuVariants mainMenu;
         [Tooltip("Drag the menu objects here. If you don't want to use one type of them, just leave it.")]
         [SerializeField] private List<MenuVariants> objectMenus;
+
         [Header("User Interface Components")]
         [Tooltip("The Menu Controller enables the manipulation of created menus and interaction with the system.")]
         [SerializeField] private GameObject systemControlPanel;
+        [Tooltip("The app bar for manipulation of menus")]
         [SerializeField] private GameObject appBar;
         [Tooltip("The dialog prefab for suggestions in manual mode")]
         [SerializeField] private GameObject suggestionPanel;
         [Tooltip("The default placement mode")]
         [SerializeField] private DefaultMode defaultPlacementMode = DefaultMode.Automatic;
 
+        [Header("Physics")]
+        [Tooltip("The layer of Spatial Awareness used in Raycast, which is Layer 31 by MRTK default settings. Please select the correct layer if the default one is occupied.")]
+        [SerializeField] private LayerMask spatialAwarenessLayer = 1 << 31;
+        [Tooltip("The layer of menus used in Raycast, which is Layer 9 by default settings. Please select the correct layer if the default one is occupied.")]
+        [SerializeField] private LayerMask menuLayer = 1 << 9;
+        #endregion
+
+        #region Non-serializable Properties
+
+        private Bounds floatingMainMenuBoundingBox;
+        private Bounds compactMainMenuBoundingBox;
+
+        //Use the corresponding ID of a MenuVariants to get the ObjectPool for it.
+        private int floatingMainMenuPoolID;
+        private int compactMainMenuPoolID;
+        //Dictionary<menuID, menuPoolID>
+        private Dictionary<int, int> floatingObjectMenuPoolIDs = new Dictionary<int, int>();
+        private Dictionary<int, int> compactObjectMenuPoolIDs = new Dictionary<int, int>();
+        //Buffers for main menus
+        private List<Tuple<Vector3, Quaternion, Vector3, float>> retrieveBufferFloatingMainMenu = new List<Tuple<Vector3, Quaternion, Vector3, float>>();
+        private List<Tuple<Vector3, Quaternion, Vector3, float>> retrieveBufferCompactMainMenu = new List<Tuple<Vector3, Quaternion, Vector3, float>>();
+        //For ManipulationLogic = OneToAll, the dictionaries will be read and written by all menus
+        //Dictionary<menuID, Bounds>
+        private Dictionary<int, Bounds> boundingBoxFloatingObjectMenu = new Dictionary<int, Bounds>();
+        private Dictionary<int, Bounds> boundingBoxCompactObjectMenu = new Dictionary<int, Bounds>();
+        //Dictionary<targetObject, Bounds>
+        //The buffer "with orbital" is for floating and compact object menus with Orbital enabled.
+        private Dictionary<int, List<Tuple<Vector3, Quaternion, Vector3, float>>> retrieveBufferOneToAllOrbital = new Dictionary<int, List<Tuple<Vector3, Quaternion, Vector3, float>>>();
+        //The buffer "without orbital" is for floating object menus with InBetween, and compact object menus with HandConstraint enabled.
+        private Dictionary<int, List<Tuple<Vector3, Quaternion, Vector3, float>>> retrieveBufferOneToAllWithoutOrbital = new Dictionary<int, List<Tuple<Vector3, Quaternion, Vector3, float>>>();
+        //Dictionary<menuID, offsets>
+        private Dictionary<int, Tuple<Vector3, Quaternion, Vector3, float>> currentOneToAllOffsetInBetween = new Dictionary<int, Tuple<Vector3, Quaternion, Vector3, float>>();
+        private Dictionary<int, Tuple<Vector3, Quaternion, Vector3, float>> currentOneToAllOffsetOrbital = new Dictionary<int, Tuple<Vector3, Quaternion, Vector3, float>>();
+        private Dictionary<int, Tuple<Vector3, Quaternion, Vector3, float>> currentOneToAllOffsetHandConstraint = new Dictionary<int, Tuple<Vector3, Quaternion, Vector3, float>>();
+
+        //For ManipulationLogic = OneToOne, the buffers/offsets are only for one single object, and will be read an written by the menu assigned to it.
+        //Dictionary<targetObject, List<Tupel<Position, Rotaion, Scale, ViewPercentageV>>>
+        private Dictionary<GameObject, List<Tuple<Vector3, Quaternion, Vector3, float>>> retrieveBufferOneToOneOrbitalFloating = new Dictionary<GameObject, List<Tuple<Vector3, Quaternion, Vector3, float>>>();
+        private Dictionary<GameObject, List<Tuple<Vector3, Quaternion, Vector3, float>>> retrieveBufferOneToOneOrbitalCompact = new Dictionary<GameObject, List<Tuple<Vector3, Quaternion, Vector3, float>>>();
+        private Dictionary<GameObject, List<Tuple<Vector3, Quaternion, Vector3, float>>> retrieveBufferOneToOneInBetween = new Dictionary<GameObject, List<Tuple<Vector3, Quaternion, Vector3, float>>>();
+        private Dictionary<GameObject, List<Tuple<Vector3, Quaternion, Vector3, float>>> retrieveBufferOneToOneHandConstraint = new Dictionary<GameObject, List<Tuple<Vector3, Quaternion, Vector3, float>>>();
+        //Dictionary<targetObject, Tuple<Vector3, Quaternion, Vector3, float>>
+        private Dictionary<GameObject, Tuple<Vector3, Quaternion, Vector3, float>> currentOneToOneOffsetOrbitalFloating = new Dictionary<GameObject, Tuple<Vector3, Quaternion, Vector3, float>>();
+        private Dictionary<GameObject, Tuple<Vector3, Quaternion, Vector3, float>> currentOneToOneOffsetOrbitalCompact = new Dictionary<GameObject, Tuple<Vector3, Quaternion, Vector3, float>>();
+        private Dictionary<GameObject, Tuple<Vector3, Quaternion, Vector3, float>> currentOneToOneOffsetInBetween = new Dictionary<GameObject, Tuple<Vector3, Quaternion, Vector3, float>>();
+        private Dictionary<GameObject, Tuple<Vector3, Quaternion, Vector3, float>> currentOneToOneOffsetHandConstraint = new Dictionary<GameObject, Tuple<Vector3, Quaternion, Vector3, float>>();
+
+        private GameObject inBetweenTarget;
         private MenuPlacementServiceMode placementMode;
+        // A counter for the expanded app bars.
+        private int adjustmentModeSemaphore = 0;
+        public bool SuggestionPanelOn { get; set; }
+        /// <summary>
+        /// The previous mode. Should only be called in adjustment mode.
+        /// </summary>
+        public MenuPlacementServiceMode PreviousMode { get; set; }
+
+        /// <summary>
+        /// If the current running platform supports articulated hand (HoloLens 2)
+        /// </summary>
         public bool ArticulatedHandSupported { get; private set; }
+
+        /// <summary>
+        /// If the current running platform supports motion controller.
+        /// </summary>
         public bool MotionControllerSupported { get; private set; }
+
+        /// <summary>
+        /// If the current running platform supports GGV hand.
+        /// </summary>
         public bool GGVHandSupported { get; private set; }
 
+        /// <summary>
+        /// If the current running platform supports hand tracking. It is equal to ArticulatedHandSupported || MotionControllerSupported.
+        /// </summary>
         public bool HandTrackingEnabled { get; private set; }
+        #endregion
 
+        #region Getters & Setters
+        /// <summary>
+        /// The app bar for manipulation of menu objects.
+        /// </summary>
+        public GameObject AppBar
+        {
+            get => appBar;
+        }
+
+        /// <summary>
+        /// The dialog panel for suggestion in the manual mode.
+        /// </summary>
+        public GameObject SuggestionPanel
+        {
+            get => suggestionPanel;
+        }
+
+        /// <summary>
+        /// Current placement mode.
+        /// </summary>
         public MenuPlacementServiceMode PlacementMode
         {
             get => placementMode;
@@ -54,88 +156,42 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
         }
 
-        private enum DefaultMode {
-            Automatic,
-            Manual
+        /// <summary>
+        /// The Layermask of the "spatial awareness" layer, default is 31 by MRTK.
+        /// </summary>
+        public LayerMask SpatialAwarenessLayer
+        {
+            get => spatialAwarenessLayer;
         }
 
         /// <summary>
-        /// The app bar for manipulation of menu objects.
+        /// The Layermask of the "menu" layer. All menu used in the menu placement system should be assigned to this layer.
         /// </summary>
-        public GameObject AppBar
+        public LayerMask MenuLayer
         {
-            get => appBar;
+            get => menuLayer;
         }
+        #endregion
 
-        public GameObject SuggestionPanel
-        {
-            get => suggestionPanel;
-        }
-
-        private Bounds floatingMainMenuBoundingBoxOnClose;
-        private Bounds compactMainMenuBoundingBoxOnClose;
-        //Dictionary<menuID, Bounds>
-        private Dictionary<int, Bounds> floatingObjectMenuBoundingBoxOnClose = new Dictionary<int, Bounds>();
-        private Dictionary<int, Bounds> compactObjectMenuBoundingBoxOnClose = new Dictionary<int, Bounds>();
-
-
-        //Use the corresponding ID of a MenuVariants to get the ObjectPool for it.
-        private int floatingMainMenuPoolID;
-        private int compactMainMenuPoolID;
-        //Dictionary<menuID, menuPoolID>
-        private Dictionary<int, int> floatingObjectMenuPoolIDs = new Dictionary<int, int>();
-        private Dictionary<int, int> compactObjectMenuPoolIDs = new Dictionary<int, int>();
-
-        //Dictionary<menuID, PositionOffset>
-        private Dictionary<int, Vector3> inBetweenPositionOffsetOnClose = new Dictionary<int, Vector3>();
-        private Dictionary<int, Vector3> orbitalPositionOffsetOnClose = new Dictionary<int, Vector3>();
-
-        private GameObject inBetweenTarget;
-
-        public bool SuggestionPanelOn { get; set; }
-
-        /// <summary>
-        /// used to switch back from the adjustment mode
-        /// </summary>
-        public MenuPlacementServiceMode PreviousMode { get; set; }
+        #region IService Methods
 
         public void Initialize(IServiceManager owner) {
             CheckMenuInitialization();
-            //make a pool for each MenuVariants and assign the index of the pool to the corresponding variable. Ignore the not assigned menu.
-            if (mainMenu.floatingMenu != null) {
-                floatingMainMenuPoolID = ObjectPool<GameObject>.CreateNewPool(1);
-            }
-            if (mainMenu.compactMenu != null) {
-                compactMainMenuPoolID = ObjectPool<GameObject>.CreateNewPool(1);
-            }
-
-            foreach (MenuVariants m in objectMenus) {
-                if (m.floatingMenu != null) { 
-                    floatingObjectMenuPoolIDs.Add(m.floatingMenu.GetComponent<MenuHandler>().menuID, ObjectPool<GameObject>.CreateNewPool(5));
-                }
-                if (m.compactMenu != null) {
-                    compactObjectMenuPoolIDs.Add(m.compactMenu.GetComponent<MenuHandler>().menuID, ObjectPool<GameObject>.CreateNewPool(5));
-                }
-            }
-
-            if (defaultPlacementMode == DefaultMode.Automatic) {
-                placementMode = MenuPlacementServiceMode.Automatic;
-            }
-            else {
-                placementMode = MenuPlacementServiceMode.Manual;
-            }
-
-            SuggestionPanelOn = false;
+            CreateObjectPools();
+            InitializeProperties();
+            InitializeMainMenuBuffers();
+            InitializeOneToAllRetrieveBuffers();
+            InitializeCurrentOneToAllOffsets();
             CreateInBetweenTarget();
             CreateMenuController();
             CheckCapability();
-
         }
 
         public void Cleanup() {
-            placementMode = MenuPlacementServiceMode.Automatic;
+            InitializeProperties();
         }
-        
+
+        #endregion
 
         #region Public Methods
 
@@ -147,10 +203,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
         
         public void Quit() {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#endif
-            Application.Quit();
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #endif
+                Application.Quit();
         }
 
         /// <summary>
@@ -175,18 +231,357 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
 
         public void EnterAdjustmentMode() {
-            PreviousMode = placementMode;
-            placementMode = MenuPlacementServiceMode.Adjustment;
+            if(adjustmentModeSemaphore == 0) {
+                PreviousMode = placementMode;
+                placementMode = MenuPlacementServiceMode.Adjustment;
+            }
+            adjustmentModeSemaphore++;
         }
 
         public void ExitAdjustmentMode() {
-            placementMode = PreviousMode;
+            adjustmentModeSemaphore--;
+            if (adjustmentModeSemaphore < 0) {
+                Debug.LogError("AdjustmentModeSemaphore is smaller than 0, it has value " + adjustmentModeSemaphore + ". It is forced reset to 0.");
+                adjustmentModeSemaphore = 0;
+            }
+            if(adjustmentModeSemaphore == 0) {
+                placementMode = PreviousMode;
+            }
+        }
+        /// <summary>
+        /// Get the retrieve buffer with given parameters, you can leave certain parameters null or set them casually if they are not important to identify the buffer. Select solverName from Orbital, InBetween,and HandConstraint.
+        /// </summary>
+        /// <param name="solverName">Select from Orbital, InBetween, HandConstraint</param>
+        public List<Tuple<Vector3, Quaternion, Vector3, float>> GetRetrieveBuffer(MenuHandler.MenuVariantType variant, MenuHandler.MenuManipulationLogic manipulationLogic, bool compact, int menuID, string solverName, GameObject targetObject) {
+            switch (variant) {
+                case MenuHandler.MenuVariantType.MainMenu:
+                    return GetRetrieveBufferMainMenu(menuID);
+                case MenuHandler.MenuVariantType.ObjectMenu:
+                    switch (manipulationLogic) {
+                        case MenuHandler.MenuManipulationLogic.OneToAll:
+                            switch (solverName) {
+                                case "Orbital":
+                                    return GetRetrieveBufferOneToAllOrbital(menuID);
+                                case "InBetween":
+                                    return GetRetrieveBufferOneToAllWithoutOrbital(menuID);
+                                case "HandConstraint":
+                                    return GetRetrieveBufferOneToAllWithoutOrbital(menuID);
+                                default:
+                                    Debug.LogError("No Such Buffer, please check the solverName: " + solverName + ", the variant: " + variant + ", and the logic: " + manipulationLogic);
+                                    return null;
+                            }
+                        case MenuHandler.MenuManipulationLogic.OneToOne:
+                            if (compact) {
+                                switch (solverName) {
+                                    case "Orbital":
+                                        return GetRetrieveBufferOneToOneOrbitalCompact(targetObject);
+                                    case "HandConstraint":
+                                        return GetRetrieveBufferOneToOneHandConstraint(targetObject);
+                                    default:
+                                        return null;
+                                }
+                            }
+                            else {
+                                switch (solverName) {
+                                    case "Orbital":
+                                        return GetRetrieveBufferOneToOneOrbitalFloating(targetObject);
+                                    case "InBetween":
+                                        return GetRetrieveBufferOneToOneInBetween(targetObject);
+                                    default:
+                                        Debug.LogError("No Such Buffer, please check the solverName: " + solverName + ", the variant: " + variant + ", and the logic: " + manipulationLogic);
+                                        return null;
+                                }
+                            }
+                        default:
+                            return null;
+                    }
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Get the current offset with given parameters, you can leave certain parameters null or set them casually if they are not important to identify the offset. Select solverName from Orbital, InBetween,and HandConstraint.
+        /// </summary>
+        /// <param name="solverName">Select from Orbital, InBetween, HandConstraint</param>
+        public Tuple<Vector3, Quaternion, Vector3, float> GetOffset(MenuHandler.MenuManipulationLogic manipulationLogic, bool compact, int menuID, string solverName, GameObject targetObject) {
+            switch (manipulationLogic) {
+                case MenuHandler.MenuManipulationLogic.OneToAll:
+                    switch (solverName) {
+                        case "Orbital":
+                            return GetCurrentOneToAllOffsetOrbital(menuID);
+                        case "InBetween":
+                            return GetCurrentOneToAllOffsetInBetween(menuID);
+                        case "HandConstraint":
+                            return GetCurrentOneToAllOffsetHandConstraint(menuID);
+                        default:
+                            Debug.LogError("No Such Offset, please check the solverName: " + solverName + ", and the logic: " + manipulationLogic);
+                            return null;
+                    }
+                case MenuHandler.MenuManipulationLogic.OneToOne:
+                    if (compact) {
+                        switch (solverName) {
+                            case "Orbital":
+                                return GetCurrentOneToOneOffsetOrbitalCompact(targetObject);
+                            case "HandConstraint":
+                                return GetCurrentOneToOneOffsetHandConstraint(targetObject);
+                            default:
+                                return null;
+                        }
+                    }
+                    else {
+                        switch (solverName) {
+                            case "Orbital":
+                                return GetCurrentOneToOneOffsetOrbitalFloating(targetObject);
+                            case "InBetween":
+                                return GetCurrentOneToOneOffsetInBetween(targetObject);
+                            default:
+                                Debug.LogError("No Such Buffer, please check the solverName: " + solverName + ", and the logic: " + manipulationLogic);
+                                return null;
+                        }
+                    }
+                default:
+                    return null;
+            }
+        }
+
+        public List<Tuple<Vector3, Quaternion, Vector3, float>> GetRetrieveBufferMainMenu(int menuID) {
+            if(menuID == mainMenu.floatingMenu.GetComponent<MenuHandler>().menuID) {
+                return retrieveBufferFloatingMainMenu;
+            }
+            else {
+                return retrieveBufferCompactMainMenu;
+            }
+        }
+
+        public List<Tuple<Vector3, Quaternion, Vector3, float>> GetRetrieveBufferOneToAllWithoutOrbital(GameObject menu) {
+            int menuID = menu.GetComponent<MenuHandler>().menuID;
+            return GetRetrieveBufferOneToAllWithoutOrbital(menuID);
+        }
+
+        public List<Tuple<Vector3, Quaternion, Vector3, float>> GetRetrieveBufferOneToAllWithoutOrbital(int menuID) {
+            if (retrieveBufferOneToAllWithoutOrbital.TryGetValue(menuID, out List<Tuple<Vector3, Quaternion, Vector3, float>> buffer)) {
+                return buffer;
+            }
+            else {
+                Debug.LogError("RetrieveBufferAutomaticModeWithoutOrbital for menu with ID \"" + menuID + "\" not found.");
+                return buffer;
+            }
+        }
+
+        public List<Tuple<Vector3, Quaternion, Vector3, float>> GetRetrieveBufferOneToAllOrbital(GameObject menu) {
+            int menuID = menu.GetComponent<MenuHandler>().menuID;
+            return GetRetrieveBufferOneToAllOrbital(menuID);
+        }
+
+        public List<Tuple<Vector3, Quaternion, Vector3, float>> GetRetrieveBufferOneToAllOrbital(int menuID) {
+            if (retrieveBufferOneToAllOrbital.TryGetValue(menuID, out List<Tuple<Vector3, Quaternion, Vector3, float>> buffer)) {
+                return buffer;
+            }
+            else {
+                Debug.LogError("RetrieveBufferAutomaticModeOrbital for menu with ID \"" + menuID + "\" not found.");
+                return buffer;
+            }
+        }
+
+        public Tuple<Vector3, Quaternion, Vector3, float> GetCurrentOneToAllOffsetInBetween(int menuID) {
+            if (currentOneToAllOffsetInBetween.TryGetValue(menuID, out Tuple<Vector3, Quaternion, Vector3, float> offset)) {
+                return offset;
+            }
+            else {
+                Debug.LogError("LastOffsetInbetween for menu with ID \"" + menuID + "\" not found.");
+                return offset;
+            }
+        }
+
+        public Tuple<Vector3, Quaternion, Vector3, float> GetCurrentOneToAllOffsetInBetween(GameObject menu) {
+            return GetCurrentOneToAllOffsetInBetween(menu.GetComponent<MenuHandler>().menuID);
+        }
+
+        public void SetCurrentOneToAllOffsetInBetween(int menuID, Tuple<Vector3, Quaternion, Vector3, float> offset) {
+            currentOneToAllOffsetInBetween[menuID] = offset;
+        }
+
+        public void SetCurrentOneToAllOffsetInBetween(GameObject menu, Tuple<Vector3, Quaternion, Vector3, float> offset) {
+            SetCurrentOneToAllOffsetInBetween(menu.GetComponent<MenuHandler>().menuID, offset);
+        }
+
+        public Tuple<Vector3, Quaternion, Vector3, float> GetCurrentOneToAllOffsetOrbital(int menuID) {
+            if (currentOneToAllOffsetOrbital.TryGetValue(menuID, out Tuple<Vector3, Quaternion, Vector3, float> offset)) {
+                return offset;
+            }
+            else {
+                Debug.LogError("LastOffsetOrbital for menu with ID \"" + menuID + "\" not found.");
+                return offset;
+            }
+        }
+
+        public Tuple<Vector3, Quaternion, Vector3, float> GetCurrentOneToAllOffsetOrbital(GameObject menu) {
+            return GetCurrentOneToAllOffsetOrbital(menu.GetComponent<MenuHandler>().menuID);
+        }
+
+        public void SetCurrentOneToAllOffsetOrbital(int menuID, Tuple<Vector3, Quaternion, Vector3, float> offset) {
+            currentOneToAllOffsetOrbital[menuID] = offset;
+        }
+
+        public void SetCurrentOneToAllOffsetOrbital(GameObject menu, Tuple<Vector3, Quaternion, Vector3, float> offset) {
+            SetCurrentOneToAllOffsetOrbital(menu.GetComponent<MenuHandler>().menuID, offset);
+        }
+
+        public Tuple<Vector3, Quaternion, Vector3, float> GetCurrentOneToAllOffsetHandConstraint(int menuID) {
+            if (currentOneToAllOffsetHandConstraint.TryGetValue(menuID, out Tuple<Vector3, Quaternion, Vector3, float> offset)) {
+                return offset;
+            }
+            else {
+                Debug.LogError("LastOffsetHandConstraint for menu with ID \"" + menuID + "\" not found.");
+                return offset;
+            }
+        }
+
+        public Tuple<Vector3, Quaternion, Vector3, float> GetCurrentOneToAllOffsetHandConstraint(GameObject menu) {
+            return GetCurrentOneToAllOffsetHandConstraint(menu.GetComponent<MenuHandler>().menuID);
+        }
+
+        public void SetCurrentOneToAllOffsetHandConstraint(int menuID, Tuple<Vector3, Quaternion, Vector3, float> offset) {
+            currentOneToAllOffsetHandConstraint[menuID] = offset;
+        }
+
+        public void SetCurrentOneToAllOffsetHandConstraint(GameObject menu, Tuple<Vector3, Quaternion, Vector3, float> offset) {
+            SetCurrentOneToAllOffsetHandConstraint(menu.GetComponent<MenuHandler>().menuID, offset);
+        }
+
+        public void InitializeRetrieveBufferOneToOneOrbitalFloating(GameObject targetObject, MenuHandler handler) {
+            if (!retrieveBufferOneToOneOrbitalFloating.ContainsKey(targetObject)) {
+                retrieveBufferOneToOneOrbitalFloating.Add(targetObject, new List<Tuple<Vector3, Quaternion, Vector3, float>>(handler.RetrieveBufferSize));
+            }
+        }
+
+        public void InitializeRetrieveBufferOneToOneOrbitalCompact(GameObject targetObject, MenuHandler handler) {
+            if (!retrieveBufferOneToOneOrbitalCompact.ContainsKey(targetObject)) {
+                retrieveBufferOneToOneOrbitalCompact.Add(targetObject, new List<Tuple<Vector3, Quaternion, Vector3, float>>(handler.RetrieveBufferSize));
+            }
+        }
+
+        public void InitializeRetrieveBufferOneToOneInBetween(GameObject targetObject, MenuHandler handler) {
+            if (!retrieveBufferOneToOneInBetween.ContainsKey(targetObject)) {
+                retrieveBufferOneToOneInBetween.Add(targetObject, new List<Tuple<Vector3, Quaternion, Vector3, float>>(handler.RetrieveBufferSize));
+            }
+        }
+
+        public void InitializeRetrieveBufferOneToOneHandConstraint(GameObject targetObject, MenuHandler handler) {
+            if (!retrieveBufferOneToOneHandConstraint.ContainsKey(targetObject)) {
+                retrieveBufferOneToOneHandConstraint.Add(targetObject, new List<Tuple<Vector3, Quaternion, Vector3, float>>(handler.RetrieveBufferSize));
+            }
+        }
+
+        public List<Tuple<Vector3, Quaternion, Vector3, float>> GetRetrieveBufferOneToOneOrbitalFloating(GameObject targetObject) {
+            return retrieveBufferOneToOneOrbitalFloating[targetObject];
+        }
+
+        public List<Tuple<Vector3, Quaternion, Vector3, float>> GetRetrieveBufferOneToOneOrbitalCompact(GameObject targetObject) {
+            return retrieveBufferOneToOneOrbitalCompact[targetObject];
+        }
+
+        public List<Tuple<Vector3, Quaternion, Vector3, float>> GetRetrieveBufferOneToOneInBetween(GameObject targetObject) {
+            return retrieveBufferOneToOneInBetween[targetObject];
+        }
+
+        public List<Tuple<Vector3, Quaternion, Vector3, float>> GetRetrieveBufferOneToOneHandConstraint(GameObject targetObject) {
+            return retrieveBufferOneToOneHandConstraint[targetObject];
+        }
+
+        public void InitializeCurrentOneToOneOffsetOrbitalFloating(GameObject targetObject, MenuHandler handler) {
+            if (!currentOneToOneOffsetOrbitalFloating.ContainsKey(targetObject)) {
+                currentOneToOneOffsetOrbitalFloating.Add(targetObject, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, handler.DefaultTargetViewPercentV));
+            }
+        }
+
+        public void InitializeCurrentOneToOneOffsetOrbitalCompact(GameObject targetObject, MenuHandler handler) {
+            if (!currentOneToOneOffsetOrbitalCompact.ContainsKey(targetObject)) {
+                currentOneToOneOffsetOrbitalCompact.Add(targetObject, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, handler.DefaultTargetViewPercentV));
+            }
+        }
+
+        public void InitializeCurrentOneToOneOffsetInBetween(GameObject targetObject, MenuHandler handler) {
+            if (!currentOneToOneOffsetInBetween.ContainsKey(targetObject)) {
+                currentOneToOneOffsetInBetween.Add(targetObject, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, handler.DefaultTargetViewPercentV));
+            }
+        }
+
+        public void InitializeCurrentOneToOneOffsetHandConstraint(GameObject targetObject, MenuHandler handler) {
+            if (!currentOneToOneOffsetHandConstraint.ContainsKey(targetObject)) {
+                currentOneToOneOffsetHandConstraint.Add(targetObject, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, handler.DefaultTargetViewPercentV));
+            }
+        }
+
+        public Tuple<Vector3, Quaternion, Vector3, float> GetCurrentOneToOneOffsetOrbitalFloating(GameObject targetObject) {
+            return currentOneToOneOffsetOrbitalFloating[targetObject];
+        }
+
+        public Tuple<Vector3, Quaternion, Vector3, float> GetCurrentOneToOneOffsetOrbitalCompact(GameObject targetObject) {
+            return currentOneToOneOffsetOrbitalCompact[targetObject];
+        }
+
+        public Tuple<Vector3, Quaternion, Vector3, float> GetCurrentOneToOneOffsetInBetween(GameObject targetObject) {
+            return currentOneToOneOffsetInBetween[targetObject];
+        }
+
+        public Tuple<Vector3, Quaternion, Vector3, float> GetCurrentOneToOneOffsetHandConstraint(GameObject targetObject) {
+            return currentOneToOneOffsetHandConstraint[targetObject];
+        }
+
+        public void SetCurrentOneToOneOffsetOrbitalFloating(GameObject targetObject, Tuple<Vector3, Quaternion, Vector3, float> offset) {
+            currentOneToOneOffsetOrbitalFloating[targetObject] = offset;
+        }
+
+        public void SetCurrentOneToOneOffsetOrbitalCompact(GameObject targetObject, Tuple<Vector3, Quaternion, Vector3, float> offset) {
+            currentOneToOneOffsetOrbitalCompact[targetObject] = offset;
+        }
+
+        public void SetCurrentOneToOneOffsetInBetween(GameObject targetObject, Tuple<Vector3, Quaternion, Vector3, float> offset) {
+            currentOneToOneOffsetInBetween[targetObject] = offset;
+        }
+
+        public void SetCurrentOneToOneOffsetHandConstraint(GameObject targetObject, Tuple<Vector3, Quaternion, Vector3, float> offset) {
+            currentOneToOneOffsetHandConstraint[targetObject] = offset;
+        }
+
+
+        /// <summary>
+        /// Remove the entries of targetObject from all OneToOne buffers and offsets.
+        /// </summary>
+        /// <param name="targetObject">The targetObject</param>
+        public void RemoveTargetObject(GameObject targetObject) {
+            if (retrieveBufferOneToOneOrbitalFloating.ContainsKey(targetObject)) {
+                retrieveBufferOneToOneOrbitalFloating.Remove(targetObject);
+            }
+            if (retrieveBufferOneToOneOrbitalCompact.ContainsKey(targetObject)) {
+                retrieveBufferOneToOneOrbitalCompact.Remove(targetObject);
+            }
+            if (retrieveBufferOneToOneInBetween.ContainsKey(targetObject)) {
+                retrieveBufferOneToOneInBetween.Remove(targetObject);
+            }
+            if (retrieveBufferOneToOneHandConstraint.ContainsKey(targetObject)) {
+                retrieveBufferOneToOneHandConstraint.Remove(targetObject);
+            }
+            if (currentOneToOneOffsetOrbitalFloating.ContainsKey(targetObject)) {
+                currentOneToOneOffsetOrbitalFloating.Remove(targetObject);
+            }
+            if (currentOneToOneOffsetOrbitalCompact.ContainsKey(targetObject)) {
+                currentOneToOneOffsetOrbitalCompact.Remove(targetObject);
+            }
+            if (currentOneToOneOffsetInBetween.ContainsKey(targetObject)) {
+                currentOneToOneOffsetInBetween.Remove(targetObject);
+            }
+            if (currentOneToOneOffsetHandConstraint.ContainsKey(targetObject)) {
+                currentOneToOneOffsetHandConstraint.Remove(targetObject);
+            }
         }
 
         /// <summary>
         /// Fetch a menu object from the ObjectPool of the origin menu
         /// </summary>
-        public GameObject OpenMenu(GameObject origin) {
+        public GameObject InstantiateMenu(GameObject origin) {
             MenuHandler handler = origin.GetComponent<MenuHandler>();
             if (handler.menuVariantType == MenuHandler.MenuVariantType.MainMenu) {
                 if (handler.compact) {
@@ -264,21 +659,21 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         /// </summary>
         /// <param name="menu">the current activated menu variant</param>
         /// <returns>the bounding box of the other variant</returns>
-        public Bounds GetStoredBoundingBoxOnCloseOppositeType(GameObject menu) {
+        public Bounds GetStoredBoundingBoxOppositeVariant(GameObject menu) {
             MenuHandler handler = menu.GetComponent<MenuHandler>();
             if (handler.menuVariantType == MenuHandler.MenuVariantType.MainMenu) {
                 if (handler.compact) {
-                    return floatingMainMenuBoundingBoxOnClose;
+                    return floatingMainMenuBoundingBox;
                 }
                 else {                  
-                    return compactMainMenuBoundingBoxOnClose;
+                    return compactMainMenuBoundingBox;
                 }
             }
             else {
                 Bounds res;
                 if (handler.compact) {
                     int menuID = SwitchToFloating(menu).GetComponent<MenuHandler>().menuID;
-                    if (floatingObjectMenuBoundingBoxOnClose.TryGetValue(menuID, out res)){
+                    if (boundingBoxFloatingObjectMenu.TryGetValue(menuID, out res)){
                         return res;
                     }
                     else {
@@ -288,7 +683,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 }
                 else {
                     int menuID = SwitchToCompact(menu).GetComponent<MenuHandler>().menuID;
-                    if(compactObjectMenuBoundingBoxOnClose.TryGetValue(menuID, out res)) {
+                    if(boundingBoxCompactObjectMenu.TryGetValue(menuID, out res)) {
                         return res;
                     }
                     else{
@@ -301,53 +696,37 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         /// <summary>
         /// Save the bounding box of one menu object. 
-        /// It is called when a menu object is closed.
         /// </summary>
-        /// <param name="menu">the closed menu</param>
+        /// <param name="menu">the closed (to be closed) menu</param>
         /// <param name="boundingBox">the bounding box of the menu</param>
-        public void StoreBoundingBoxOnClose(GameObject menu, Bounds boundingBox) {
+        public void StoreBoundingBox(GameObject menu, Bounds boundingBox) {
             MenuHandler handler = menu.GetComponent<MenuHandler>();
             if (handler.menuVariantType == MenuHandler.MenuVariantType.MainMenu) {
                 if (handler.compact) {
-                    compactMainMenuBoundingBoxOnClose = boundingBox;
+                    compactMainMenuBoundingBox = boundingBox;
                 }
                 else {
-                    floatingMainMenuBoundingBoxOnClose = boundingBox;
+                    floatingMainMenuBoundingBox = boundingBox;
                 }
             }
             else {
                 if (handler.compact) {
-                    if (compactObjectMenuBoundingBoxOnClose.ContainsKey(handler.menuID)) {
-                        compactObjectMenuBoundingBoxOnClose[handler.menuID] = boundingBox;
+                    if (boundingBoxCompactObjectMenu.ContainsKey(handler.menuID)) {
+                        boundingBoxCompactObjectMenu[handler.menuID] = boundingBox;
                     }
                     else {
-                        compactObjectMenuBoundingBoxOnClose.Add(handler.menuID, boundingBox);
+                        boundingBoxCompactObjectMenu.Add(handler.menuID, boundingBox);
                     }
                 }
                 else {
-                    if (floatingObjectMenuBoundingBoxOnClose.ContainsKey(handler.menuID)) {
-                        floatingObjectMenuBoundingBoxOnClose[handler.menuID] = boundingBox;
+                    if (boundingBoxFloatingObjectMenu.ContainsKey(handler.menuID)) {
+                        boundingBoxFloatingObjectMenu[handler.menuID] = boundingBox;
                     }
                     else {
-                        floatingObjectMenuBoundingBoxOnClose.Add(handler.menuID, boundingBox);
+                        boundingBoxFloatingObjectMenu.Add(handler.menuID, boundingBox);
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Store the position offset of the InBetween solver of a menu object.
-        /// It is called when a menu object is closed and the InBetween solver is activated.
-        /// </summary>
-        /// <param name="menu">the closed menu</param>
-        /// <param name="offset">the Position Offset of FinalPlacementOptimizer solver</param>
-        public void StoreInBetweenPositionOffsetOnClose(GameObject menu, Vector3 offset) {
-            MenuHandler handler = menu.GetComponent<MenuHandler>();
-            if (inBetweenPositionOffsetOnClose.ContainsKey(handler.menuID)) {
-                inBetweenPositionOffsetOnClose[handler.menuID] = offset;
-            }
-            else {
-                inBetweenPositionOffsetOnClose.Add(handler.menuID, offset);
+                
             }
         }
 
@@ -356,79 +735,92 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         /// </summary>
         /// <param name="menu"> current menu</param>
         /// <returns>the InBetween offset of the other variant</returns>
-        public Vector3 GetInBetweenPositionOffsetOppositeType(GameObject menu) {
+        public Vector3 GetInBetweenPositionOffsetOppositeVariant(GameObject menu) {
             MenuHandler handler = menu.GetComponent<MenuHandler>();
-            Vector3 res;
+            Tuple<Vector3, Quaternion, Vector3, float> offset;
+            MenuHandler oppositeHandler = SwitchToFloating(menu).GetComponent<MenuHandler>();
+            int menuID = oppositeHandler.menuID;
             if (handler.compact) {
-                int menuID = SwitchToFloating(menu).GetComponent<MenuHandler>().menuID;
-                if (inBetweenPositionOffsetOnClose.TryGetValue(menuID, out res)) {
-                    return res;
+                if(oppositeHandler.ManipulationLogic == MenuHandler.MenuManipulationLogic.OneToAll) {
+                    if (currentOneToAllOffsetInBetween.TryGetValue(menuID, out offset)) {
+                        return offset.Item1;
+                    }
+                    else {
+                        Debug.LogError("No lastOffsetInBetween found for menu with menuID" + menuID);
+                        return new Vector3();
+                    }
                 }
                 else {
-                    return new Vector3();
+                    return GetCurrentOneToOneOffsetInBetween(handler.TargetObject).Item1;
                 }
+
             }
             else {
-                int menuID = SwitchToCompact(menu).GetComponent<MenuHandler>().menuID;
-                if (inBetweenPositionOffsetOnClose.TryGetValue(menuID, out res)) {
-                    return res;
+                if(oppositeHandler.ManipulationLogic == MenuHandler.MenuManipulationLogic.OneToAll) {
+                    if (currentOneToAllOffsetInBetween.TryGetValue(menuID, out offset)) {
+                        return offset.Item1;
+                    }
+                    else {
+                        Debug.LogError("No lastOffsetInBetween found for menu with menuID" + menuID);
+                        return new Vector3();
+                    }
                 }
                 else {
-                    return new Vector3();
+                    return GetCurrentOneToOneOffsetInBetween(handler.TargetObject).Item1;
                 }
+
             }
             
         }
 
-        /// <summary>
-        /// Store the position offset of the Orbital solver of a menu object.
-        /// It is called when a menu object is closed and the Orbital solver is activated.
-        /// </summary>
-        /// <param name="menu">the closed menu</param>
-        /// <param name="offset">the Position Offset of FinalPlacementOptimizer solver</param>
-        public void StoreOrbitalPositionOffsetOnClose(GameObject menu, Vector3 offset) {
-            MenuHandler handler = menu.GetComponent<MenuHandler>();
-            if (orbitalPositionOffsetOnClose.ContainsKey(handler.menuID)) {
-                orbitalPositionOffsetOnClose[handler.menuID] = offset;
-            }
-            else {
-                orbitalPositionOffsetOnClose.Add(handler.menuID, offset);
-            }
-        }
 
         /// <summary>
         /// Get the stored Orbital position offset of the other menu variant (not OrbitalOffset).
         /// </summary>
         /// <param name="menu"> current menu</param>
         /// <returns>the Orbital position offset of the other variant</returns>
-        public Vector3 GetOrbitalPositionOffsetOppositeType(GameObject menu) {
+        public Vector3 GetOrbitalPositionOffsetOppositeVariant(GameObject menu) {
             MenuHandler handler = menu.GetComponent<MenuHandler>();
-            Vector3 res;
+            Tuple<Vector3, Quaternion, Vector3, float> offset;
+            MenuHandler oppositeHandler = SwitchToFloating(menu).GetComponent<MenuHandler>();
+            int menuID = oppositeHandler.menuID;
             if (handler.compact) {
-                int menuID = SwitchToFloating(menu).GetComponent<MenuHandler>().menuID;
-                if (orbitalPositionOffsetOnClose.TryGetValue(menuID, out res)) {
-                    return res;
+                if(oppositeHandler.ManipulationLogic == MenuHandler.MenuManipulationLogic.OneToAll) {                 
+                    if (currentOneToAllOffsetOrbital.TryGetValue(menuID, out offset)) {
+                        return offset.Item1;
+                    }
+                    else {
+                        Debug.LogError("No lastOffsetOrbital found for menu with menuID" + menuID);
+                        return new Vector3();
+                    }
                 }
                 else {
-                    return new Vector3();
+                    return GetCurrentOneToOneOffsetOrbitalFloating(handler.TargetObject).Item1;
                 }
+
             }
             else {
-                int menuID = SwitchToCompact(menu).GetComponent<MenuHandler>().menuID;
-                if (orbitalPositionOffsetOnClose.TryGetValue(menuID, out res)) {
-                    return res;
+                if(oppositeHandler.ManipulationLogic == MenuHandler.MenuManipulationLogic.OneToAll) {
+                    if (currentOneToAllOffsetOrbital.TryGetValue(menuID, out offset)) {
+                        return offset.Item1;
+                    }
+                    else {
+                        Debug.LogError("No lastOffsetOrbital found for menu with menuID" + menuID);
+                        return new Vector3();
+                    }
                 }
                 else {
-                    return new Vector3();
+                    return GetCurrentOneToOneOffsetOrbitalCompact(handler.TargetObject).Item1;
                 }
+
             }
         }
 
         /// <summary>
-        /// Get the OrbitalOffset of the other menu variant (not OrbitalOffset).
+        /// Get the OrbitalOffset set in the inspector of the other menu variant.
         /// </summary>
         /// <param name="menu"> current menu</param>
-        public Vector3 GetOrbitalOffsetOppositeType(GameObject menu) {
+        public Vector3 GetOrbitalOffsetOppositeVariant(GameObject menu) {
             MenuHandler handler = menu.GetComponent<MenuHandler>();
             if (handler.menuVariantType == MenuHandler.MenuVariantType.MainMenu) {
                 if (handler.compact) {
@@ -447,14 +839,11 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 }
             }
         }
-
-
-
         #endregion Public Methods
 
         #region Private Methods
 
-        //Check if all menus are initialized properly.
+        //Check if all menus and their properties are initialized properly.
         private void CheckMenuInitialization() {
             List<GameObject> menus = new List<GameObject>();
             if (mainMenu.compactMenu == null) {
@@ -546,17 +935,95 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
 
         }
+
         private void CreateMenuController() {
             Instantiate(systemControlPanel);
         }
+        //make a pool for each MenuVariants and assign the index of the pool to the corresponding variable. Ignore the not assigned menu.
+        private void CreateObjectPools() {
 
-        // Create a target which is lower than head for the InBetween solver on object menus
+            if (mainMenu.floatingMenu != null) {
+                floatingMainMenuPoolID = ObjectPool<GameObject>.CreateNewPool(1);
+            }
+            if (mainMenu.compactMenu != null) {
+                compactMainMenuPoolID = ObjectPool<GameObject>.CreateNewPool(1);
+            }
+
+            foreach (MenuVariants m in objectMenus) {
+                if (m.floatingMenu != null) {
+                    floatingObjectMenuPoolIDs.Add(m.floatingMenu.GetComponent<MenuHandler>().menuID, ObjectPool<GameObject>.CreateNewPool(5));
+                }
+                if (m.compactMenu != null) {
+                    compactObjectMenuPoolIDs.Add(m.compactMenu.GetComponent<MenuHandler>().menuID, ObjectPool<GameObject>.CreateNewPool(5));
+                }
+            }
+        }
+
+        // Create a target which is lower than head for the InBetween solver on object menus, which can prevent the menu occluding users' sights.
         private void CreateInBetweenTarget() {
             inBetweenTarget = new GameObject("InBetween Target");
             inBetweenTarget.transform.parent = CameraCache.Main.transform;
             inBetweenTarget.transform.position = new Vector3(CameraCache.Main.transform.position.x, CameraCache.Main.transform.position.y - 0.15f, CameraCache.Main.transform.position.z);
         }
 
+        private void InitializeProperties() {
+            if (defaultPlacementMode == DefaultMode.Automatic) {
+                placementMode = MenuPlacementServiceMode.Automatic;
+            }
+            else {
+                placementMode = MenuPlacementServiceMode.Manual;
+            }
+            adjustmentModeSemaphore = 0;
+            SuggestionPanelOn = false;
+        }
+
+        private void InitializeMainMenuBuffers() {
+            if (mainMenu.floatingMenu != null) {
+                retrieveBufferFloatingMainMenu = new List<Tuple<Vector3, Quaternion, Vector3, float>>(mainMenu.floatingMenu.GetComponent<MenuHandler>().RetrieveBufferSize);
+            }
+            if (mainMenu.compactMenu != null) {
+                retrieveBufferCompactMainMenu = new List<Tuple<Vector3, Quaternion, Vector3, float>>(mainMenu.compactMenu.GetComponent<MenuHandler>().RetrieveBufferSize);
+            }
+        }
+
+        // initialize the retrieve buffers for main menus and object menus with "OneToAll" logic
+        private void InitializeOneToAllRetrieveBuffers() { 
+
+            //If the logic is OneToOne, the buffers will be linked to the object but not the menu, so we don't consider it here.
+            foreach(MenuVariants v in objectMenus) {
+                if (v.floatingMenu != null) {
+                    if (v.floatingMenu.GetComponent<MenuHandler>().ManipulationLogic == MenuHandler.MenuManipulationLogic.OneToAll) {
+                        retrieveBufferOneToAllOrbital.Add(v.floatingMenu.GetComponent<MenuHandler>().menuID, new List<Tuple<Vector3, Quaternion, Vector3, float>>(v.floatingMenu.GetComponent<MenuHandler>().RetrieveBufferSize));
+                        retrieveBufferOneToAllWithoutOrbital.Add(v.floatingMenu.GetComponent<MenuHandler>().menuID, new List<Tuple<Vector3, Quaternion, Vector3, float>>(v.floatingMenu.GetComponent<MenuHandler>().RetrieveBufferSize));
+                    }
+                }           
+                if(v.compactMenu != null) {
+                    if (v.compactMenu.GetComponent<MenuHandler>().ManipulationLogic == MenuHandler.MenuManipulationLogic.OneToAll) {
+                        retrieveBufferOneToAllOrbital.Add(v.compactMenu.GetComponent<MenuHandler>().menuID, new List<Tuple<Vector3, Quaternion, Vector3, float>>(v.compactMenu.GetComponent<MenuHandler>().RetrieveBufferSize));
+                        retrieveBufferOneToAllWithoutOrbital.Add(v.compactMenu.GetComponent<MenuHandler>().menuID, new List<Tuple<Vector3, Quaternion, Vector3, float>>(v.compactMenu.GetComponent<MenuHandler>().RetrieveBufferSize));
+                    }
+                }
+            }
+        }
+
+        private void InitializeCurrentOneToAllOffsets() {
+            foreach(MenuVariants v in objectMenus) {
+                if(v.floatingMenu != null) {
+                    if(v.floatingMenu.GetComponent<MenuHandler>().ManipulationLogic == MenuHandler.MenuManipulationLogic.OneToAll) {
+                        currentOneToAllOffsetInBetween.Add(v.floatingMenu.GetComponent<MenuHandler>().menuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.floatingMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
+                        currentOneToAllOffsetOrbital.Add(v.floatingMenu.GetComponent<MenuHandler>().menuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.floatingMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
+                        currentOneToAllOffsetHandConstraint.Add(v.floatingMenu.GetComponent<MenuHandler>().menuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.floatingMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
+                    }
+                }
+                if (v.compactMenu != null) {
+                    if (v.compactMenu.GetComponent<MenuHandler>().ManipulationLogic == MenuHandler.MenuManipulationLogic.OneToAll) {
+                        currentOneToAllOffsetInBetween.Add(v.compactMenu.GetComponent<MenuHandler>().menuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.compactMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
+                        currentOneToAllOffsetOrbital.Add(v.compactMenu.GetComponent<MenuHandler>().menuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.compactMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
+                        currentOneToAllOffsetHandConstraint.Add(v.compactMenu.GetComponent<MenuHandler>().menuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.compactMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
+                    }
+                }
+            }
+        }
 
         private GameObject GetObjectMenuWithID(int menuID) {
             foreach(MenuVariants v in objectMenus) {
@@ -637,8 +1104,6 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
 
         #endregion Private Methods
-
-
 
     }
 }

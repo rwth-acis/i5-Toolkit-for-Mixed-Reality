@@ -37,16 +37,12 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         // Start is called before the first frame update
         void Start() {
-
             targetMenuObject.GetComponent<BoxCollider>().enabled = false;
             gameObject.GetComponent<AppBar>().Target = targetMenuObject.GetComponent<BoundsControl>();
             handler = targetMenuObject.GetComponent<MenuHandler>();
             placementService = ServiceManager.GetService<MenuPlacementService>();
-            if (!targetMenuObject.GetComponent<ObjectManipulator>()) {
-                targetMenuObject.AddComponent<ObjectManipulator>();
-            }
-            //targetMenuObject.GetComponent<ObjectManipulator>().OnManipulationStarted.AddListener(targetMenuObject.GetComponent<BoundsControl>().HighlightWires);
-            
+            (targetMenuObject.GetComponent<ObjectManipulator>() ?? targetMenuObject.AddComponent<ObjectManipulator>()).enabled = false;
+            //targetMenuObject.GetComponent<ObjectManipulator>().OnManipulationStarted.AddListener(delegate () { targetMenuObject.GetComponent<BoundsControl>().HighlightWires; });          
             if (!targetMenuObject.GetComponent<NearInteractionGrabbable>()) {
                 targetMenuObject.AddComponent<NearInteractionGrabbable>();
             }
@@ -59,8 +55,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         void Update() {
             if(placementService.PlacementMode != MenuPlacementService.MenuPlacementServiceMode.Adjustment) {
                 targetMenuObject.GetComponent<BoxCollider>().enabled = false;
-            }
-            
+            }            
         }
 
         void LateUpdate() {
@@ -68,8 +63,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
 
         public void OnAppBarExpand() {
-            StartPosition = targetMenuObject.transform.localPosition;
-            StartRotation = targetMenuObject.transform.localRotation;
+            StartPosition = targetMenuObject.transform.position;
+            StartRotation = targetMenuObject.transform.rotation;
             StartScale = targetMenuObject.transform.localScale;
             slider.GetComponent<PinchSlider>().SliderValue = targetMenuObject.GetComponent<ConstantViewSize>().TargetViewPercentV;
             StartSliderValue = slider.GetComponent<PinchSlider>().SliderValue;
@@ -86,8 +81,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         public void Retrieve() {
             handler.Retrieve();
-            StartPosition = targetMenuObject.transform.localPosition;
-            StartRotation = targetMenuObject.transform.localRotation;
+            StartPosition = targetMenuObject.transform.position;
+            StartRotation = targetMenuObject.transform.rotation;
             StartScale = targetMenuObject.transform.localScale;
             slider.GetComponent<PinchSlider>().SliderValue = targetMenuObject.GetComponent<ConstantViewSize>().TargetViewPercentV;
             StartSliderValue = slider.GetComponent<PinchSlider>().SliderValue;
@@ -119,7 +114,6 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 suggestionPanel.gameObject.GetComponent<Follow>().DefaultDistance = 0.4f;
                 suggestionPanel.gameObject.transform.forward = CameraCache.Main.transform.forward;
             }
-
         }
 
         public void OnSliderValueUpdate() {            
@@ -138,8 +132,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     ButtonConfigHelper helper = transform.Find("BaseRenderer/ButtonParent/Lock&Unlock").gameObject.GetComponent<ButtonConfigHelper>();
                     helper.MainLabelText = "Unlock";
                     helper.SeeItSayItLabelText = "Say \"Unlock\"";
-                    helper.SetQuadIconByName("Unlock");
-                    
+                    helper.SetQuadIconByName("Unlock");                   
                 }
                 // Set to world-referenced (unlock)
                 else {
@@ -168,8 +161,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 slider.SetActive(true);
             }
             targetMenuObject.GetComponent<ObjectManipulator>().enabled = true;            
-            StartPosition = targetMenuObject.transform.localPosition;
-            StartRotation = targetMenuObject.transform.localRotation;
+            StartPosition = targetMenuObject.transform.position;
+            StartRotation = targetMenuObject.transform.rotation;
             StartScale = targetMenuObject.transform.localScale;
             StartSliderValue = slider.GetComponent<PinchSlider>().SliderValue;
         }
@@ -180,9 +173,9 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             if (placementService.PreviousMode == MenuPlacementService.MenuPlacementServiceMode.Manual) {
                 targetMenuObject.GetComponent<BoundsControl>().ScaleHandlesConfig.ShowScaleHandles = false;
             }
-            if (StartPosition != targetMenuObject.transform.localPosition || StartRotation != targetMenuObject.transform.localRotation || StartScale != targetMenuObject.transform.localScale) {
+            if (StartPosition != targetMenuObject.transform.position || StartRotation != targetMenuObject.transform.rotation || StartScale != targetMenuObject.transform.localScale) {
                 Tuple<Vector3, Quaternion, Vector3, float> lastOffsets = new Tuple<Vector3, Quaternion, Vector3, float>(StartPosition, StartRotation, StartScale, StartSliderValue);
-                Tuple<Vector3, Quaternion, Vector3, float> newOffsets = new Tuple<Vector3, Quaternion, Vector3, float>(targetMenuObject.transform.localPosition, targetMenuObject.transform.localRotation, targetMenuObject.transform.localScale, slider.GetComponent<PinchSlider>().SliderValue);
+                Tuple<Vector3, Quaternion, Vector3, float> newOffsets = new Tuple<Vector3, Quaternion, Vector3, float>(targetMenuObject.transform.position, targetMenuObject.transform.rotation, targetMenuObject.transform.localScale, slider.GetComponent<PinchSlider>().SliderValue);
                 handler.SaveOffsetBeforeManipulation(lastOffsets);
                 handler.UpdateOffset(newOffsets, lastOffsets);
             }

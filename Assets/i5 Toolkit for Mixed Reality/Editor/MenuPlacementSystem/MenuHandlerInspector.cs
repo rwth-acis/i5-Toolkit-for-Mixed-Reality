@@ -31,8 +31,6 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         //ConstantViewSize Offsets
         private SerializedProperty defaultTargetViewPercentV;
-        private SerializedProperty minDistance;
-        private SerializedProperty maxDistance;
 
         //Main Menu Offsets
         private SerializedProperty followOffset;
@@ -42,6 +40,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         //Object Menu Offsets
         private SerializedProperty orbitalOffset;
+        private SerializedProperty manipulationLogic;
 
         bool constantViewSizeEnabledFoldout = true;
         bool mainMenuOffsetFoldout = true;
@@ -69,8 +68,6 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             defaultFloatingDistance = serializedObject.FindProperty("defaultFloatingDistance");
 
             defaultTargetViewPercentV = serializedObject.FindProperty("defaultTargetViewPercentV");
-            minDistance = serializedObject.FindProperty("minDistance");
-            maxDistance = serializedObject.FindProperty("maxDistance");
 
             followOffset = serializedObject.FindProperty("followOffset");
             followMaxViewHorizontalDegrees = serializedObject.FindProperty("followMaxViewHorizontalDegrees");
@@ -78,6 +75,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             surfaceMagnetismSafetyOffset = serializedObject.FindProperty("surfaceMagnetismSafetyOffset");
 
             orbitalOffset = serializedObject.FindProperty("orbitalOffset");
+            manipulationLogic = serializedObject.FindProperty("manipulationLogic");
 
         }
 
@@ -109,12 +107,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             FontStyle previousStyle = style.fontStyle;
             style.fontStyle = FontStyle.Bold;
 
-            constantViewSizeEnabledFoldout = EditorGUILayout.Foldout(constantViewSizeEnabledFoldout, "ConstantViewSize Offsets", true);
+            constantViewSizeEnabledFoldout = EditorGUILayout.Foldout(constantViewSizeEnabledFoldout, "ConstantViewSize Settings", true);
             if (constantViewSizeEnabledFoldout) {
                 if (constantViewSizeEnabled.boolValue == true) {
                     EditorGUILayout.PropertyField(defaultTargetViewPercentV);
-                    EditorGUILayout.PropertyField(minDistance);
-                    EditorGUILayout.PropertyField(maxDistance);
                 }
                 else {
                     EditorGUILayout.HelpBox("The ConstantViewSize solver is currently not enabled.", MessageType.Info);
@@ -123,7 +119,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
             EditorGUILayout.Space();
 
-            mainMenuOffsetFoldout = EditorGUILayout.Foldout(mainMenuOffsetFoldout, "Main Menu Offsets", true);
+            mainMenuOffsetFoldout = EditorGUILayout.Foldout(mainMenuOffsetFoldout, "Main Menu Settings", true);
             if (mainMenuOffsetFoldout) {
                 //0 for main menu, 1 for object menu
                 if (menuVariantType.enumValueIndex == 0) {
@@ -138,11 +134,12 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
             EditorGUILayout.Space();
 
-            objectMenuOffsetFoldout = EditorGUILayout.Foldout(objectMenuOffsetFoldout, "Object Menu Offsets", true);
+            objectMenuOffsetFoldout = EditorGUILayout.Foldout(objectMenuOffsetFoldout, "Object Menu Settings", true);
             if (objectMenuOffsetFoldout) {
                 //0 for main menu, 1 for object menu
                 if (menuVariantType.enumValueIndex == 1) {
                     EditorGUILayout.PropertyField(orbitalOffset);
+                    EditorGUILayout.PropertyField(manipulationLogic);
                 }
                 else {
                     EditorGUILayout.HelpBox("The menu is a main menu, so you don't need to set the properties for an object menu.", MessageType.Info);
@@ -152,9 +149,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             style.fontStyle = previousStyle;
             serializedObject.ApplyModifiedProperties();
         }
-
     }
-
 }
 
 

@@ -17,38 +17,56 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         private Vector3 rotationOffset = Vector3.zero;
         private Vector3 scaleOffset = Vector3.one;
 
+
+        /// <summary>
+        /// How should the menu be oriented
+        /// </summary>
         public MenuHandler.MenuOrientationType OrientationType { get; set; }
-
-        public Vector3 PositionWithoutOffset { get; private set; }
+        /// <summary>
+        /// local scale of the target object
+        /// </summary>
         public Vector3 OriginalScale { get; set; }
-
+        /// <summary>
+        /// the orbital offset set in the inspector of the menu
+        /// </summary>
         public Vector3 OrbitalOffset
         {
             get { return orbitalOffset; }
             set { orbitalOffset = value; }
         }
 
-        public Vector3 FinalPosition { get; set; }
-        public Quaternion FinalRotation { get; set; }
-
+        /// <summary>
+        /// position offset set by manipulation
+        /// </summary>
         public Vector3 PositionOffset
         {
             get => positionOffset;
             set { positionOffset = value; }
         }
+
+        /// <summary>
+        /// rotation offset set by manipulation
+        /// </summary>
         public Vector3 RotationOffset
         {
             get => rotationOffset;
             set { rotationOffset = value; }
         }
+
+        /// <summary>
+        /// scale offset set by manpulation
+        /// </summary>
         public Vector3 ScaleOffset
         {
             get => scaleOffset;
             set { scaleOffset = value; }
         }
 
+        /// <summary>
+        /// Fine-tune the transform of the menu based on several offsets.
+        /// </summary>
         public override void SolverUpdate() {
-            Camera head = CameraCache.Main;
+            Camera head = CameraCache.Main;           
             if (gameObject.GetComponent<MenuHandler>().menuVariantType == MenuHandler.MenuVariantType.MainMenu) {
                 if (gameObject.GetComponent<MenuHandler>().compact) {
                     GoalPosition += head.transform.right * positionOffset.x + head.transform.up * positionOffset.y + head.transform.forward * positionOffset.z;
@@ -56,16 +74,19 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
             else {
                 if (gameObject.GetComponent<Orbital>().enabled) {
-
-                    Vector3 directionToHead = head.transform.position - SolverHandler.TransformTarget.position;
-                    bool rightSide = Vector3.Dot(directionToHead, head.transform.right) > 0 ? true : false;
-
+                    Vector3 headToObject = Vector3.Normalize(SolverHandler.TransformTarget.position - head.transform.position);
+                    Vector3 forward = Vector3.Normalize(new Vector3(headToObject.x, 0, headToObject.z));
+                    Vector3 right = Vector3.Normalize(Vector3.ProjectOnPlane(new Vector3(head.transform.right.x, 0, head.transform.right.z), headToObject));
+                    Vector3 up = Vector3.up;
+                    //If we look at the object's LEFT side, than the angle between head.transform.right and headToObject is an acute angle, i.e. Vector3.Dot(headToObject, head.transform.right) > 0.
+                    //If we look at the object's RIGHT side, than the angle between head.transform.right and headToObject is an obtuse angle, i.e. Vector3.Dot(headToObject, head.transform.right) < 0. 
+                    bool rightSide = Vector3.Dot(headToObject, head.transform.right) < 0 ? true : false;
                     if (rightSide) {
-                        Vector3 finalOffset = head.transform.right * (orbitalOffset.x + positionOffset.x) + head.transform.up * (orbitalOffset.y + positionOffset.y) + head.transform.forward * (orbitalOffset.z + positionOffset.z);
+                        Vector3 finalOffset = right * orbitalOffset.x + up * orbitalOffset.y + forward * orbitalOffset.z + head.transform.right * positionOffset.x + head.transform.up * positionOffset.y + head.transform.forward*positionOffset.z;
                         GoalPosition += finalOffset;
                     }
                     else {
-                        Vector3 finalOffset = -head.transform.right * (orbitalOffset.x + positionOffset.x) + head.transform.up * (orbitalOffset.y + positionOffset.y) + head.transform.forward * (orbitalOffset.z + positionOffset.z);
+                        Vector3 finalOffset = - right * orbitalOffset.x + up * orbitalOffset.y + forward * orbitalOffset.z - head.transform.right * positionOffset.x + head.transform.up * positionOffset.y + head.transform.forward * positionOffset.z;
                         GoalPosition += finalOffset;
                     }
                 }
@@ -81,9 +102,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     GoalRotation = GoalRotation;
                     break;
             }
-            FinalPosition = GoalPosition;
-            FinalRotation = GoalRotation;
+
+
             GoalScale = new Vector3(OriginalScale.x * ScaleOffset.x, OriginalScale.y * ScaleOffset.y, OriginalScale.z * ScaleOffset.z);
+            
         }
     }
 }

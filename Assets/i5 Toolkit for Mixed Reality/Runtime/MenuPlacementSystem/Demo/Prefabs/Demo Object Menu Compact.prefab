@@ -3867,13 +3867,12 @@ MonoBehaviour:
   minFloatingDistance: 0.4
   defaultFloatingDistance: 0
   defaultTargetViewPercentV: 0.5
-  minDistance: 0
-  maxDistance: 1
   followOffset: {x: 0, y: 0, z: 0}
   followMaxViewHorizontalDegrees: 50
   followMaxViewVerticalDegrees: 100
   surfaceMagnetismSafetyOffset: 0.05
   orbitalOffset: {x: 0.1, y: -0.05, z: 0}
+  manipulationLogic: 0
 --- !u!114 &848889932135214136
 MonoBehaviour:
   m_ObjectHideFlags: 0

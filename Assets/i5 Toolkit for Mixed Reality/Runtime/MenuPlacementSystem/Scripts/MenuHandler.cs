@@ -13,6 +13,12 @@ using UnityEngine;
 
 namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
     public class MenuHandler : MonoBehaviour {
+        #region Enums
+        //The assignment of manipulation offsets of object menus
+        public enum MenuManipulationLogic {
+            OneToAll, //different objects have the same offset for object menus
+            OneToOne  //every object has its own offset for the object menu assigned to it.
+        }
 
         public enum BoundsType {
             BasedOnColliders,
@@ -33,6 +39,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             Left,
             Right
         }
+        #endregion
 
         #region Serialize Fields
         [Header("General Properties")]
@@ -74,15 +81,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         //Constant View Size Offsets
         [Tooltip("The default Target View Percent V of ConstantViewSize")]
-        [Range(0,1)]
+        [Range(0f, 1f)]
         [SerializeField] private float defaultTargetViewPercentV = 0.5f;
-        [Tooltip("The 'Min Distance' of ConstantViewSize")]
-        [SerializeField] private float minDistance = 0;
-        [Tooltip("The 'Max Distance' of ConstantViewSize")]
-        [SerializeField] private float maxDistance = 1;
 
-
-        //Main Menu Offsets
+        //Main Menu Settings
         [Tooltip("Position Offset to the head for floating main menus. It will be directly added to the 'AdditionalOffset' on SolverHandler.")]
         [SerializeField] private Vector3 followOffset = Vector3.zero;
         [Tooltip("Max view degrees in horizontal direction for Follow solver of floating main menus.")]
@@ -92,18 +94,23 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         [Tooltip("Offsets for the distance between the surface and the attached menu, i.e. the 'Surface Normal Offset' of the SurfaceMagnetism solver")]
         [SerializeField] private float surfaceMagnetismSafetyOffset = 0.05f;
 
-        //Object Menu Offsets
+        //Object Menu Settings
         [Tooltip("Position Offset to the target object. For object menus, the additive inverse of the X (right) offset will be taken if the menu is on the left side of the targetObjects (e.g. 2 to -2).")]
         [SerializeField] private Vector3 orbitalOffset = Vector3.zero;
+        [Tooltip("Manipulation logic of object menus in the AUTOMATIC MODE. If \" One To All\", the offsets calculated in manipulation will be assigned to all instances of this menu. If \" One To One\", " +
+            "the offsets are binded with the single target object, which means all menu instances assigned to this target object will have the offsets.")]
+        [SerializeField] private MenuManipulationLogic manipulationLogic = MenuManipulationLogic.OneToAll;
 
 
 
         #endregion Serialize Fields
 
+        #region Non-serializable Properties
         private MenuPlacementService placementService;
         private PlacementMessage message = new PlacementMessage();
         private PlacementMessage.SwitchType switchTo = PlacementMessage.SwitchType.NoSwitch;
         private Camera head;
+        //The OrbitalOffset set in inspector of the opposite type (the other variant)
         private Vector3 orbitalOffsetOppositeType;
         //Expired time in the thresholds.
         private float inactivityTime = 0;
@@ -113,21 +120,27 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         private float accumulatedTimeForSuggestionThreshold = 3f;
         private float accumulatedTimeForSuggestion = 0;
         private GameObject appBar;
+
         //Tupel<Position, Rotaion, Scale>
         private List<Tuple<Vector3, Quaternion, Vector3>> retrieveBufferManualMode = new List<Tuple<Vector3, Quaternion, Vector3>>();
-        private List<Tuple<Vector3, Quaternion, Vector3, float>> retrieveBufferAutomaticModeWithoutOrbital = new List<Tuple<Vector3, Quaternion, Vector3, float>>();
-        private List<Tuple<Vector3, Quaternion, Vector3, float>> retrieveBufferAutomaticModeOrbital = new List<Tuple<Vector3, Quaternion, Vector3, float>>();
-        //Offsets saved for the switch of the dominant solvers.
-        private Tuple<Vector3, Quaternion, Vector3, float> lastOffsetsInBetween = new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, 0);
-        private Tuple<Vector3, Quaternion, Vector3, float> lastOffsetsOrbital = new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, 0);
-        private Tuple<Vector3, Quaternion, Vector3, float> lastOffsetsHandConstraint = new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, 0);
+
         private Vector3 manualModePositionOffset;
         private Vector3 manualModeRotationOffset;
         private Vector3 manualModeScaleOffset;
         private Vector3 originalScale;
         private bool manualModeEntered = false;
+        #endregion
 
+        #region Getters&Setters
+
+        /// <summary>
+        /// The target object of the OBJECT menu.
+        /// </summary>
         public GameObject TargetObject { get; private set; }
+
+        /// <summary>
+        /// Orbital offset of the OBJECT menu.
+        /// </summary>
         public Vector3 OrbitalOffset
         {
             get => orbitalOffset;
@@ -137,6 +150,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
         }
 
+        /// <summary>
+        /// The dominant hand of the menu (user) set in the inspector. It decides on which hand the compact variant locked.
+        /// If the dominant hand is "right", the compact menu will be constraint on the "left" hand.
+        /// </summary>
         public Handedness DominantHand
         {
             get => dominantHand;
@@ -146,25 +163,63 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
         }
 
+        /// <summary>
+        /// The manipulation logic set in the inspector.
+        /// </summary>
+        public MenuManipulationLogic ManipulationLogic
+        {
+            get => manipulationLogic;
+        }
+
+        /// <summary>
+        /// The size of the retrieve buffers set in the inspector.
+        /// </summary>
+        public int RetrieveBufferSize
+        {
+            get => retrieveBufferSize;
+        }
+
+        /// <summary>
+        /// If the ConstantViewSize solver is enabled.
+        /// </summary>
         public bool ConstantViewSizeEnabled
         {
             get => constantViewSizeEnabled;
         }
 
+        /// <summary>
+        /// The minimum floating distance. The menu will generally not be closer than this value.
+        /// </summary>
         public float MinFloatingDistance
         {
             get => minFloatingDistance;
         }
 
+        /// <summary>
+        /// The maximum floating distance. The menu will generally not be further than this value.
+        /// </summary>
         public float MaxFloatingDistance
         {
             get => maxFloatingDistance;
         }
 
+        /// <summary>
+        /// The default floating distance. If it is not set explicitly in the inspector, it is the average of min and maxFloatingDistance.
+        /// </summary>
         public float DefaultFloatingDistance
         {
             get => defaultFloatingDistance;
         }
+
+        /// <summary>
+        /// The object take up this percent vertically in our view (not technically a percent use 0.5 for 50%). Used for ConstantViewSize
+        /// </summary>
+        public float DefaultTargetViewPercentV
+        {
+            get => defaultTargetViewPercentV;
+        }
+
+        #endregion
 
         #region MonoBehaviour Functions
 
@@ -180,16 +235,22 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 InitializeMainMenu();
             }
             retrieveBufferManualMode.Capacity = retrieveBufferSize;
-            retrieveBufferAutomaticModeWithoutOrbital.Capacity = retrieveBufferSize;
-            retrieveBufferAutomaticModeOrbital.Capacity = retrieveBufferSize;
             originalScale = gameObject.transform.localScale;
-            manualModePositionOffset = new Vector3(0, -0.05f, defaultFloatingDistance);
+            manualModePositionOffset = new Vector3(0, 0, defaultFloatingDistance);
             manualModeRotationOffset = Vector3.zero;
             manualModeScaleOffset = Vector3.one;
         }
 
         // Update is called once per frame
         void Update() {
+            if(TargetObject == null) {
+                if(menuVariantType == MenuVariantType.ObjectMenu) {
+                    if(manipulationLogic == MenuManipulationLogic.OneToOne) {
+                        placementService.RemoveTargetObject(TargetObject);
+                    }
+                    Close();
+                }   
+            }
             if (placementService.PlacementMode == MenuPlacementService.MenuPlacementServiceMode.Automatic) {
                 if (manualModeEntered) {
                     ExitManualMode();
@@ -240,7 +301,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         /// <summary>
         /// Open the menu given its target object.
         /// </summary>
-        /// <param name="targetObject">The target object controlled by this menu</param>
+        /// <param name="targetObject"> The target object controlled by this menu </param>
         public void Open(GameObject targetObject) {
             //Find all menus in the scene. If there is already one menu for the targetObject, no menu will be opened.
             MenuHandler [] menus = FindObjectsOfType<MenuHandler>();
@@ -259,29 +320,32 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             if (placementService == null) {
                 placementService = ServiceManager.GetService<MenuPlacementService>();
             }
-            GameObject menu = placementService.OpenMenu(gameObject);
-            menu.GetComponent<MenuHandler>().orbitalOffsetOppositeType = placementService.GetOrbitalOffsetOppositeType(menu);
+            GameObject menu = placementService.InstantiateMenu(gameObject);
+            menu.GetComponent<MenuHandler>().orbitalOffsetOppositeType = placementService.GetOrbitalOffsetOppositeVariant(menu);
             menu.GetComponent<MenuHandler>().head = CameraCache.Main;
-            menu.GetComponent<MenuHandler>().updateTime = -0.15f;
+            menu.GetComponent<MenuHandler>().updateTime = -0.15f; //safty offset
             if (manipulationEnabled) {
                 menu.GetComponent<MenuHandler>().InitializeAppBar();
             }
-
             //Initialize the solvers for object menus.
             if (menuVariantType == MenuVariantType.ObjectMenu) {
-                //Initialization the defaultTargetViewPercentV
-                if (menu.GetComponent<MenuHandler>().lastOffsetsHandConstraint.Item4 == 0) {
-                    menu.GetComponent<MenuHandler>().lastOffsetsHandConstraint = new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, defaultTargetViewPercentV);
-                }
-                if (menu.GetComponent<MenuHandler>().lastOffsetsOrbital.Item4 == 0) {
-                    menu.GetComponent<MenuHandler>().lastOffsetsOrbital = new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, defaultTargetViewPercentV);
-                }
-                if (menu.GetComponent<MenuHandler>().lastOffsetsInBetween.Item4 == 0) {
-                    menu.GetComponent<MenuHandler>().lastOffsetsInBetween = new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, defaultTargetViewPercentV);
+                //If manipulation Logic is OneToOne, add buffers and current offsets to the target object
+                if(manipulationLogic == MenuManipulationLogic.OneToOne) {
+                    if (compact) {
+                        placementService.InitializeRetrieveBufferOneToOneOrbitalCompact(targetObject, this);
+                        placementService.InitializeRetrieveBufferOneToOneHandConstraint(targetObject, this);
+                        placementService.InitializeCurrentOneToOneOffsetOrbitalCompact(targetObject, this);
+                        placementService.InitializeCurrentOneToOneOffsetHandConstraint(targetObject, this);
+                    }
+                    else {
+                        placementService.InitializeRetrieveBufferOneToOneOrbitalFloating(targetObject, this);
+                        placementService.InitializeRetrieveBufferOneToOneInBetween(targetObject, this);
+                        placementService.InitializeCurrentOneToOneOffsetOrbitalFloating(targetObject, this);
+                        placementService.InitializeCurrentOneToOneOffsetInBetween(targetObject, this);
+                    }
                 }
                 //To avoid collision at the beginning, or the menu may switch between two variants all the time.
                 menu.transform.position = placementService.GetInBetweenTarget().transform.position;
-
                 menu.GetComponent<MenuHandler>().TargetObject = targetObject;
                 (menu.GetComponent<SolverHandler>() ?? menu.AddComponent<SolverHandler>()).TrackedTargetType = TrackedObjectType.CustomOverride;
                 menu.GetComponent<SolverHandler>().TransformOverride = targetObject.transform;
@@ -300,22 +364,36 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     menu.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
                     menu.GetComponent<FinalPlacementOptimizer>().enabled = true;
                     menu.GetComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
-                    (menu.GetComponent<ConstantViewSize>() ?? menu.AddComponent<ConstantViewSize>()).MinDistance = minDistance;
-                    menu.GetComponent<ConstantViewSize>().MaxDistance = maxDistance;
+                    (menu.GetComponent<ConstantViewSize>() ?? menu.AddComponent<ConstantViewSize>()).MinDistance = minFloatingDistance;
+                    menu.GetComponent<ConstantViewSize>().MaxDistance = MaxFloatingDistance;
                     //restore offsets
                     if (targetDistance > maxFloatingDistance) {
-                        menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = menu.GetComponent<MenuHandler>().lastOffsetsInBetween.Item1;
-                        menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = menu.GetComponent<MenuHandler>().lastOffsetsInBetween.Item2.eulerAngles;
-                        menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = menu.GetComponent<MenuHandler>().lastOffsetsInBetween.Item3;
-                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = menu.GetComponent<MenuHandler>().lastOffsetsInBetween.Item4;
+                        Tuple<Vector3, Quaternion, Vector3, float> currentOffsetInBetween;
+                        if (menu.GetComponent<MenuHandler>().manipulationLogic == MenuManipulationLogic.OneToAll) {
+                            currentOffsetInBetween = placementService.GetCurrentOneToAllOffsetInBetween(menu);
+                        }
+                        else {
+                            currentOffsetInBetween = placementService.GetCurrentOneToOneOffsetInBetween(targetObject);
+                        }
+                        menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetInBetween.Item1;
+                        menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetInBetween.Item2.eulerAngles;
+                        menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetInBetween.Item3;
+                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetInBetween.Item4;
                         menu.GetComponent<SolverHandler>().TransformOverride = placementService.GetInBetweenTarget().transform;
                         menu.GetComponent<Orbital>().enabled = false;
                     }
                     else {
-                        menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = menu.GetComponent<MenuHandler>().lastOffsetsOrbital.Item1;
-                        menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = menu.GetComponent<MenuHandler>().lastOffsetsOrbital.Item2.eulerAngles;
-                        menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = menu.GetComponent<MenuHandler>().lastOffsetsOrbital.Item3;
-                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = menu.GetComponent<MenuHandler>().lastOffsetsOrbital.Item4;
+                        Tuple<Vector3, Quaternion, Vector3, float> currentOffsetOrbital;
+                        if (menu.GetComponent<MenuHandler>().manipulationLogic == MenuManipulationLogic.OneToAll) {
+                            currentOffsetOrbital = placementService.GetCurrentOneToAllOffsetOrbital(menu);
+                        }
+                        else {
+                            currentOffsetOrbital = placementService.GetCurrentOneToOneOffsetOrbitalFloating(targetObject);
+                        }
+                        menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetOrbital.Item1;
+                        menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetOrbital.Item2.eulerAngles;
+                        menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetOrbital.Item3;
+                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetOrbital.Item4;
                         menu.GetComponent<InBetween>().enabled = false;
                     }
                 }
@@ -341,14 +419,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     menu.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
                     menu.GetComponent<FinalPlacementOptimizer>().enabled = true;
                     menu.GetComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
-                    (menu.GetComponent<ConstantViewSize>() ?? menu.AddComponent<ConstantViewSize>()).MinDistance = minDistance;
-                    menu.GetComponent<ConstantViewSize>().MaxDistance = maxDistance;
-
+                    (menu.GetComponent<ConstantViewSize>() ?? menu.AddComponent<ConstantViewSize>()).MinDistance = minFloatingDistance;
+                    menu.GetComponent<ConstantViewSize>().MaxDistance = maxFloatingDistance;
+                    //Switch on solvers according to the targetDistance
                     if (targetDistance > maxFloatingDistance) {
-                        menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = menu.GetComponent<MenuHandler>().lastOffsetsHandConstraint.Item1;
-                        menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = menu.GetComponent<MenuHandler>().lastOffsetsHandConstraint.Item2.eulerAngles;
-                        menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = menu.GetComponent<MenuHandler>().lastOffsetsHandConstraint.Item3;
-                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = menu.GetComponent<MenuHandler>().lastOffsetsHandConstraint.Item4;
                         if (placementService.HandTrackingEnabled) {
                             if (placementService.ArticulatedHandSupported) {
                                 menu.GetComponent<SolverHandler>().TrackedTargetType = TrackedObjectType.HandJoint;
@@ -374,14 +448,31 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                         else {
                             menu.GetComponent<Follow>().enabled = true;
                         }
-
+                        Tuple<Vector3, Quaternion, Vector3, float> currentOffsetHandConstraint;
+                        if (menu.GetComponent<MenuHandler>().manipulationLogic == MenuManipulationLogic.OneToAll) {
+                            currentOffsetHandConstraint = placementService.GetCurrentOneToAllOffsetHandConstraint(menu);
+                        }
+                        else {
+                            currentOffsetHandConstraint = placementService.GetCurrentOneToOneOffsetHandConstraint(targetObject);
+                        }
+                        menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetHandConstraint.Item1;
+                        menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetHandConstraint.Item2.eulerAngles;
+                        menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetHandConstraint.Item3;
+                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetHandConstraint.Item4;
                         menu.GetComponent<Orbital>().enabled = false;
                     }
                     else {
-                        menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = menu.GetComponent<MenuHandler>().lastOffsetsOrbital.Item1;
-                        menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = menu.GetComponent<MenuHandler>().lastOffsetsOrbital.Item2.eulerAngles;
-                        menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = menu.GetComponent<MenuHandler>().lastOffsetsOrbital.Item3;
-                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = menu.GetComponent<MenuHandler>().lastOffsetsOrbital.Item4;                       
+                        Tuple<Vector3, Quaternion, Vector3, float> currentOffsetOrbital;
+                        if (menu.GetComponent<MenuHandler>().manipulationLogic == MenuManipulationLogic.OneToAll) {
+                            currentOffsetOrbital = placementService.GetCurrentOneToAllOffsetOrbital(menu);
+                        }
+                        else {
+                            currentOffsetOrbital = placementService.GetCurrentOneToOneOffsetOrbitalCompact(targetObject);
+                        }
+                        menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetOrbital.Item1;
+                        menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetOrbital.Item2.eulerAngles;
+                        menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetOrbital.Item3;
+                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetOrbital.Item4;
                         if (placementService.HandTrackingEnabled) {
                             menu.GetComponent<HandConstraint>().enabled = false;
                         }
@@ -403,31 +494,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         /// Close the menu object and return it to its object pool.
         /// </summary>
         public void Close() {
-            placementService.StoreBoundingBoxOnClose(gameObject, GetBoundingBox());
+            placementService.StoreBoundingBox(gameObject, GetBoundingBox());
             placementService.CloseMenu(gameObject);
-            if(menuVariantType == MenuVariantType.ObjectMenu) {
-                if (!compact) {
-                    if (gameObject.GetComponent<Orbital>().enabled) {
-                        lastOffsetsOrbital = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV);
-                        placementService.StoreOrbitalPositionOffsetOnClose(gameObject, gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset);
-                        placementService.StoreInBetweenPositionOffsetOnClose(gameObject, lastOffsetsInBetween.Item1);
-                    }
-                    else {
-                        lastOffsetsInBetween = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV);
-                        placementService.StoreInBetweenPositionOffsetOnClose(gameObject, gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset);
-                        placementService.StoreOrbitalPositionOffsetOnClose(gameObject, lastOffsetsOrbital.Item1);
-                    }
-                }
-                else {
-                    if (gameObject.GetComponent<Orbital>().enabled) {
-                        lastOffsetsOrbital = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV);
-                        placementService.StoreOrbitalPositionOffsetOnClose(gameObject, gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset);
-                    }
-                    else {                      
-                        lastOffsetsHandConstraint = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV);                       
-                    }
-                }
-            }
             gameObject.GetComponent<MenuBase>().OnClose();
             if (manualModeEntered) {
                 ExitManualMode();
@@ -439,29 +507,62 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
 
         /// <summary>
-        /// Save the old offsets of the menu object for later retrieve in the order of position, rotation AND scale.
+        /// Save the old offsets of the menu object for later retrieve in the order of position, rotation, scale, and TargetViewPercentV.
         /// </summary>
         public void SaveOffsetBeforeManipulation(Tuple<Vector3, Quaternion, Vector3, float> oldOffsets)
         {      
             if (placementService.PreviousMode == MenuPlacementService.MenuPlacementServiceMode.Automatic) {
                 if (menuVariantType == MenuVariantType.ObjectMenu && gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
                     Vector3 scaleOffset = new Vector3(oldOffsets.Item3.x / originalScale.x, oldOffsets.Item3.y / originalScale.y, oldOffsets.Item3.z / originalScale.z);
-                    if (retrieveBufferAutomaticModeOrbital.Count == retrieveBufferAutomaticModeOrbital.Capacity) {
-                        retrieveBufferAutomaticModeOrbital.RemoveAt(0);
+                    List<Tuple<Vector3, Quaternion, Vector3, float>> retrieveBufferOrbital;
+                    if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                        retrieveBufferOrbital = placementService.GetRetrieveBufferOneToAllOrbital(menuID);
+                    }
+                    else {
+                        if (!compact) {
+                            retrieveBufferOrbital = placementService.GetRetrieveBufferOneToOneOrbitalFloating(TargetObject);
+                        }
+                        else {
+                            retrieveBufferOrbital = placementService.GetRetrieveBufferOneToOneOrbitalCompact(TargetObject);
+                        }
+                    }
+                    if (retrieveBufferOrbital.Count == retrieveBufferOrbital.Capacity) {
+                        retrieveBufferOrbital.RemoveAt(0);
                     }
                     Tuple<Vector3, Quaternion, Vector3, float> oldOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), scaleOffset, oldOffsets.Item4);
-                    retrieveBufferAutomaticModeOrbital.Add(oldOffset);             
+                    retrieveBufferOrbital.Add(oldOffset);
                 }
                 else {
                     Vector3 scaleOffset = new Vector3(oldOffsets.Item3.x / originalScale.x, oldOffsets.Item3.y / originalScale.y, oldOffsets.Item3.z / originalScale.z);
-                    if (retrieveBufferAutomaticModeWithoutOrbital.Count == retrieveBufferAutomaticModeWithoutOrbital.Capacity) {
-                        retrieveBufferAutomaticModeWithoutOrbital.RemoveAt(0);
+                    if(menuVariantType == MenuVariantType.MainMenu) {
+                        List<Tuple<Vector3, Quaternion, Vector3, float>> retrieveBufferMainMenu = placementService.GetRetrieveBufferMainMenu(menuID);
+                        if (retrieveBufferMainMenu.Count == retrieveBufferMainMenu.Capacity) {
+                            retrieveBufferMainMenu.RemoveAt(0);
+                        }
+                        Tuple<Vector3, Quaternion, Vector3, float> oldOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), scaleOffset, oldOffsets.Item4);
+                        retrieveBufferMainMenu.Add(oldOffset);
                     }
-                    Tuple<Vector3, Quaternion, Vector3, float> oldOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), scaleOffset, oldOffsets.Item4);
-                    retrieveBufferAutomaticModeWithoutOrbital.Add(oldOffset);
-                }
+                    else {
+                        List<Tuple<Vector3, Quaternion, Vector3, float>> retrieveBufferWithoutOrbital;
+                        if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                            retrieveBufferWithoutOrbital = placementService.GetRetrieveBufferOneToAllWithoutOrbital(menuID);
+                        }
+                        else {
+                            if (!compact) {
+                                retrieveBufferWithoutOrbital = placementService.GetRetrieveBufferOneToOneInBetween(TargetObject);
+                            }
+                            else {
+                                retrieveBufferWithoutOrbital = placementService.GetRetrieveBufferOneToOneHandConstraint(TargetObject);
+                            }
+                        }
+                        if (retrieveBufferWithoutOrbital.Count == retrieveBufferWithoutOrbital.Capacity) {
+                            retrieveBufferWithoutOrbital.RemoveAt(0);
+                        }
+                        Tuple<Vector3, Quaternion, Vector3, float> oldOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), scaleOffset, oldOffsets.Item4);
+                        retrieveBufferWithoutOrbital.Add(oldOffset);
+                    }
 
-                
+                }                
             }
             else {
                 Vector3 scaleOffset = new Vector3(oldOffsets.Item3.x / originalScale.x, oldOffsets.Item3.y / originalScale.y, oldOffsets.Item3.z / originalScale.z);
@@ -475,19 +576,73 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         /// <summary>
         /// Update the offsets for the menu object, used on app bar.
-        /// </summary>
+        /// </summary>  
+        /// <param name="newOffsets"> offsets after manipulation</param>
+        /// <param name="oldOffsets"> offsets before manipulation </param>
         public void UpdateOffset(Tuple<Vector3, Quaternion, Vector3, float> newOffsets, Tuple<Vector3, Quaternion, Vector3, float> oldOffsets) {
             if (placementService.PreviousMode == MenuPlacementService.MenuPlacementServiceMode.Automatic) {
-                if (menuVariantType == MenuVariantType.ObjectMenu && gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {                  
-                    gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset += Camera.main.transform.InverseTransformVector(newOffsets.Item1 - oldOffsets.Item1);
-                    gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = new Vector3(Math.Abs(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x), gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.y, gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.z);
+                if (menuVariantType == MenuVariantType.ObjectMenu && gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
+                    Vector3 offsetsCameraCoord = Camera.main.transform.InverseTransformVector(newOffsets.Item1) - Camera.main.transform.InverseTransformVector(oldOffsets.Item1);
+                    Vector3 objectToMenu = Vector3.Normalize(gameObject.transform.position - TargetObject.transform.position);
+                    //Is the menu on the right side of the object (in the camera/user space)?
+                    bool rightSide = Vector3.Dot(objectToMenu, gameObject.transform.right) > 0 ? true : false;
+                    if (rightSide) {
+                        gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset += offsetsCameraCoord;
+                    }
+                    else {
+                        //move away from the target object
+                        if (offsetsCameraCoord.x < 0) {
+                            gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = new Vector3(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x - offsetsCameraCoord.x, gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.y + offsetsCameraCoord.y, gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.z + offsetsCameraCoord.z);
+                            if (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x > 0) {
+                                gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = new Vector3(Math.Abs(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x), gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.y, gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.z);
+                            }
+                        }
+                        //move closer to the target object
+                        else {
+                            gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = new Vector3(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x - offsetsCameraCoord.x, gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.y + offsetsCameraCoord.y, gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.z + offsetsCameraCoord.z);
+                        }
+                    }                    
                     gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset += newOffsets.Item2.eulerAngles - oldOffsets.Item2.eulerAngles;
                     gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = new Vector3(newOffsets.Item3.x / originalScale.x, newOffsets.Item3.y / originalScale.y, newOffsets.Item3.z / originalScale.z);
                 }
-                else {                  
-                    gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset += Camera.main.transform.InverseTransformVector(newOffsets.Item1 - oldOffsets.Item1);
+                else {
+                    Vector3 offsetsCameraCoord = Camera.main.transform.InverseTransformVector(newOffsets.Item1) - Camera.main.transform.InverseTransformVector(oldOffsets.Item1);
+                    gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset += offsetsCameraCoord;
                     gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset += newOffsets.Item2.eulerAngles - oldOffsets.Item2.eulerAngles;
                     gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = new Vector3(newOffsets.Item3.x / originalScale.x, newOffsets.Item3.y / originalScale.y, newOffsets.Item3.z / originalScale.z);
+                }
+                //TargetViewPercentV of ConstantViewSize is already updated in AppBarControllerMPS, so we don't update it here.
+                if(menuVariantType == MenuVariantType.ObjectMenu) {
+                    Tuple<Vector3, Quaternion, Vector3, float> currentOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV);
+                    if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                        if (gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
+                            placementService.SetCurrentOneToAllOffsetOrbital(menuID, currentOffset);
+                        }
+                        if(gameObject.GetComponent<InBetween>() != null && gameObject.GetComponent<InBetween>().enabled) {
+                            placementService.SetCurrentOneToAllOffsetInBetween(menuID, currentOffset);
+                        }
+                        if(gameObject.GetComponent<HandConstraint>() != null && gameObject.GetComponent<HandConstraint>().enabled) {
+                            placementService.SetCurrentOneToAllOffsetHandConstraint(menuID, currentOffset);
+                        }
+                    }
+                    else {
+                        if (!compact) {
+                            if (gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
+                                placementService.SetCurrentOneToOneOffsetOrbitalFloating(TargetObject, currentOffset);
+                            }
+                            if (gameObject.GetComponent<InBetween>() != null && gameObject.GetComponent<InBetween>().enabled) {
+                                placementService.SetCurrentOneToOneOffsetInBetween(TargetObject, currentOffset);
+                            }
+                        }
+                        else {
+                            if (gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
+                                placementService.SetCurrentOneToOneOffsetOrbitalCompact(TargetObject, currentOffset);
+                            }
+                            if (gameObject.GetComponent<HandConstraint>() != null && gameObject.GetComponent<HandConstraint>().enabled) {
+                                placementService.SetCurrentOneToAllOffsetHandConstraint(menuID, currentOffset);
+                            }
+                        }
+                    }
                 }
             }
             else {
@@ -503,43 +658,125 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         public void Retrieve() {
             if(placementService.PreviousMode == MenuPlacementService.MenuPlacementServiceMode.Automatic){
                 if (menuVariantType == MenuVariantType.ObjectMenu && gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
-                    if (retrieveBufferAutomaticModeOrbital.Count > 0) {
-                        Tuple<Vector3, Quaternion, Vector3, float> oldOffset = retrieveBufferAutomaticModeOrbital.Last();
-                        Vector3 directionToHead = head.transform.position - TargetObject.transform.position;
-                        bool rightSide = Vector3.Dot(directionToHead, head.transform.right) > 0 ? true : false;
+                    List<Tuple<Vector3, Quaternion, Vector3, float>> retrieveBufferOrbital;
+                    if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                        retrieveBufferOrbital = placementService.GetRetrieveBufferOneToAllOrbital(menuID);
+                    }
+                    else {
+                        if (!compact) {
+                            retrieveBufferOrbital = placementService.GetRetrieveBufferOneToOneOrbitalFloating(TargetObject);
+                        }
+                        else {
+                            retrieveBufferOrbital = placementService.GetRetrieveBufferOneToOneOrbitalCompact(TargetObject);
+                        }
+                    }
+                    if (retrieveBufferOrbital.Count > 0) {
+                        Tuple<Vector3, Quaternion, Vector3, float> oldOffset = retrieveBufferOrbital.Last();
+                        Vector3 headToObject = Vector3.Normalize(TargetObject.transform.position - head.transform.position);
+                        //If we look at the object's LEFT side, than the angle between head.transform.right and headToObject is an acute angle, i.e. Vector3.Dot(headToObject, head.transform.right) > 0.
+                        //If we look at the object's RIGHT side, than the angle between head.transform.right and headToObject is an obtuse angle, i.e. Vector3.Dot(headToObject, head.transform.right) < 0. 
+                        bool rightSide = Vector3.Dot(headToObject, head.transform.right) < 0 ? true : false;
                         if (rightSide) {
                             gameObject.transform.localPosition = gameObject.transform.localPosition - (head.transform.right * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x - oldOffset.Item1.x))
                                 - head.transform.up * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.y - oldOffset.Item1.y) - head.transform.forward * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.z - oldOffset.Item1.z);
-                                
                         }
                         else {
-                            gameObject.transform.localPosition = gameObject.transform.localPosition - (-head.transform.right * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x - oldOffset.Item1.x))
+                            gameObject.transform.localPosition = gameObject.transform.localPosition - (- head.transform.right * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x - oldOffset.Item1.x))
                                 - head.transform.up * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.y - oldOffset.Item1.y) - head.transform.forward * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.z - oldOffset.Item1.z);
                         }
-                        //gameObject.transform.localPosition = gameObject.transform.localPosition - gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset + oldOffset.Item1;
                         gameObject.transform.localEulerAngles = gameObject.transform.localEulerAngles - gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset + oldOffset.Item2.eulerAngles;
                         gameObject.transform.localScale = new Vector3(oldOffset.Item3.x * originalScale.x, oldOffset.Item3.y * originalScale.y, oldOffset.Item3.z * originalScale.z);
                         gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = oldOffset.Item1;
                         gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = oldOffset.Item2.eulerAngles;
                         gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = oldOffset.Item3;
                         gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = oldOffset.Item4;
-                        retrieveBufferAutomaticModeOrbital.RemoveAt(retrieveBufferAutomaticModeOrbital.Count - 1);
+                        retrieveBufferOrbital.RemoveAt(retrieveBufferOrbital.Count - 1);
                     }
                 }
                 else {
-                    if (retrieveBufferAutomaticModeWithoutOrbital.Count > 0) {
-                        Tuple<Vector3, Quaternion, Vector3, float> oldOffset = retrieveBufferAutomaticModeWithoutOrbital.Last();
-                        gameObject.transform.localPosition = gameObject.transform.localPosition - head.transform.right * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x - oldOffset.Item1.x)
-                                - head.transform.up * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.y - oldOffset.Item1.y) - head.transform.forward * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.z - oldOffset.Item1.z);
-                        gameObject.transform.localEulerAngles = gameObject.transform.localEulerAngles - gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset + oldOffset.Item2.eulerAngles;
-                        gameObject.transform.localScale = new Vector3(oldOffset.Item3.x * originalScale.x, oldOffset.Item3.y * originalScale.y, oldOffset.Item3.z * originalScale.z);
-                        gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = oldOffset.Item1;
-                        gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = oldOffset.Item2.eulerAngles;
-                        gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = oldOffset.Item3;
-                        gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = oldOffset.Item4;
-                        retrieveBufferAutomaticModeWithoutOrbital.RemoveAt(retrieveBufferAutomaticModeWithoutOrbital.Count - 1);
+                    if (menuVariantType == MenuVariantType.MainMenu) {
+                        List<Tuple<Vector3, Quaternion, Vector3, float>> retrieveBufferMainMenu = placementService.GetRetrieveBufferMainMenu(menuID);
+                        if (retrieveBufferMainMenu.Count > 0) {
+                            Tuple<Vector3, Quaternion, Vector3, float> oldOffset = retrieveBufferMainMenu.Last();
+                            gameObject.transform.localPosition = gameObject.transform.localPosition - head.transform.right * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x - oldOffset.Item1.x)
+                                    - head.transform.up * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.y - oldOffset.Item1.y) - head.transform.forward * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.z - oldOffset.Item1.z);
+                            gameObject.transform.localEulerAngles = gameObject.transform.localEulerAngles - gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset + oldOffset.Item2.eulerAngles;
+                            gameObject.transform.localScale = new Vector3(oldOffset.Item3.x * originalScale.x, oldOffset.Item3.y * originalScale.y, oldOffset.Item3.z * originalScale.z);
+                            gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = oldOffset.Item1;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = oldOffset.Item2.eulerAngles;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = oldOffset.Item3;
+                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = oldOffset.Item4;
+                            retrieveBufferMainMenu.RemoveAt(retrieveBufferMainMenu.Count - 1);
+                        }
                     }
-                }              
+                    else { 
+                        List<Tuple<Vector3, Quaternion, Vector3, float>> retrieveBufferWithoutOrbital;
+                        if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                            retrieveBufferWithoutOrbital = placementService.GetRetrieveBufferOneToAllWithoutOrbital(menuID);
+                        }
+                        else {
+                            if (!compact) {
+                                retrieveBufferWithoutOrbital = placementService.GetRetrieveBufferOneToOneInBetween(TargetObject);
+                            }
+                            else {
+                                retrieveBufferWithoutOrbital = placementService.GetRetrieveBufferOneToOneHandConstraint(TargetObject);
+                            }
+                        }
+                        if (retrieveBufferWithoutOrbital.Count > 0) {
+                            Tuple<Vector3, Quaternion, Vector3, float> oldOffset = retrieveBufferWithoutOrbital.Last();
+                            gameObject.transform.localPosition = gameObject.transform.localPosition - head.transform.right * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.x - oldOffset.Item1.x)
+                                    - head.transform.up * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.y - oldOffset.Item1.y) - head.transform.forward * (gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset.z - oldOffset.Item1.z);
+                            gameObject.transform.localEulerAngles = gameObject.transform.localEulerAngles - gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset + oldOffset.Item2.eulerAngles;
+                            gameObject.transform.localScale = new Vector3(oldOffset.Item3.x * originalScale.x, oldOffset.Item3.y * originalScale.y, oldOffset.Item3.z * originalScale.z);
+                            gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = oldOffset.Item1;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = oldOffset.Item2.eulerAngles;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = oldOffset.Item3;
+                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = oldOffset.Item4;
+                            retrieveBufferWithoutOrbital.RemoveAt(retrieveBufferWithoutOrbital.Count - 1);
+                        }
+                    }
+                }
+                //Recompute the menu's orientation based on menuOrientationType for a better appearance.
+                switch (menuOrientationType) {
+                    case MenuOrientationType.CameraAligned:
+                        gameObject.transform.forward = Vector3.Normalize(gameObject.transform.position - head.transform.position);
+                        break;
+                    case MenuOrientationType.Unmodified:
+                        //Do nothing
+                        break;
+                }
+                if (menuVariantType == MenuVariantType.ObjectMenu) {
+                    Tuple<Vector3, Quaternion, Vector3, float> currentOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV);
+                    if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                        if (gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
+                            placementService.SetCurrentOneToAllOffsetOrbital(menuID, currentOffset);
+                        }
+                        if (gameObject.GetComponent<InBetween>() != null && gameObject.GetComponent<InBetween>().enabled) {
+                            placementService.SetCurrentOneToAllOffsetInBetween(menuID, currentOffset);
+                        }
+                        if (gameObject.GetComponent<HandConstraint>() != null && gameObject.GetComponent<HandConstraint>().enabled) {
+                            placementService.SetCurrentOneToAllOffsetHandConstraint(menuID, currentOffset);
+                        }
+                    }
+                    else {
+                        if (!compact) {
+                            if (gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
+                                placementService.SetCurrentOneToOneOffsetOrbitalFloating(TargetObject, currentOffset);
+                            }
+                            if (gameObject.GetComponent<InBetween>() != null && gameObject.GetComponent<InBetween>().enabled) {
+                                placementService.SetCurrentOneToOneOffsetInBetween(TargetObject, currentOffset);
+                            }
+                        }
+                        else {
+                            if (gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
+                                placementService.SetCurrentOneToOneOffsetOrbitalCompact(TargetObject, currentOffset);
+                            }
+                            if (gameObject.GetComponent<HandConstraint>() != null && gameObject.GetComponent<HandConstraint>().enabled) {
+                                placementService.SetCurrentOneToAllOffsetHandConstraint(menuID, currentOffset);
+                            }
+                        }
+                    }
+                }
             }
             else {
                 if (retrieveBufferManualMode.Count > 0) {
@@ -553,8 +790,9 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         }
 
-
-
+        /// <summary>
+        /// place the menu in front of the user, and lock it on the user (user-referenced)
+        /// </summary>
         public void EnterManualMode() {
             gameObject.transform.parent = head.transform;
             gameObject.transform.localPosition = manualModePositionOffset;
@@ -582,7 +820,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 gameObject.AddComponent<SurfaceMagnetism>().SurfaceNormalOffset = surfaceMagnetismSafetyOffset;
                 gameObject.GetComponent<SurfaceMagnetism>().UpdateLinkedTransform = true;
                 gameObject.GetComponent<SurfaceMagnetism>().CurrentOrientationMode = SurfaceMagnetism.OrientationMode.None;
-                gameObject.GetComponent<SurfaceMagnetism>().MagneticSurfaces[0] = LayerMask.GetMask("Spatial Mapping");
+                gameObject.GetComponent<SurfaceMagnetism>().MagneticSurfaces[0] = placementService.SpatialAwarenessLayer;
                 gameObject.GetComponent<SurfaceMagnetism>().MaxRaycastDistance = maxFloatingDistance;
                 gameObject.GetComponent<SurfaceMagnetism>().ClosestDistance = minFloatingDistance;
                 gameObject.AddComponent<Follow>().MinDistance = minFloatingDistance;
@@ -595,8 +833,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 gameObject.GetComponent<Follow>().UpdateLinkedTransform = true;
                 gameObject.AddComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
                 gameObject.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
-                gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;
-                
+                gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;               
             }
             else {
                 if (placementService.HandTrackingEnabled) {
@@ -641,11 +878,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     gameObject.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
                     gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;
                 }
-
             }
             (gameObject.GetComponent<ConstantViewSize>() ?? gameObject.AddComponent<ConstantViewSize>()).TargetViewPercentV = defaultTargetViewPercentV;
-            gameObject.GetComponent<ConstantViewSize>().MinDistance = minDistance;
-            gameObject.GetComponent<ConstantViewSize>().MaxDistance = maxDistance;
+            gameObject.GetComponent<ConstantViewSize>().MinDistance = minFloatingDistance;
+            gameObject.GetComponent<ConstantViewSize>().MaxDistance = maxFloatingDistance;
             gameObject.GetComponent<ConstantViewSize>().enabled = constantViewSizeEnabled;
             if (manipulationEnabled) {
                 InitializeAppBar();
@@ -671,12 +907,14 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
         }
 
+        //The core method of the menu placement system.
+        //It checks the spatial mapping in front of the user and around the menu object to determine the proper placement strategy (solver).
         private void CheckSpatialMapping() {
             float distanceToMenu = Vector3.Dot(gameObject.transform.position - head.transform.position, head.transform.forward);
             //Use to check main menu, 2 * surfaceMagnetismSafetyOffset for better accuracy
-            bool closeToSpatialMapping = Physics.Raycast(head.transform.position, head.transform.forward, minFloatingDistance + 2 * surfaceMagnetismSafetyOffset, LayerMask.GetMask("Spatial Mapping"));
+            bool closeToSpatialMapping = Physics.Raycast(head.transform.position, head.transform.forward, minFloatingDistance + 2 * surfaceMagnetismSafetyOffset, placementService.SpatialAwarenessLayer);
             if (menuVariantType == MenuVariantType.MainMenu && !compact) {
-                if(Physics.Raycast(head.transform.position,head.transform.forward,maxFloatingDistance,LayerMask.GetMask("Spatial Mapping"))) {
+                if(Physics.Raycast(head.transform.position, head.transform.forward, maxFloatingDistance, placementService.SpatialAwarenessLayer)) { 
                     gameObject.GetComponent<SurfaceMagnetism>().enabled = false;
                 }
                 else {
@@ -685,12 +923,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
             if (CollideWithSpatialMapping() || (distanceToMenu < minFloatingDistance + surfaceMagnetismSafetyOffset && closeToSpatialMapping)) {
                 if (menuVariantType == MenuVariantType.MainMenu) {
-                    if (!compact) {
-                        
+                    if (!compact) {                       
                         // Cast a ray towards the position of the menu from the camera, if the menu is closer than the minFloatingDistance, switch to the compact version.
                         Ray ray = new Ray(head.transform.position, GetBoundingBox().center - head.transform.position);
-                        Debug.Log(Physics.Raycast(ray, minFloatingDistance, LayerMask.GetMask("Menu")));
-                        if (Physics.Raycast(ray, minFloatingDistance, LayerMask.GetMask("Menu"))) {
+                        if (Physics.Raycast(ray, minFloatingDistance, placementService.MenuLayer)) {
                             message.switchType = PlacementMessage.SwitchType.FloatingToCompact;
                             switchTo = message.switchType;
                         }
@@ -736,7 +972,17 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                                 gameObject.GetComponent<Follow>().enabled = true;
                                 gameObject.GetComponent<Orbital>().enabled = false;
                             }
-
+                            Tuple<Vector3, Quaternion, Vector3, float> currentOffsetHandConstaint;
+                            if(manipulationLogic == MenuManipulationLogic.OneToAll) {
+                                currentOffsetHandConstaint = placementService.GetCurrentOneToAllOffsetHandConstraint(menuID);
+                            }
+                            else {
+                                currentOffsetHandConstaint = placementService.GetCurrentOneToOneOffsetHandConstraint(TargetObject);
+                            }
+                            gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetHandConstaint.Item1;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetHandConstaint.Item2.eulerAngles;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetHandConstaint.Item3;
+                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
                         }
                     }
                     else {
@@ -777,7 +1023,17 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                                 gameObject.GetComponent<Follow>().enabled = true;
                                 gameObject.GetComponent<Orbital>().enabled = false;
                             }
-
+                            Tuple<Vector3, Quaternion, Vector3, float> currentOffsetHandConstaint;
+                            if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                                currentOffsetHandConstaint = placementService.GetCurrentOneToAllOffsetHandConstraint(menuID);
+                            }
+                            else {
+                                currentOffsetHandConstaint = placementService.GetCurrentOneToOneOffsetHandConstraint(TargetObject);
+                            }
+                            gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetHandConstaint.Item1;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetHandConstaint.Item2.eulerAngles;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetHandConstaint.Item3;
+                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
                         }
                     }                    
                 }
@@ -787,8 +1043,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     if (compact) {
                         //check the bounding box of the floating menu from GetBoundingBox() in front of the user's head.
                         Vector3 center = head.transform.position + head.transform.forward * minFloatingDistance;
-                        if (!Physics.CheckBox(center, placementService.GetStoredBoundingBoxOnCloseOppositeType(gameObject).extents, Quaternion.identity, LayerMask.GetMask("Spatial Mapping"))) {
-                            Debug.Log("Front Free for Floating main menu");
+                        if (!Physics.CheckBox(center, placementService.GetStoredBoundingBoxOppositeVariant(gameObject).extents, Quaternion.identity, placementService.SpatialAwarenessLayer)) {
+                            //Debug.Log("Front Free for Floating main menu");
                             message.switchType = PlacementMessage.SwitchType.CompactToFloating;
                             switchTo = message.switchType;
                         }
@@ -797,57 +1053,59 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 }
                 else {
                     float targetDistance = (head.transform.position - TargetObject.transform.position).magnitude;
-                    if (!compact) {                
+                    if (!compact) {
                         //The object is between maxFloatingDistance and minFloatingDistance, use the Orbital solver.
                         if (targetDistance <= maxFloatingDistance && targetDistance >= minFloatingDistance) {
-
-                            //If a switch between solvers is needed, save the current offsets for next switch.
-                            if (gameObject.GetComponent<InBetween>().enabled) {
-                                gameObject.GetComponent<SolverHandler>().TransformOverride = TargetObject.transform;
-                                lastOffsetsInBetween = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV);
-                                gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = lastOffsetsOrbital.Item1;
-                                gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = lastOffsetsOrbital.Item2.eulerAngles;
-                                gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = lastOffsetsOrbital.Item3;
-                                gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = lastOffsetsOrbital.Item4;
-                            }                        
+                            gameObject.GetComponent<SolverHandler>().TransformOverride = TargetObject.transform;
                             gameObject.GetComponent<Orbital>().enabled = true;
-                            gameObject.GetComponent<InBetween>().enabled = false;
-                            
-                            gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;                           
+                            gameObject.GetComponent<InBetween>().enabled = false;                            
+                            gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;
+                            Tuple<Vector3, Quaternion, Vector3, float> currentOffsetOrbital;
+                            if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                                currentOffsetOrbital = placementService.GetCurrentOneToAllOffsetOrbital(menuID);
+                            }
+                            else {
+                                currentOffsetOrbital = placementService.GetCurrentOneToOneOffsetOrbitalFloating(TargetObject);
+                            }
+                            gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetOrbital.Item1;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetOrbital.Item2.eulerAngles;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetOrbital.Item3;
+                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetOrbital.Item4;
                         }
                         else if (targetDistance < minFloatingDistance) {
                             message.switchType = PlacementMessage.SwitchType.FloatingToCompact;
                             switchTo = message.switchType;
                         }
                         else if (targetDistance > maxFloatingDistance) {
-
-                            //If a switch between solvers is needed, save the current offsets for next switch.
-                            if (gameObject.GetComponent<Orbital>().enabled) {
-                                gameObject.GetComponent<SolverHandler>().TransformOverride = placementService.GetInBetweenTarget().transform;
-                                lastOffsetsOrbital = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV);
-                                gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = lastOffsetsInBetween.Item1;
-                                gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = lastOffsetsInBetween.Item2.eulerAngles;
-                                gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = lastOffsetsInBetween.Item3;
-                                gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = lastOffsetsInBetween.Item4;
-                            }                          
                             //We should enable InBetween solver;
+                            gameObject.GetComponent<SolverHandler>().TransformOverride = placementService.GetInBetweenTarget().transform;
                             gameObject.GetComponent<Orbital>().enabled = false;
                             gameObject.GetComponent<InBetween>().enabled = true;
                             gameObject.GetComponent<InBetween>().PartwayOffset = 1 - (defaultFloatingDistance / targetDistance);
                             gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;
+                            Tuple<Vector3, Quaternion, Vector3, float> currentOffsetInBetween;
+                            if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                                currentOffsetInBetween = placementService.GetCurrentOneToAllOffsetInBetween(menuID);
+                            }
+                            else {
+                                currentOffsetInBetween = placementService.GetCurrentOneToOneOffsetInBetween(TargetObject);
+                            }
+                            gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetInBetween.Item1;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetInBetween.Item2.eulerAngles;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetInBetween.Item3;
+                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetInBetween.Item4;
                         }
                     }
                     //Compact 
                     else {
-                        Vector3 inBetweenPositionOffsetFloatingVariant = placementService.GetInBetweenPositionOffsetOppositeType(gameObject);
-                        Vector3 orbitalPositionOffsetFloatingVariant = placementService.GetOrbitalPositionOffsetOppositeType(gameObject);
                         //Check space around and try to switch to floating version.
                         if (targetDistance > maxFloatingDistance) {
+                            Vector3 inBetweenPositionOffsetFloatingVariant = placementService.GetInBetweenPositionOffsetOppositeVariant(gameObject);
                             //Check the space in front of user because InBetween solver should be activated
                             Vector3 center = placementService.GetInBetweenTarget().transform.position + Vector3.Normalize(TargetObject.transform.position - placementService.GetInBetweenTarget().transform.position) * defaultFloatingDistance 
                                 + head.transform.right * inBetweenPositionOffsetFloatingVariant.x + head.transform.up * inBetweenPositionOffsetFloatingVariant.y + head.transform.forward * inBetweenPositionOffsetFloatingVariant.z;
-                            if (!Physics.CheckBox(center, placementService.GetStoredBoundingBoxOnCloseOppositeType(gameObject).extents, Quaternion.identity, LayerMask.GetMask("Spatial Mapping"))) {
-                                Debug.Log("Front Free for InBetween");
+                            if (!Physics.CheckBox(center, placementService.GetStoredBoundingBoxOppositeVariant(gameObject).extents, Quaternion.identity, placementService.SpatialAwarenessLayer)) {
+                                //Debug.Log("Front Free for InBetween");
                                 message.switchType = PlacementMessage.SwitchType.CompactToFloating;
                                 switchTo = message.switchType;
                             }
@@ -880,41 +1138,63 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                                     gameObject.GetComponent<Follow>().enabled = true;
                                     gameObject.GetComponent<Orbital>().enabled = false;
                                 }
+                                Tuple<Vector3, Quaternion, Vector3, float> currentOffsetHandConstaint;
+                                if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                                    currentOffsetHandConstaint = placementService.GetCurrentOneToAllOffsetHandConstraint(menuID);
+                                }
+                                else {
+                                    currentOffsetHandConstaint = placementService.GetCurrentOneToOneOffsetHandConstraint(TargetObject);
+                                }
+                                gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetHandConstaint.Item1;
+                                gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetHandConstaint.Item2.eulerAngles;
+                                gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetHandConstaint.Item3;
+                                gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
                             }
                         }
+                        //Try to enable floating vairant with the Orbital solver
                         else {
-                            Vector3 directionToHead = head.transform.position - TargetObject.transform.position;
-                            bool rightSide = Vector3.Dot(directionToHead, head.transform.right) > 0 ? true : false;
+                            Vector3 orbitalPositionOffsetFloatingVariant = placementService.GetOrbitalPositionOffsetOppositeVariant(gameObject);
+                            Vector3 headToObject = Vector3.Normalize(TargetObject.transform.position - head.transform.position);
+                            Vector3 forward = Vector3.Normalize(new Vector3(headToObject.x, 0, headToObject.y));
+                            Vector3 right = Vector3.Normalize(Vector3.ProjectOnPlane(new Vector3(head.transform.right.x, 0, head.transform.right.z), headToObject));
+                            Vector3 up = Vector3.up;
+                            //If we look at the object's LEFT side, than the angle between head.transform.right and headToObject is an acute angle, i.e. Vector3.Dot(headToObject, head.transform.right) > 0.
+                            //If we look at the object's RIGHT side, than the angle between head.transform.right and headToObject is an obtuse angle, i.e. Vector3.Dot(headToObject, head.transform.right) < 0. 
+                            bool rightSide = Vector3.Dot(headToObject, head.transform.right) < 0 ? true : false;
                             Vector3 centerFloating = Vector3.zero;
                             Vector3 centerCompact = Vector3.zero;
-                            if (rightSide) {
-                                centerFloating = TargetObject.transform.position + head.transform.right * (orbitalOffsetOppositeType.x + orbitalPositionOffsetFloatingVariant.x) + head.transform.up * (orbitalOffsetOppositeType.y + orbitalPositionOffsetFloatingVariant.y) + head.transform.forward * (orbitalOffsetOppositeType.z + orbitalPositionOffsetFloatingVariant.z);
-                                centerCompact = TargetObject.transform.position + head.transform.right * (orbitalOffset.x + lastOffsetsOrbital.Item1.x) + head.transform.up * (orbitalOffset.y + lastOffsetsOrbital.Item1.y) + head.transform.forward * (orbitalOffset.z + lastOffsetsOrbital.Item1.z);
+                            Tuple<Vector3, Quaternion, Vector3, float> currentOffsetOrbitalCompact;
+                            if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                                currentOffsetOrbitalCompact = placementService.GetCurrentOneToAllOffsetOrbital(menuID);
                             }
                             else {
-                                centerFloating = TargetObject.transform.position + (-head.transform.right * (orbitalOffsetOppositeType.x + orbitalPositionOffsetFloatingVariant.x)) + head.transform.up * (orbitalOffsetOppositeType.y + orbitalPositionOffsetFloatingVariant.y) + head.transform.forward * (orbitalOffsetOppositeType.z + orbitalPositionOffsetFloatingVariant.z);
-                                centerCompact = TargetObject.transform.position + (-head.transform.right * (orbitalOffset.x + lastOffsetsOrbital.Item1.x)) + head.transform.up * (orbitalOffset.y + lastOffsetsOrbital.Item1.y) + head.transform.forward * (orbitalOffset.z + lastOffsetsOrbital.Item1.z);
+                                currentOffsetOrbitalCompact = placementService.GetCurrentOneToOneOffsetOrbitalCompact(TargetObject);
                             }
+                            if (rightSide) {
+                                centerFloating = TargetObject.transform.position + right * orbitalOffsetOppositeType.x + head.transform.right * orbitalPositionOffsetFloatingVariant.x + up * orbitalOffsetOppositeType.y + head.transform.up * orbitalPositionOffsetFloatingVariant.y + forward * orbitalOffsetOppositeType.z + head.transform.forward * orbitalPositionOffsetFloatingVariant.z;
+                                centerCompact = TargetObject.transform.position + right * orbitalOffset.x + head.transform.right * currentOffsetOrbitalCompact.Item1.x + up * orbitalOffset.y + head.transform.up * currentOffsetOrbitalCompact.Item1.y + forward * orbitalOffset.z + head.transform.forward * currentOffsetOrbitalCompact.Item1.z;
+                            }
+                            else {
+                                centerFloating = TargetObject.transform.position - right * orbitalOffsetOppositeType.x - head.transform.right * orbitalPositionOffsetFloatingVariant.x + up * orbitalOffsetOppositeType.y + head.transform.up * orbitalPositionOffsetFloatingVariant.y + forward * orbitalOffsetOppositeType.z + head.transform.forward * orbitalPositionOffsetFloatingVariant.z;
+                                centerCompact = TargetObject.transform.position - right * orbitalOffset.x - head.transform.right * currentOffsetOrbitalCompact.Item1.x + up * orbitalOffset.y + head.transform.up * currentOffsetOrbitalCompact.Item1.y + forward * orbitalOffset.z + head.transform.forward * currentOffsetOrbitalCompact.Item1.z;
+                            }                            
                             if (targetDistance >= minFloatingDistance && targetDistance <= maxFloatingDistance) {
-                                //Orbital and Beside solver should be activated on the floating menu.
+                                //Orbital solver should be activated on the floating menu.
                                 //Check the space "besides" the targetObject on the left or right side according to user's position, similar to FinalPlacementOptimizer solver.
-
-                                if (!Physics.CheckBox(centerFloating, placementService.GetStoredBoundingBoxOnCloseOppositeType(gameObject).extents, Quaternion.identity, LayerMask.GetMask("Spatial Mapping"))
-                                    && !Physics.Raycast(TargetObject.transform.position, centerFloating - TargetObject.transform.position, (centerFloating - TargetObject.transform.position).magnitude, LayerMask.GetMask("Spatial Mapping"))) {
+                                if (!Physics.CheckBox(centerFloating, placementService.GetStoredBoundingBoxOppositeVariant(gameObject).extents, Quaternion.identity, placementService.SpatialAwarenessLayer)
+                                    && !Physics.Raycast(TargetObject.transform.position, centerFloating - TargetObject.transform.position, (centerFloating - TargetObject.transform.position).magnitude, placementService.SpatialAwarenessLayer)) {
                                     //Debug.Log("Besides Free for Floating Orbital");
                                     message.switchType = PlacementMessage.SwitchType.CompactToFloating;
                                     switchTo = message.switchType;
                                 }
-                                else if (!Physics.CheckBox(centerCompact, placementService.GetStoredBoundingBoxOnCloseOppositeType(gameObject).extents, Quaternion.identity, LayerMask.GetMask("Spatial Mapping"))
-                                   && !Physics.Raycast(TargetObject.transform.position, centerCompact - TargetObject.transform.position, (centerCompact - TargetObject.transform.position).magnitude, LayerMask.GetMask("Spatial Mapping"))) {
+                                //The space is not enough for a floating menu with the Orbital solver, so we then check if it is enough for a compact menu with the Orbital solver.
+                                else if (!Physics.CheckBox(centerCompact, placementService.GetStoredBoundingBoxOppositeVariant(gameObject).extents, Quaternion.identity, placementService.SpatialAwarenessLayer)
+                                   && !Physics.Raycast(TargetObject.transform.position, centerCompact - TargetObject.transform.position, (centerCompact - TargetObject.transform.position).magnitude, placementService.SpatialAwarenessLayer)) {
                                     //Debug.Log("Beside Free for Compact Orbital");
                                     gameObject.GetComponent<SolverHandler>().TrackedTargetType = TrackedObjectType.CustomOverride;
                                     gameObject.GetComponent<SolverHandler>().TransformOverride = TargetObject.transform;
                                     gameObject.GetComponent<Orbital>().enabled = true;
                                     gameObject.GetComponent<FinalPlacementOptimizer>().OrbitalOffset = orbitalOffset;
-                                    gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = lastOffsetsOrbital.Item1;
-                                    gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = lastOffsetsOrbital.Item2.eulerAngles;
-                                    gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = lastOffsetsOrbital.Item3;
                                     if (placementService.HandTrackingEnabled) {
                                         gameObject.GetComponent<HandConstraint>().enabled = false;
                                     }
@@ -922,12 +1202,24 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                                         gameObject.GetComponent<Follow>().enabled = false;
                                     }
                                     gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;
+                                    Tuple<Vector3, Quaternion, Vector3, float> currentOffsetOrbital;
+                                    if(manipulationLogic == MenuManipulationLogic.OneToAll) {
+                                        currentOffsetOrbital = placementService.GetCurrentOneToAllOffsetOrbital(menuID);
+                                    }
+                                    else {
+                                        currentOffsetOrbital = placementService.GetCurrentOneToOneOffsetOrbitalCompact(TargetObject);
+                                    }
+                                    gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetOrbital.Item1;
+                                    gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetOrbital.Item2.eulerAngles;
+                                    gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetOrbital.Item3;
+                                    gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetOrbital.Item4;
                                 }
                             }
                             //If targetDistance < minFloatingDistance, the menu should remain compact.
                             if (targetDistance < minFloatingDistance) {
-                                if (!Physics.CheckBox(centerCompact, placementService.GetStoredBoundingBoxOnCloseOppositeType(gameObject).extents, Quaternion.identity, LayerMask.GetMask("Spatial Mapping"))
-                                    && !Physics.Raycast(TargetObject.transform.position, centerCompact - TargetObject.transform.position, (centerCompact - TargetObject.transform.position).magnitude, LayerMask.GetMask("Spatial Mapping"))) {
+                                //Try to enable the Orbital solver.
+                                if (!Physics.CheckBox(centerCompact, placementService.GetStoredBoundingBoxOppositeVariant(gameObject).extents, Quaternion.identity, placementService.SpatialAwarenessLayer)
+                                    && !Physics.Raycast(TargetObject.transform.position, centerCompact - TargetObject.transform.position, (centerCompact - TargetObject.transform.position).magnitude, placementService.SpatialAwarenessLayer)) {
                                     //Debug.Log("Beside Free for Compact Orbital");
                                     gameObject.GetComponent<SolverHandler>().TrackedTargetType = TrackedObjectType.CustomOverride;
                                     gameObject.GetComponent<SolverHandler>().TransformOverride = TargetObject.transform;
@@ -940,19 +1232,27 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                                         gameObject.GetComponent<Follow>().enabled = false;
                                     }
                                     gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;
+                                    Tuple<Vector3, Quaternion, Vector3, float> currentOffsetOrbital;
+                                    if(manipulationLogic == MenuManipulationLogic.OneToAll) {
+                                        currentOffsetOrbital = placementService.GetCurrentOneToAllOffsetOrbital(menuID);
+                                    }
+                                    else {
+                                        currentOffsetOrbital = placementService.GetCurrentOneToOneOffsetOrbitalCompact(TargetObject);
+                                    }
+                                    gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetOrbital.Item1;
+                                    gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetOrbital.Item2.eulerAngles;
+                                    gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetOrbital.Item3;
+                                    gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetOrbital.Item4;
                                 }
                             }
                         }
-                        
-                        
                     }
-                    
                 }
             }
         }
 
         // Check Occlusion using raycast from the head to the center of the menu.
-        // We don't need to check occlusion for main menu because of the SurfaceMagnetism solver and all menus with HandConstraint solver (or Follow on HoloLens 1) activated.
+        // We don't need to check occlusion for main menus because of the SurfaceMagnetism solver and all menus with HandConstraint solver (or Follow on HoloLens 1) activated.
         private void CheckOcclusion() {
             if (menuVariantType == MenuVariantType.ObjectMenu) {
                 float targetDistance = (head.transform.position - TargetObject.transform.position).magnitude;
@@ -960,18 +1260,18 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 float headMenuDistance = (gameObject.transform.position - head.transform.position).magnitude;
                 if (!compact) {      
                     //InBetween or Orbital activated
-                    if(Physics.Raycast(ray, headMenuDistance, LayerMask.GetMask("Spatial Mapping"))){
+                    if(Physics.Raycast(ray, headMenuDistance, placementService.SpatialAwarenessLayer)){
                         message.switchType = PlacementMessage.SwitchType.FloatingToCompact;
                         switchTo = message.switchType;
                         Debug.Log("Occlusion Detected for Floating menu");
                     }
                 }
                 else {
-                    if(Physics.Raycast(ray, headMenuDistance, LayerMask.GetMask("Spatial Mapping"))) {
+                    if(Physics.Raycast(ray, headMenuDistance, placementService.SpatialAwarenessLayer)) {
                         Debug.Log("Occlusion Detected for Compact Menu");
                         message.switchType = PlacementMessage.SwitchType.NoSwitch;
                         switchTo = message.switchType;
-                        //If orbital activated，turn on the HandConstraint or Follow solver, else we do not need to do anything.
+                        //If orbital activated，turn on the HandConstraint or Follow solver, else we do not need to do anything (remain in HandConstraint).
                         if (placementService.HandTrackingEnabled) {
                             if (!gameObject.GetComponent<HandConstraint>().enabled) {
                                 if (placementService.ArticulatedHandSupported) {
@@ -1002,40 +1302,59 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                             gameObject.GetComponent<Follow>().enabled = true;
                             gameObject.GetComponent<Orbital>().enabled = false;
                         }
-
+                        Tuple<Vector3, Quaternion, Vector3, float> currentOffsetHandConstaint;
+                        if (manipulationLogic == MenuManipulationLogic.OneToAll) {
+                            currentOffsetHandConstaint = placementService.GetCurrentOneToAllOffsetHandConstraint(menuID);
+                        }
+                        else {
+                            currentOffsetHandConstaint = placementService.GetCurrentOneToOneOffsetHandConstraint(TargetObject);
+                        }
+                        gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetHandConstaint.Item1;
+                        gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetHandConstaint.Item2.eulerAngles;
+                        gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetHandConstaint.Item3;
+                        gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
                     }
                     //Check if there is no (potential) occlusion anymore
                     if (targetDistance > maxFloatingDistance) {
                         //For InBetween
-                        Vector3 inBetweenPostion = placementService.GetInBetweenTarget().transform.position + Vector3.Normalize(TargetObject.transform.position - placementService.GetInBetweenTarget().transform.position) * defaultFloatingDistance;
-                        if (Physics.Raycast(head.transform.position, inBetweenPostion - head.transform.position, (inBetweenPostion - head.transform.position).magnitude, LayerMask.GetMask("Spatial Mapping"))) {
+                        Vector3 inBetweenPositionOffsetFloatingVariant = placementService.GetInBetweenPositionOffsetOppositeVariant(gameObject);
+                        //Check the space in front of user because InBetween solver should be activated
+                        Vector3 inBetweenPosition = placementService.GetInBetweenTarget().transform.position + Vector3.Normalize(TargetObject.transform.position - placementService.GetInBetweenTarget().transform.position) * defaultFloatingDistance
+                            + head.transform.right * inBetweenPositionOffsetFloatingVariant.x + head.transform.up * inBetweenPositionOffsetFloatingVariant.y + head.transform.forward * inBetweenPositionOffsetFloatingVariant.z;
+                        if (Physics.Raycast(head.transform.position, inBetweenPosition - head.transform.position, (inBetweenPosition - head.transform.position).magnitude, placementService.SpatialAwarenessLayer)) {
                             Debug.Log("Occlusion detected if switch to floating menu InBetween");
                             message.switchType = PlacementMessage.SwitchType.NoSwitch;
                             switchTo = message.switchType;
                         }
                     }
                     if(targetDistance <= maxFloatingDistance && targetDistance >= minFloatingDistance) {
-                        Vector3 directionToHead = head.transform.position - TargetObject.transform.position;
-                        bool rightSide = Vector3.Dot(directionToHead, head.transform.right) > 0 ? true : false;
+                        //For Orbital
+                        Vector3 orbitalPositionOffsetFloatingVariant = placementService.GetOrbitalPositionOffsetOppositeVariant(gameObject);
+                        Vector3 headToObject = Vector3.Normalize(TargetObject.transform.position - head.transform.position);
+                        Vector3 forward = Vector3.Normalize(new Vector3(headToObject.x, 0, headToObject.y));
+                        Vector3 right = Vector3.Normalize(Vector3.ProjectOnPlane(new Vector3(head.transform.right.x, 0, head.transform.right.z), headToObject));
+                        Vector3 up = Vector3.up;
+                        //If we look at the object's LEFT side, than the angle between head.transform.right and headToObject is an acute angle, i.e. Vector3.Dot(headToObject, head.transform.right) > 0.
+                        //If we look at the object's RIGHT side, than the angle between head.transform.right and headToObject is an obtuse angle, i.e. Vector3.Dot(headToObject, head.transform.right) < 0. 
+                        bool rightSide = Vector3.Dot(headToObject, head.transform.right) < 0 ? true : false;
                         Vector3 centerFloating = Vector3.zero;
                         if (rightSide) {
-                            centerFloating = TargetObject.transform.position + head.transform.right * orbitalOffsetOppositeType.x + head.transform.up * orbitalOffsetOppositeType.y + head.transform.forward * orbitalOffsetOppositeType.z;
+                            centerFloating = TargetObject.transform.position + right * orbitalOffsetOppositeType.x + head.transform.right * orbitalPositionOffsetFloatingVariant.x + up * orbitalOffsetOppositeType.y + head.transform.up * orbitalPositionOffsetFloatingVariant.y + forward * orbitalOffsetOppositeType.z + head.transform.forward * orbitalPositionOffsetFloatingVariant.z;
                         }
                         else {
-                            centerFloating = TargetObject.transform.position + (-head.transform.right * orbitalOffsetOppositeType.x) + head.transform.up * orbitalOffsetOppositeType.y + head.transform.forward * orbitalOffsetOppositeType.z;
+                            centerFloating = TargetObject.transform.position - right * orbitalOffsetOppositeType.x - head.transform.right * orbitalPositionOffsetFloatingVariant.x + up * orbitalOffsetOppositeType.y + head.transform.up * orbitalPositionOffsetFloatingVariant.y + forward * orbitalOffsetOppositeType.z + head.transform.forward * orbitalPositionOffsetFloatingVariant.z;
                         }
-                        if (Physics.Raycast(head.transform.position, centerFloating - head.transform.position, (centerFloating - head.transform.position).magnitude, LayerMask.GetMask("Spatial Mapping"))) {
+                        if (Physics.Raycast(head.transform.position, centerFloating - head.transform.position, (centerFloating - head.transform.position).magnitude, placementService.SpatialAwarenessLayer)) {
                             Debug.Log("Occlusion detected if switch to floating menu Orbital");
                             message.switchType = PlacementMessage.SwitchType.NoSwitch;
                             switchTo = message.switchType;
-                        }
-                        
+                        }                      
                     }
                 }                
             }
         }
 
-        // Provide suggestions to the user in manual mode.
+        // Provide suggestions to the user in manual mode by showing a dialog panel.
         private void ShowSuggestion() {
             //Check collsions
             if (CollideWithSpatialMapping()) {
@@ -1060,7 +1379,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             else {
                 Ray ray = new Ray(head.transform.position, gameObject.transform.position - head.transform.position);
                 float headMenuDistance = (gameObject.transform.position - head.transform.position).magnitude;
-                if(Physics.Raycast(ray, headMenuDistance, LayerMask.GetMask("Spatial Mapping"))) {
+                if(Physics.Raycast(ray, headMenuDistance, placementService.SpatialAwarenessLayer)) {
                     accumulatedTimeForSuggestion += Time.deltaTime;
                     if (suggestionTime > suggestionTimeInterval && accumulatedTimeForSuggestion > accumulatedTimeForSuggestionThreshold) {
                         placementService.EnterAdjustmentMode();
@@ -1103,9 +1422,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
         }
 
-        //Get the axis-aligned bounding box which contains all renderers or colliders of the object depending on "boundingBoxType"
+        //Get the axis-aligned bounding box (AABB) which contains all renderers or colliders of the object depending on "boundingBoxType"
         private Bounds GetBoundingBox() {
             List<Bounds> allBounds = new List<Bounds>();
+            Bounds bound = new Bounds(transform.position, Vector3.zero);
             switch (boundingBoxType) {
                 case BoundsType.BasedOnColliders:
                     foreach (Collider c in gameObject.GetComponentsInChildren<Collider>()) {
@@ -1123,7 +1443,11 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     }
                     break;
             }
-            Vector3 maxPoint = Vector3.negativeInfinity;
+            foreach (Bounds b in allBounds) {
+                bound.Encapsulate(b);
+            }
+            return bound;
+/*            Vector3 maxPoint = Vector3.negativeInfinity;
             Vector3 minPoint = Vector3.positiveInfinity;
             foreach (Bounds b in allBounds) {
                 if (b.max.x > maxPoint.x) {
@@ -1147,15 +1471,14 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
             Vector3 size = new Vector3(maxPoint.x - minPoint.x, maxPoint.y - minPoint.y, maxPoint.z - minPoint.z);
             Vector3 center = new Vector3((minPoint.x + maxPoint.x) / 2, (minPoint.y + maxPoint.y) / 2, (minPoint.z + maxPoint.z) / 2);
-            return new Bounds(center, size);
+            return new Bounds(center, size);*/
 
         }
 
-        //Only use this method for object menus, because for main menus we have the SurfaceMagnetismSafetyOffset
+        //Only use this method for object menus, because for main menus we have the SurfaceMagnetismSafetyOffset so that it will never (ideally) collide with the spatial surfaces.
         private bool CollideWithSpatialMapping() {          
-            return Physics.CheckBox(GetBoundingBox().center, GetBoundingBox().extents, Quaternion.identity, LayerMask.GetMask("Spatial Mapping"));
+            return Physics.CheckBox(GetBoundingBox().center, GetBoundingBox().extents, Quaternion.identity, placementService.SpatialAwarenessLayer);
         }
-
 
         #endregion Private Methods
     }

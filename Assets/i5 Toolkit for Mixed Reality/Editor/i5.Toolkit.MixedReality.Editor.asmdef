@@ -2,7 +2,7 @@
     "name": "i5.Toolkit.MixedReality.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:8a511acec1d83a74285608a414424535"
+        "i5.Toolkit.MixedReality.Runtime"
     ],
     "includePlatforms": [
         "Editor"

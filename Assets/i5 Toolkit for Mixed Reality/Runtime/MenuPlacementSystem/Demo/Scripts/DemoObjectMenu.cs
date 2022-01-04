@@ -51,13 +51,15 @@ public class DemoObjectMenu : MenuBase {
     }
 
     public override void OnClose() {
-        targetObject = GetComponent<MenuHandler>().TargetObject;
-        manipulator = targetObject.GetComponent<ObjectManipulator>();
-        targetObject.GetComponent<PointerHandler>().enabled = true;
-        targetObject.GetComponent<MinMaxScaleConstraint>().enabled = true;
-        targetObject.GetComponent<MoveAxisConstraint>().enabled = true;
-        targetObject.GetComponent<RotationAxisConstraint>().enabled = true;
-        manipulator.ManipulationType = 0;
-        manipulator.TwoHandedManipulationType = 0;
+        if (targetObject != null) {
+            targetObject = GetComponent<MenuHandler>().TargetObject;
+            manipulator = targetObject.GetComponent<ObjectManipulator>();
+            targetObject.GetComponent<PointerHandler>().enabled = true;
+            targetObject.GetComponent<MinMaxScaleConstraint>().enabled = true;
+            targetObject.GetComponent<MoveAxisConstraint>().enabled = true;
+            targetObject.GetComponent<RotationAxisConstraint>().enabled = true;
+            manipulator.ManipulationType = 0;
+            manipulator.TwoHandedManipulationType = 0;
+        }
     }
 }
