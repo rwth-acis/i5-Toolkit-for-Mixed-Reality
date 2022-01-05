@@ -27,6 +27,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         public enum MenuOrientationType {
             CameraAligned,
+            CameraFacing,
+            CameraFacingReverse,
+            YawOnly,
+            FollowTargetObject,
             Unmodified
         }
 
@@ -43,13 +47,13 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         #region Serialize Fields
         [Header("General Properties")]
-        [Tooltip("True, if the menu is an object menu. False, if the menu is a main menu")]
+        [Tooltip("True, if the menu is an object menu. False, if the menu is a main menu.")]
         public MenuVariantType menuVariantType;
         [Tooltip("Is the menu a normal one or a compact one?")]
         public bool compact;
-        [Tooltip("The ID of this menu. Make sure they are different from one to another")]
+        [Tooltip("The ID of this menu. Make sure they are different from one to another.")]
         public int menuID;
-        [Tooltip("The orientation type used on the solver attached to the object by the placement system if applicable")]
+        [Tooltip("The orientation type used on the solver attached to the object by the placement system if applicable. For CameraFacing and CameraFacingReverse: Depending on the forward vector of the menu.")]
         public MenuOrientationType menuOrientationType = MenuOrientationType.CameraAligned;
         [Tooltip("If enabled, the menu will be closed automatically if it is not in the users' head gaze for a while. The time threshold can be set in 'Inactivity Time Threshold'.")]
         [SerializeField] private bool inactivityDetectionEnabled = true;
@@ -83,6 +87,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         [Tooltip("The default Target View Percent V of ConstantViewSize. The object take up this percent vertically in our view (not technically a percent use 0.5 for 50%)")]
         [Range(0f, 1f)]
         [SerializeField] private float defaultTargetViewPercentV = 0.5f;
+        [Tooltip("Minimum scale value possible (world space scale)")]
+        [SerializeField] private float minScale = 0.01f;
+        [Tooltip("Maximum scale value possible (world space scale)")]
+        [SerializeField] private float maxScale = 100f;
 
         //Main Menu Settings
         [Tooltip("Position Offset to the head for floating main menus. It will be directly added to the 'AdditionalOffset' on SolverHandler.")]
@@ -363,6 +371,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     menu.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
                     menu.GetComponent<FinalPlacementOptimizer>().enabled = true;
                     menu.GetComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
+                    menu.GetComponent<FinalPlacementOptimizer>().MinScale = minScale;
+                    menu.GetComponent<FinalPlacementOptimizer>().MaxScale = maxScale;
                     //restore offsets
                     if (targetDistance > maxFloatingDistance) {
                         Tuple<Vector3, Quaternion, Vector3, float> currentOffsetInBetween;
@@ -416,6 +426,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     menu.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
                     menu.GetComponent<FinalPlacementOptimizer>().enabled = true;
                     menu.GetComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
+                    menu.GetComponent<FinalPlacementOptimizer>().MinScale = minScale;
+                    menu.GetComponent<FinalPlacementOptimizer>().MaxScale = maxScale;
                     //Switch on solvers according to the targetDistance
                     if (targetDistance > maxFloatingDistance) {
                         if (placementService.HandTrackingEnabled) {
@@ -738,6 +750,27 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     case MenuOrientationType.Unmodified:
                         //Do nothing
                         break;
+                    case MenuOrientationType.CameraFacing:
+                        gameObject.transform.forward = head.transform.position - transform.position;
+                        break;
+                    case MenuOrientationType.CameraFacingReverse:
+                        gameObject.transform.forward = transform.position - head.transform.position;
+                        break;
+                    case MenuOrientationType.FollowTargetObject:
+                        if (gameObject.GetComponent<MenuHandler>().menuVariantType == MenuVariantType.MainMenu) {
+                            gameObject.transform.rotation = head.transform.rotation;
+                        }
+                        else {
+                            gameObject.transform.rotation = gameObject.GetComponent<MenuHandler>().TargetObject.transform.rotation;
+                        }
+                        break;
+                    case MenuOrientationType.YawOnly:
+                        Vector3 rotation = gameObject.transform.rotation.eulerAngles;
+                        gameObject.transform.rotation = Quaternion.Euler(rotation.x, head.transform.rotation.eulerAngles.y, rotation.z);
+                        break;
+                    default:
+                        gameObject.transform.forward = Vector3.Normalize(gameObject.transform.position - head.transform.position);
+                        break;
                 }
                 if (menuVariantType == MenuVariantType.ObjectMenu) {
                     Tuple<Vector3, Quaternion, Vector3, float> currentOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV);
@@ -867,6 +900,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             gameObject.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
             gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;
             gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = defaultTargetViewPercentV;
+            gameObject.GetComponent<FinalPlacementOptimizer>().MinScale = minScale;
+            gameObject.GetComponent<FinalPlacementOptimizer>().MaxScale = maxScale;
             if (manipulationEnabled) {
                 InitializeAppBar();
             }

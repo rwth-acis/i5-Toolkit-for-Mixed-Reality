@@ -13,12 +13,13 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         [Tooltip("XYZ offset for this object oriented with the TrackedObject/TargetTransform's forward. X offset will be minus if this object should be placed on the left side of the TrackedObject/TargetTransform")]
         [SerializeField] private Vector3 orbitalOffset = Vector3.zero;
 
+        private Camera head;
+
         private Vector3 positionOffset = Vector3.zero;
         private Vector3 rotationOffset = Vector3.zero;
         private Vector3 scaleOffset = Vector3.one;
 
         //ConstantViewSize properties:
-        private float fovScalar = 1f;
         private float objectSize = 1f;
         private float targetViewPercentV = 0.5f;
         private float minScale = 0.01f;
@@ -45,6 +46,24 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             set
             {
                 targetViewPercentV = value;
+            }
+        }
+
+        public float MinScale
+        {
+            get => minScale;
+            set
+            {
+                minScale = value;
+            }
+        }
+
+        public float MaxScale
+        {
+            get => maxScale;
+            set
+            {
+                maxScale = value;
             }
         }
 
@@ -95,13 +114,20 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         private void Start() {
             base.Start();
             RecalculateBounds();
+            head = CameraCache.Main;
         }
 
         /// <summary>
         /// Fine-tune the transform of the menu based on several offsets.
         /// </summary>
         public override void SolverUpdate() {
-            Camera head = CameraCache.Main;           
+            UpdatePosition();
+            UpdateOrientation();
+            UpdateScale();
+        }
+
+        //Compute the final position based on menu variant and solvers
+        private void UpdatePosition() {
             if (gameObject.GetComponent<MenuHandler>().menuVariantType == MenuHandler.MenuVariantType.MainMenu) {
                 if (gameObject.GetComponent<MenuHandler>().compact) {
                     GoalPosition += head.transform.right * positionOffset.x + head.transform.up * positionOffset.y + head.transform.forward * positionOffset.z;
@@ -117,11 +143,11 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     //If we look at the object's RIGHT side, than the angle between head.transform.right and headToObject is an obtuse angle, i.e. Vector3.Dot(headToObject, head.transform.right) < 0. 
                     bool rightSide = Vector3.Dot(headToObject, head.transform.right) < 0 ? true : false;
                     if (rightSide) {
-                        Vector3 finalOffset = right * orbitalOffset.x + up * orbitalOffset.y + forward * orbitalOffset.z + head.transform.right * positionOffset.x + head.transform.up * positionOffset.y + head.transform.forward*positionOffset.z;
+                        Vector3 finalOffset = right * orbitalOffset.x + up * orbitalOffset.y + forward * orbitalOffset.z + head.transform.right * positionOffset.x + head.transform.up * positionOffset.y + head.transform.forward * positionOffset.z;
                         GoalPosition += finalOffset;
                     }
                     else {
-                        Vector3 finalOffset = - right * orbitalOffset.x + up * orbitalOffset.y + forward * orbitalOffset.z - head.transform.right * positionOffset.x + head.transform.up * positionOffset.y + head.transform.forward * positionOffset.z;
+                        Vector3 finalOffset = -right * orbitalOffset.x + up * orbitalOffset.y + forward * orbitalOffset.z - head.transform.right * positionOffset.x + head.transform.up * positionOffset.y + head.transform.forward * positionOffset.z;
                         GoalPosition += finalOffset;
                     }
                 }
@@ -129,15 +155,43 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     GoalPosition += head.transform.right * positionOffset.x + head.transform.up * positionOffset.y + head.transform.forward * positionOffset.z;
                 }
             }
+        }
+        
+        //Compute the final orientation based on the MenuOrientationType
+        private void UpdateOrientation() {            
             switch (gameObject.GetComponent<MenuHandler>().menuOrientationType) {
                 case MenuHandler.MenuOrientationType.CameraAligned:
-                    GoalRotation = Quaternion.Euler(head.transform.rotation.eulerAngles + RotationOffset);
+                    GoalRotation = head.transform.rotation;
                     break;
                 case MenuHandler.MenuOrientationType.Unmodified:
                     GoalRotation = GoalRotation;
                     break;
+                case MenuHandler.MenuOrientationType.CameraFacing:
+                    GoalRotation = Quaternion.LookRotation(head.transform.position - transform.position);
+                    break;
+                case MenuHandler.MenuOrientationType.CameraFacingReverse:
+                    GoalRotation = Quaternion.LookRotation(transform.position - head.transform.position);
+                    break;
+                case MenuHandler.MenuOrientationType.YawOnly:
+                    GoalRotation = Quaternion.Euler(0f, head.transform.rotation.eulerAngles.y, 0f);
+                    break;
+                case MenuHandler.MenuOrientationType.FollowTargetObject:
+                    if(gameObject.GetComponent<MenuHandler>().menuVariantType == MenuHandler.MenuVariantType.MainMenu) {
+                        GoalRotation = head.transform.rotation;
+                    }
+                    else {
+                        GoalRotation = gameObject.GetComponent<MenuHandler>().TargetObject.transform.rotation;
+                    }
+                    break;
+                default:
+                    GoalRotation = GoalRotation;
+                    break;
             }
+            GoalRotation = Quaternion.Euler(GoalRotation.eulerAngles + rotationOffset);
+        }
 
+        //Compute the final scale based on the offsets or ConstantViewSize
+        private void UpdateScale() {
             if (gameObject.GetComponent<MenuHandler>().ConstantViewSizeEnabled) {
                 //Partially borrowed and simplified from ConstantViewSize solver in MRTK under MIT License
 
@@ -148,19 +202,20 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 Vector3 targetPosition = head.transform.position;
                 float distance = Vector3.Distance(transform.position, targetPosition);
                 float scale = Mathf.Clamp(FovScale * distance, minScale, maxScale);
-                Vector3 originalRatio = new Vector3(OriginalScale.x/OriginalScale.y, 1, OriginalScale.z/OriginalScale.y);
-                GoalScale = originalRatio * scale;            
+                Vector3 originalRatio = new Vector3(OriginalScale.x / OriginalScale.y, 1, OriginalScale.z / OriginalScale.y);
+                GoalScale = originalRatio * scale;
             }
             else {
                 GoalScale = new Vector3(OriginalScale.x * ScaleOffset.x, OriginalScale.y * ScaleOffset.y, OriginalScale.z * ScaleOffset.z);
             }
         }
+        
 
         /// <summary>
         /// Attempts to calculate the size of the bounds which contains all child renderers for attached GameObject. This information is used in the core solver calculations
         /// Borrowed from ConstantViewSize but modified
         /// </summary>
-        public void RecalculateBounds() {
+        private void RecalculateBounds() {
             float baseSize;
             Vector3 cachedScale = transform.root.localScale;
             transform.root.localScale = Vector3.one;

@@ -31,6 +31,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         //ConstantViewSize Offsets
         private SerializedProperty defaultTargetViewPercentV;
+        private SerializedProperty minScale;
+        private SerializedProperty maxScale;
 
         //Main Menu Offsets
         private SerializedProperty followOffset;
@@ -66,6 +68,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             maxFloatingDistance = serializedObject.FindProperty("maxFloatingDistance");
             minFloatingDistance = serializedObject.FindProperty("minFloatingDistance");
             defaultFloatingDistance = serializedObject.FindProperty("defaultFloatingDistance");
+            minScale = serializedObject.FindProperty("minScale");
+            maxScale = serializedObject.FindProperty("maxScale");
 
             defaultTargetViewPercentV = serializedObject.FindProperty("defaultTargetViewPercentV");
 
@@ -111,6 +115,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             if (constantViewSizeEnabledFoldout) {
                 if (constantViewSizeEnabled.boolValue == true) {
                     EditorGUILayout.PropertyField(defaultTargetViewPercentV);
+                    EditorGUILayout.PropertyField(minScale);
+                    EditorGUILayout.PropertyField(maxScale);
                 }
                 else {
                     EditorGUILayout.HelpBox("The ConstantViewSize solver is currently not enabled.", MessageType.Info);

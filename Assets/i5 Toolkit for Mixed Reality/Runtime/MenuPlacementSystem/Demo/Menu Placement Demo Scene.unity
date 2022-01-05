@@ -437,6 +437,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7750482789387478931, guid: 79374de9a1d88504bb9e1796542f0042,
         type: 3}
+      propertyPath: menuOrientationType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7750482789387478931, guid: 79374de9a1d88504bb9e1796542f0042,
+        type: 3}
       propertyPath: constantViewSizeEnabled
       value: 0
       objectReference: {fileID: 0}
