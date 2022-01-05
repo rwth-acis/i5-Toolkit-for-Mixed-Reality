@@ -55,7 +55,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         [SerializeField] private bool inactivityDetectionEnabled = true;
         [Tooltip("If enabled, an App Bar will be instantiate for this menu object on start. For better performance and avoiding potential problems, it is better to add a BoxCollider and a BoundingBox script manually.")]
         [SerializeField] private bool manipulationEnabled = true;
-        [Tooltip("If enabled, the 'ConstantViewSize' solver will be added to the menu object, and the scale option of manipulation will be deactivated, instead a slider for 'Target View Percent V' of 'ConstantViewSize;")]
+        [Tooltip("If enabled, the functionality of 'ConstantViewSize' solver will enabled, and the scale option of manipulation will be deactivated, instead a slider for 'Target View Percent V' of 'ConstantViewSize;")]
         [SerializeField] private bool constantViewSizeEnabled = true;        
         [Tooltip("The bounding box will be used to decide whether the space is enough to place the menu. It is a 'Bounds' object containing all Bounds of the corresponding base")]
         [SerializeField] private BoundsType boundingBoxType = BoundsType.BasedOnColliders;
@@ -80,7 +80,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         [SerializeField] private float defaultFloatingDistance = 0;
 
         //Constant View Size Offsets
-        [Tooltip("The default Target View Percent V of ConstantViewSize")]
+        [Tooltip("The default Target View Percent V of ConstantViewSize. The object take up this percent vertically in our view (not technically a percent use 0.5 for 50%)")]
         [Range(0f, 1f)]
         [SerializeField] private float defaultTargetViewPercentV = 0.5f;
 
@@ -212,7 +212,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
 
         /// <summary>
-        /// The object take up this percent vertically in our view (not technically a percent use 0.5 for 50%). Used for ConstantViewSize
+        /// The object take up this percent vertically in our view (not technically a percent use 0.5 for 50%). Used for ConstantViewSize functionality.
         /// </summary>
         public float DefaultTargetViewPercentV
         {
@@ -221,14 +221,13 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         #endregion
 
-        #region MonoBehaviour Functions
+        #region MonoBehaviour Methods
 
         // Start is called before the first frame update
         void Start() {
             if (defaultFloatingDistance < minFloatingDistance || defaultFloatingDistance > maxFloatingDistance) {
                 defaultFloatingDistance = (minFloatingDistance + maxFloatingDistance) / 2;
             }
-
             placementService = ServiceManager.GetService<MenuPlacementService>();
             head = CameraCache.Main;
             if (menuVariantType == MenuVariantType.MainMenu) {
@@ -364,8 +363,6 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     menu.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
                     menu.GetComponent<FinalPlacementOptimizer>().enabled = true;
                     menu.GetComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
-                    (menu.GetComponent<ConstantViewSize>() ?? menu.AddComponent<ConstantViewSize>()).MinDistance = minFloatingDistance;
-                    menu.GetComponent<ConstantViewSize>().MaxDistance = MaxFloatingDistance;
                     //restore offsets
                     if (targetDistance > maxFloatingDistance) {
                         Tuple<Vector3, Quaternion, Vector3, float> currentOffsetInBetween;
@@ -378,7 +375,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                         menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetInBetween.Item1;
                         menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetInBetween.Item2.eulerAngles;
                         menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetInBetween.Item3;
-                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetInBetween.Item4;
+                        menu.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetInBetween.Item4;
                         menu.GetComponent<SolverHandler>().TransformOverride = placementService.GetInBetweenTarget().transform;
                         menu.GetComponent<Orbital>().enabled = false;
                     }
@@ -393,7 +390,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                         menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetOrbital.Item1;
                         menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetOrbital.Item2.eulerAngles;
                         menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetOrbital.Item3;
-                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetOrbital.Item4;
+                        menu.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetOrbital.Item4;
                         menu.GetComponent<InBetween>().enabled = false;
                     }
                 }
@@ -419,8 +416,6 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     menu.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
                     menu.GetComponent<FinalPlacementOptimizer>().enabled = true;
                     menu.GetComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
-                    (menu.GetComponent<ConstantViewSize>() ?? menu.AddComponent<ConstantViewSize>()).MinDistance = minFloatingDistance;
-                    menu.GetComponent<ConstantViewSize>().MaxDistance = maxFloatingDistance;
                     //Switch on solvers according to the targetDistance
                     if (targetDistance > maxFloatingDistance) {
                         if (placementService.HandTrackingEnabled) {
@@ -458,7 +453,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                         menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetHandConstraint.Item1;
                         menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetHandConstraint.Item2.eulerAngles;
                         menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetHandConstraint.Item3;
-                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetHandConstraint.Item4;
+                        menu.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetHandConstraint.Item4;
                         menu.GetComponent<Orbital>().enabled = false;
                     }
                     else {
@@ -472,7 +467,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                         menu.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetOrbital.Item1;
                         menu.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetOrbital.Item2.eulerAngles;
                         menu.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetOrbital.Item3;
-                        menu.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetOrbital.Item4;
+                        menu.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetOrbital.Item4;
                         if (placementService.HandTrackingEnabled) {
                             menu.GetComponent<HandConstraint>().enabled = false;
                         }
@@ -481,7 +476,6 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                         }
                     }                    
                 }
-                menu.GetComponent<ConstantViewSize>().enabled = constantViewSizeEnabled;
             }
             menu.SetActive(true);
             menu.GetComponent<MenuBase>().Initialize();
@@ -611,9 +605,9 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset += newOffsets.Item2.eulerAngles - oldOffsets.Item2.eulerAngles;
                     gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = new Vector3(newOffsets.Item3.x / originalScale.x, newOffsets.Item3.y / originalScale.y, newOffsets.Item3.z / originalScale.z);
                 }
-                //TargetViewPercentV of ConstantViewSize is already updated in AppBarControllerMPS, so we don't update it here.
+                //TargetViewPercentV is already updated in AppBarControllerMPS, so we don't update it here.
                 if(menuVariantType == MenuVariantType.ObjectMenu) {
-                    Tuple<Vector3, Quaternion, Vector3, float> currentOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV);
+                    Tuple<Vector3, Quaternion, Vector3, float> currentOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV);
                     if (manipulationLogic == MenuManipulationLogic.OneToAll) {
                         if (gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
                             placementService.SetCurrentOneToAllOffsetOrbital(menuID, currentOffset);
@@ -689,7 +683,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                         gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = oldOffset.Item1;
                         gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = oldOffset.Item2.eulerAngles;
                         gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = oldOffset.Item3;
-                        gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = oldOffset.Item4;
+                        gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = oldOffset.Item4;
                         retrieveBufferOrbital.RemoveAt(retrieveBufferOrbital.Count - 1);
                     }
                 }
@@ -705,7 +699,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                             gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = oldOffset.Item1;
                             gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = oldOffset.Item2.eulerAngles;
                             gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = oldOffset.Item3;
-                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = oldOffset.Item4;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = oldOffset.Item4;
                             retrieveBufferMainMenu.RemoveAt(retrieveBufferMainMenu.Count - 1);
                         }
                     }
@@ -731,7 +725,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                             gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = oldOffset.Item1;
                             gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = oldOffset.Item2.eulerAngles;
                             gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = oldOffset.Item3;
-                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = oldOffset.Item4;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = oldOffset.Item4;
                             retrieveBufferWithoutOrbital.RemoveAt(retrieveBufferWithoutOrbital.Count - 1);
                         }
                     }
@@ -746,7 +740,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                         break;
                 }
                 if (menuVariantType == MenuVariantType.ObjectMenu) {
-                    Tuple<Vector3, Quaternion, Vector3, float> currentOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV);
+                    Tuple<Vector3, Quaternion, Vector3, float> currentOffset = new Tuple<Vector3, Quaternion, Vector3, float>(gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset, Quaternion.Euler(gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset), gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset, gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV);
                     if (manipulationLogic == MenuManipulationLogic.OneToAll) {
                         if (gameObject.GetComponent<Orbital>() != null && gameObject.GetComponent<Orbital>().enabled) {
                             placementService.SetCurrentOneToAllOffsetOrbital(menuID, currentOffset);
@@ -831,9 +825,6 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 gameObject.GetComponent<Follow>().OrientToControllerDeadzoneDegrees = 20f;
                 gameObject.GetComponent<Follow>().OrientationType = SolverOrientationType.Unmodified;
                 gameObject.GetComponent<Follow>().UpdateLinkedTransform = true;
-                gameObject.AddComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
-                gameObject.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
-                gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;               
             }
             else {
                 if (placementService.HandTrackingEnabled) {
@@ -855,14 +846,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                             gameObject.GetComponent<SolverHandler>().TrackedHandness = Microsoft.MixedReality.Toolkit.Utilities.Handedness.Left;
                         }
                     }
-
                     gameObject.AddComponent<HandConstraint>().SafeZone = HandConstraint.SolverSafeZone.UlnarSide;
                     gameObject.GetComponent<HandConstraint>().SafeZoneBuffer = 0.05f;
                     gameObject.GetComponent<HandConstraint>().UpdateLinkedTransform = true;
                     gameObject.GetComponent<HandConstraint>().UpdateWhenOppositeHandNear = true;
-                    gameObject.AddComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
-                    gameObject.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
-                    gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;
                 }
                 else {
                     gameObject.AddComponent<SolverHandler>();
@@ -874,15 +861,12 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     gameObject.GetComponent<Follow>().OrientToControllerDeadzoneDegrees = 20f;
                     gameObject.GetComponent<Follow>().OrientationType = SolverOrientationType.Unmodified;
                     gameObject.GetComponent<Follow>().UpdateLinkedTransform = true;
-                    gameObject.AddComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
-                    gameObject.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
-                    gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;
                 }
             }
-            (gameObject.GetComponent<ConstantViewSize>() ?? gameObject.AddComponent<ConstantViewSize>()).TargetViewPercentV = defaultTargetViewPercentV;
-            gameObject.GetComponent<ConstantViewSize>().MinDistance = minFloatingDistance;
-            gameObject.GetComponent<ConstantViewSize>().MaxDistance = maxFloatingDistance;
-            gameObject.GetComponent<ConstantViewSize>().enabled = constantViewSizeEnabled;
+            gameObject.AddComponent<FinalPlacementOptimizer>().OriginalScale = gameObject.transform.localScale;
+            gameObject.GetComponent<FinalPlacementOptimizer>().OrientationType = menuOrientationType;
+            gameObject.GetComponent<FinalPlacementOptimizer>().enabled = true;
+            gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = defaultTargetViewPercentV;
             if (manipulationEnabled) {
                 InitializeAppBar();
             }
@@ -982,7 +966,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                             gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetHandConstaint.Item1;
                             gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetHandConstaint.Item2.eulerAngles;
                             gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetHandConstaint.Item3;
-                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
                         }
                     }
                     else {
@@ -1033,7 +1017,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                             gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetHandConstaint.Item1;
                             gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetHandConstaint.Item2.eulerAngles;
                             gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetHandConstaint.Item3;
-                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
                         }
                     }                    
                 }
@@ -1070,7 +1054,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                             gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetOrbital.Item1;
                             gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetOrbital.Item2.eulerAngles;
                             gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetOrbital.Item3;
-                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetOrbital.Item4;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetOrbital.Item4;
                         }
                         else if (targetDistance < minFloatingDistance) {
                             message.switchType = PlacementMessage.SwitchType.FloatingToCompact;
@@ -1093,7 +1077,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                             gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetInBetween.Item1;
                             gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetInBetween.Item2.eulerAngles;
                             gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetInBetween.Item3;
-                            gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetInBetween.Item4;
+                            gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetInBetween.Item4;
                         }
                     }
                     //Compact 
@@ -1148,7 +1132,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                                 gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetHandConstaint.Item1;
                                 gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetHandConstaint.Item2.eulerAngles;
                                 gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetHandConstaint.Item3;
-                                gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
+                                gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
                             }
                         }
                         //Try to enable floating vairant with the Orbital solver
@@ -1212,7 +1196,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                                     gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetOrbital.Item1;
                                     gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetOrbital.Item2.eulerAngles;
                                     gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetOrbital.Item3;
-                                    gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetOrbital.Item4;
+                                    gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetOrbital.Item4;
                                 }
                             }
                             //If targetDistance < minFloatingDistance, the menu should remain compact.
@@ -1242,7 +1226,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                                     gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetOrbital.Item1;
                                     gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetOrbital.Item2.eulerAngles;
                                     gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetOrbital.Item3;
-                                    gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetOrbital.Item4;
+                                    gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetOrbital.Item4;
                                 }
                             }
                         }
@@ -1312,7 +1296,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                         gameObject.GetComponent<FinalPlacementOptimizer>().PositionOffset = currentOffsetHandConstaint.Item1;
                         gameObject.GetComponent<FinalPlacementOptimizer>().RotationOffset = currentOffsetHandConstaint.Item2.eulerAngles;
                         gameObject.GetComponent<FinalPlacementOptimizer>().ScaleOffset = currentOffsetHandConstaint.Item3;
-                        gameObject.GetComponent<ConstantViewSize>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
+                        gameObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = currentOffsetHandConstaint.Item4;
                     }
                     //Check if there is no (potential) occlusion anymore
                     if (targetDistance > maxFloatingDistance) {

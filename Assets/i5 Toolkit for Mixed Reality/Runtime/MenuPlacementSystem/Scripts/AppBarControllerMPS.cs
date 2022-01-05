@@ -47,7 +47,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 targetMenuObject.AddComponent<NearInteractionGrabbable>();
             }
             if (handler.ConstantViewSizeEnabled) {
-                slider.GetComponent<PinchSlider>().SliderValue = targetMenuObject.GetComponent<ConstantViewSize>().TargetViewPercentV;
+                slider.GetComponent<PinchSlider>().SliderValue = targetMenuObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV;
             }
             
         }
@@ -66,7 +66,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             StartPosition = targetMenuObject.transform.position;
             StartRotation = targetMenuObject.transform.rotation;
             StartScale = targetMenuObject.transform.localScale;
-            slider.GetComponent<PinchSlider>().SliderValue = targetMenuObject.GetComponent<ConstantViewSize>().TargetViewPercentV;
+            slider.GetComponent<PinchSlider>().SliderValue = targetMenuObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV;
             StartSliderValue = slider.GetComponent<PinchSlider>().SliderValue;
             targetMenuObject.GetComponent<BoxCollider>().enabled = true;
             placementService.EnterAdjustmentMode();
@@ -84,7 +84,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             StartPosition = targetMenuObject.transform.position;
             StartRotation = targetMenuObject.transform.rotation;
             StartScale = targetMenuObject.transform.localScale;
-            slider.GetComponent<PinchSlider>().SliderValue = targetMenuObject.GetComponent<ConstantViewSize>().TargetViewPercentV;
+            slider.GetComponent<PinchSlider>().SliderValue = targetMenuObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV;
             StartSliderValue = slider.GetComponent<PinchSlider>().SliderValue;
         }
 
@@ -118,8 +118,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         public void OnSliderValueUpdate() {            
             if(placementService.PlacementMode == MenuPlacementService.MenuPlacementServiceMode.Adjustment && slider.activeSelf) {
-                print("updated");
-                targetMenuObject.GetComponent<ConstantViewSize>().TargetViewPercentV = slider.GetComponent<PinchSlider>().SliderValue;
+                targetMenuObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = slider.GetComponent<PinchSlider>().SliderValue;
                 targetMenuObject.transform.localScale = StartScale * (slider.GetComponent<PinchSlider>().SliderValue / StartSliderValue);
             }
         }

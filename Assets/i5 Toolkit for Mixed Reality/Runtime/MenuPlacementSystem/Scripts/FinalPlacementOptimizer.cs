@@ -17,6 +17,36 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         private Vector3 rotationOffset = Vector3.zero;
         private Vector3 scaleOffset = Vector3.one;
 
+        //ConstantViewSize properties:
+        private float fovScalar = 1f;
+        private float objectSize = 1f;
+        private float targetViewPercentV = 0.5f;
+        private float minScale = 0.01f;
+        private float maxScale = 100f;
+
+        /// <summary>
+        /// Returns the scale to be applied based on the FOV. This scale will be multiplied by distance as part of
+        /// the final scale calculation, so this is the ratio of vertical fov to distance.
+        /// </summary>
+        public float FovScale
+        {
+            get
+            {
+                //float cameraFovRadians = (CameraCache.Main.aspect * CameraCache.Main.fieldOfView) * Mathf.Deg2Rad;
+                float cameraFovRadians = CameraCache.Main.fieldOfView * Mathf.Deg2Rad;
+                float sinFov = Mathf.Sin(cameraFovRadians * 0.5f);
+                return 2f * targetViewPercentV * sinFov / objectSize;
+            }
+        }
+
+        public float TargetViewPercentV
+        {
+            get => targetViewPercentV;
+            set
+            {
+                targetViewPercentV = value;
+            }
+        }
 
         /// <summary>
         /// How should the menu be oriented
@@ -62,6 +92,11 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             set { scaleOffset = value; }
         }
 
+        private void Start() {
+            base.Start();
+            RecalculateBounds();
+        }
+
         /// <summary>
         /// Fine-tune the transform of the menu based on several offsets.
         /// </summary>
@@ -103,9 +138,51 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     break;
             }
 
+            if (gameObject.GetComponent<MenuHandler>().ConstantViewSizeEnabled) {
+                //Partially borrowed and simplified from ConstantViewSize solver in MRTK under MIT License
 
-            GoalScale = new Vector3(OriginalScale.x * ScaleOffset.x, OriginalScale.y * ScaleOffset.y, OriginalScale.z * ScaleOffset.z);
+                // Set the linked alt scale ahead of our work. This is an attempt to minimize jittering by having solvers work with an interpolated scale.
+                SolverHandler.AltScale.SetGoal(transform.localScale);
+
+                // Calculate scale based on distance from view.  Do not interpolate so we can appear at a constant size if possible.  Borrowed from greybox.
+                Vector3 targetPosition = head.transform.position;
+                float distance = Vector3.Distance(transform.position, targetPosition);
+                float scale = Mathf.Clamp(FovScale * distance, minScale, maxScale);
+                Vector3 originalRatio = new Vector3(OriginalScale.x/OriginalScale.y, 1, OriginalScale.z/OriginalScale.y);
+                GoalScale = originalRatio * scale;            
+            }
+            else {
+                GoalScale = new Vector3(OriginalScale.x * ScaleOffset.x, OriginalScale.y * ScaleOffset.y, OriginalScale.z * ScaleOffset.z);
+            }
+        }
+
+        /// <summary>
+        /// Attempts to calculate the size of the bounds which contains all child renderers for attached GameObject. This information is used in the core solver calculations
+        /// Borrowed from ConstantViewSize but modified
+        /// </summary>
+        public void RecalculateBounds() {
+            float baseSize;
+            Vector3 cachedScale = transform.root.localScale;
+            transform.root.localScale = Vector3.one;
+
+            var combinedBounds = new Bounds(transform.position, Vector3.zero);
+            var renderers = GetComponentsInChildren<Renderer>();
+
+            for (var i = 0; i < renderers.Length; i++) {
+                combinedBounds.Encapsulate(renderers[i].bounds);
+            }
+
+            //baseSize = combinedBounds.extents.magnitude;
+            baseSize = combinedBounds.max.y - combinedBounds.min.y;
+            transform.root.localScale = cachedScale;
             
+            if (baseSize > 0) {
+                objectSize = baseSize;
+            }
+            else {
+                Debug.LogWarning("ConstantViewSize: Object base size calculate was 0, defaulting to 1");
+                objectSize = 1f;
+            }
         }
     }
 }

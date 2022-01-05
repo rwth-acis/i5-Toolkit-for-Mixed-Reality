@@ -231,7 +231,7 @@ MonoBehaviour:
   menuOrientationType: 0
   inactivityDetectionEnabled: 0
   manipulationEnabled: 1
-  constantViewSizeEnabled: 0
+  constantViewSizeEnabled: 1
   boundingBoxType: 0
   dominantHand: 1
   updateTimeInterval: 0.1
@@ -241,7 +241,7 @@ MonoBehaviour:
   maxFloatingDistance: 0.8
   minFloatingDistance: 0.4
   defaultFloatingDistance: 0
-  defaultTargetViewPercentV: 0.35
+  defaultTargetViewPercentV: 0.4
   followOffset: {x: 0, y: 0, z: 0}
   followMaxViewHorizontalDegrees: 50
   followMaxViewVerticalDegrees: 100

@@ -845,6 +845,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         //Check if all menus and their properties are initialized properly.
         private void CheckMenuInitialization() {
+            //Check initialization in Menu Placement Service
             List<GameObject> menus = new List<GameObject>();
             if (mainMenu.compactMenu == null) {
                 Debug.LogWarning("The compact main menu is not assigned in Menu Placement Service. Make sure you set it correctly unless you don't want to have it.");
@@ -934,6 +935,20 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 }
             }
 
+            //Check initialization in scene (if there are unregistered menus)
+            MenuHandler[] menuInScene = FindObjectsOfType<MenuHandler>(true);
+            foreach (MenuHandler handler in menuInScene) {
+                if(handler.menuVariantType == MenuHandler.MenuVariantType.ObjectMenu) {
+                    if (GetObjectMenuWithID(handler.menuID) == null) {
+                        Debug.LogError("Unregistered object menus with menuID " + handler.menuID + " found in scene, please make sure all menus are registered in Menu Placement Service");
+                    }
+                }
+                if(handler.menuVariantType == MenuHandler.MenuVariantType.MainMenu) {
+                    if(mainMenu.floatingMenu.GetComponent<MenuHandler>().menuID != handler.menuID && mainMenu.compactMenu.GetComponent<MenuHandler>().menuID != handler.menuID) {
+                        Debug.LogError("Unregistered main menus with menuID " + handler.menuID + " found in scene, please make sure all menus are registered in Menu Placement Service");
+                    }
+                }
+            }
         }
 
         private void CreateMenuController() {
