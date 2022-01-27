@@ -13,7 +13,16 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         public GameObject compactMenu;
 
         public override string ToString() {
-            return floatingMenu + " and " + compactMenu; 
+            return "Floating Variant: " + floatingMenu + "; Compact Variant: " + compactMenu; 
+        }
+
+        public MenuVariants(GameObject floatingMenu, GameObject compactMenu) {
+            this.floatingMenu = floatingMenu;
+            this.compactMenu = compactMenu;
+        }
+
+        public MenuVariants() {
+            
         }
 
     }

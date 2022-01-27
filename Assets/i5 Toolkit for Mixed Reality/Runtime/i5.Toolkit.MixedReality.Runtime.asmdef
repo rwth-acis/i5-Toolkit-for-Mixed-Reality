@@ -6,7 +6,8 @@
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
         "i5.Toolkit.Core.Runtime",
-        "Microsoft.MixedReality.Toolkit.Services.InputSystem"
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

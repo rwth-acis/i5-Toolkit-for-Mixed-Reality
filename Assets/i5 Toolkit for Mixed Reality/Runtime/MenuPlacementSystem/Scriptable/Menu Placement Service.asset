@@ -28,3 +28,13 @@ MonoBehaviour:
   suggestionPanel: {fileID: 3426602376893313686, guid: 8d43e7921459d0d489c1c75a5574bbf2,
     type: 3}
   defaultPlacementMode: 0
+  spatialAwarenessLayer:
+    serializedVersion: 2
+    m_Bits: 2147483648
+  menuLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  addingRuntimeMenuEnabled: 1
+  runtimeMenuLayer:
+    serializedVersion: 2
+    m_Bits: 512

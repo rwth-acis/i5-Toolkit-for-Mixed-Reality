@@ -6,17 +6,17 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
     [CanEditMultipleObjects]
     public class MenuHandlerInspector : Editor {
 
-        private SerializedProperty menuVariantType;
-        private SerializedProperty compact;
+        private SerializedProperty menuType;
+        private SerializedProperty variantType;
         private SerializedProperty menuID;
 
-        //General Properties
-        private SerializedProperty inactivityDetectionEnabled;
+        //General Properties  
         private SerializedProperty manipulationEnabled;
         private SerializedProperty boundingBoxType;
-        private SerializedProperty menuOrientationType;
-        private SerializedProperty constantViewSizeEnabled;
         private SerializedProperty dominantHand;
+        private SerializedProperty orientationType;
+        private SerializedProperty constantViewSizeEnabled;
+        private SerializedProperty inactivityDetectionEnabled;
 
         //Thresholds
         private SerializedProperty updateTimeInterval;
@@ -49,17 +49,17 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         bool objectMenuOffsetFoldout = true;
 
         public void OnEnable() {
-            menuVariantType = serializedObject.FindProperty("menuVariantType");
-            compact = serializedObject.FindProperty("compact");
             menuID = serializedObject.FindProperty("menuID");
+            menuType = serializedObject.FindProperty("menuType");
+            variantType = serializedObject.FindProperty("variantType");
 
+            boundingBoxType = serializedObject.FindProperty("boundingBoxType");
+            dominantHand = serializedObject.FindProperty("dominantHand");
+            orientationType = serializedObject.FindProperty("orientationType");
             inactivityDetectionEnabled = serializedObject.FindProperty("inactivityDetectionEnabled");
             manipulationEnabled = serializedObject.FindProperty("manipulationEnabled");
-            boundingBoxType = serializedObject.FindProperty("boundingBoxType");
-            menuOrientationType = serializedObject.FindProperty("menuOrientationType");
             constantViewSizeEnabled = serializedObject.FindProperty("constantViewSizeEnabled");
-            dominantHand = serializedObject.FindProperty("dominantHand");
-
+            
             updateTimeInterval = serializedObject.FindProperty("updateTimeInterval");
             inactivityTimeThreshold = serializedObject.FindProperty("inactivityTimeThreshold");
             suggestionTimeInterval = serializedObject.FindProperty("suggestionTimeInterval");
@@ -85,16 +85,16 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         public override void OnInspectorGUI() {
 
-            EditorGUILayout.PropertyField(menuVariantType);
-            EditorGUILayout.PropertyField(compact);
             EditorGUILayout.PropertyField(menuID);
+            EditorGUILayout.PropertyField(menuType);
+            EditorGUILayout.PropertyField(variantType);
 
+            EditorGUILayout.PropertyField(boundingBoxType);
+            EditorGUILayout.PropertyField(orientationType);
+            EditorGUILayout.PropertyField(dominantHand);
             EditorGUILayout.PropertyField(inactivityDetectionEnabled);
             EditorGUILayout.PropertyField(manipulationEnabled);
             EditorGUILayout.PropertyField(constantViewSizeEnabled);
-            EditorGUILayout.PropertyField(boundingBoxType);
-            EditorGUILayout.PropertyField(menuOrientationType);
-            EditorGUILayout.PropertyField(dominantHand);
 
             EditorGUILayout.PropertyField(updateTimeInterval);
             EditorGUILayout.PropertyField(inactivityTimeThreshold);
@@ -128,7 +128,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             mainMenuOffsetFoldout = EditorGUILayout.Foldout(mainMenuOffsetFoldout, "Main Menu Settings", true);
             if (mainMenuOffsetFoldout) {
                 //0 for main menu, 1 for object menu
-                if (menuVariantType.enumValueIndex == 0) {
+                if (menuType.enumValueIndex == 0) {
                     EditorGUILayout.PropertyField(followOffset);
                     EditorGUILayout.PropertyField(followMaxViewHorizontalDegrees);
                     EditorGUILayout.PropertyField(followMaxViewVerticalDegrees);
@@ -143,7 +143,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             objectMenuOffsetFoldout = EditorGUILayout.Foldout(objectMenuOffsetFoldout, "Object Menu Settings", true);
             if (objectMenuOffsetFoldout) {
                 //0 for main menu, 1 for object menu
-                if (menuVariantType.enumValueIndex == 1) {
+                if (menuType.enumValueIndex == 1) {
                     EditorGUILayout.PropertyField(orbitalOffset);
                     EditorGUILayout.PropertyField(manipulationLogic);
                 }

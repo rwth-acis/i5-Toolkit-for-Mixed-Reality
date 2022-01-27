@@ -3076,15 +3076,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07cff6b9d0b7e8c43bdc384285e94a5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuVariantType: 0
-  compact: 0
   menuID: 0
-  menuOrientationType: 0
+  menuType: 0
+  variantType: 0
+  orientationType: 0
+  boundingBoxType: 0
+  dominantHand: 1
   inactivityDetectionEnabled: 0
   manipulationEnabled: 1
   constantViewSizeEnabled: 1
-  boundingBoxType: 0
-  dominantHand: 1
   updateTimeInterval: 0.1
   inactivityTimeThreshold: 10
   suggestionTimeInterval: 10
@@ -3092,7 +3092,9 @@ MonoBehaviour:
   maxFloatingDistance: 0.8
   minFloatingDistance: 0.4
   defaultFloatingDistance: 0
-  defaultTargetViewPercentV: 0.2
+  defaultTargetViewPercentV: 0.201
+  minScale: 0.01
+  maxScale: 100
   followOffset: {x: 0, y: 0, z: 0}
   followMaxViewHorizontalDegrees: 50
   followMaxViewVerticalDegrees: 40

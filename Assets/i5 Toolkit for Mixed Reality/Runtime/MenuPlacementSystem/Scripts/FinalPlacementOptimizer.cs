@@ -70,7 +70,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         /// <summary>
         /// How should the menu be oriented
         /// </summary>
-        public MenuHandler.MenuOrientationType OrientationType { get; set; }
+        public OrientationType OrientationType { get; set; }
         /// <summary>
         /// local scale of the target object
         /// </summary>
@@ -128,8 +128,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         //Compute the final position based on menu variant and solvers
         private void UpdatePosition() {
-            if (gameObject.GetComponent<MenuHandler>().menuVariantType == MenuHandler.MenuVariantType.MainMenu) {
-                if (gameObject.GetComponent<MenuHandler>().compact) {
+            if (gameObject.GetComponent<MenuHandler>().MenuType == MenuType.MainMenu) {
+                if (gameObject.GetComponent<MenuHandler>().VariantType == VariantType.Compact) {
                     GoalPosition += head.transform.right * positionOffset.x + head.transform.up * positionOffset.y + head.transform.forward * positionOffset.z;
                 }
             }
@@ -159,24 +159,24 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         
         //Compute the final orientation based on the MenuOrientationType
         private void UpdateOrientation() {            
-            switch (gameObject.GetComponent<MenuHandler>().menuOrientationType) {
-                case MenuHandler.MenuOrientationType.CameraAligned:
+            switch (gameObject.GetComponent<MenuHandler>().OrientationType) {
+                case OrientationType.CameraAligned:
                     GoalRotation = head.transform.rotation;
                     break;
-                case MenuHandler.MenuOrientationType.Unmodified:
+                case OrientationType.Unmodified:
                     GoalRotation = GoalRotation;
                     break;
-                case MenuHandler.MenuOrientationType.CameraFacing:
+                case OrientationType.CameraFacing:
                     GoalRotation = Quaternion.LookRotation(head.transform.position - transform.position);
                     break;
-                case MenuHandler.MenuOrientationType.CameraFacingReverse:
+                case OrientationType.CameraFacingReverse:
                     GoalRotation = Quaternion.LookRotation(transform.position - head.transform.position);
                     break;
-                case MenuHandler.MenuOrientationType.YawOnly:
+                case OrientationType.YawOnly:
                     GoalRotation = Quaternion.Euler(0f, head.transform.rotation.eulerAngles.y, 0f);
                     break;
-                case MenuHandler.MenuOrientationType.FollowTargetObject:
-                    if(gameObject.GetComponent<MenuHandler>().menuVariantType == MenuHandler.MenuVariantType.MainMenu) {
+                case OrientationType.FollowTargetObject:
+                    if(gameObject.GetComponent<MenuHandler>().MenuType == MenuType.MainMenu) {
                         GoalRotation = head.transform.rotation;
                     }
                     else {

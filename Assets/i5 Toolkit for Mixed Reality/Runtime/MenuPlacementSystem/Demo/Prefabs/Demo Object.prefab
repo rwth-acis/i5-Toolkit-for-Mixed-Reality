@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2642995101621588204}
   - component: {fileID: 2642995101621588179}
-  - component: {fileID: 8923503696469060008}
   - component: {fileID: 910999285180271955}
   - component: {fileID: -8804744294666839417}
   - component: {fileID: -8172274165272064014}
@@ -54,45 +53,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9249632, y: 0.63449967, z: 0.047590002}
   m_Center: {x: -0.06922671, y: -0.13063765, z: 0.059046976}
---- !u!114 &8923503696469060008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2642995101621588205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7e736ec19b1c5543a9bb27c150f94fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isFocusRequired: 1
-  MarkEventsAsUsed: 0
-  OnPointerDown:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPointerUp:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPointerClicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 165315280745840138, guid: b44ccddfa2e056b41bc7bf2d48427ca2,
-          type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: Open
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 2642995101621588205}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPointerDragged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &910999285180271955
 MonoBehaviour:
   m_ObjectHideFlags: 0

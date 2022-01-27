@@ -53,7 +53,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
 
         void Update() {
-            if(placementService.PlacementMode != MenuPlacementService.MenuPlacementServiceMode.Adjustment) {
+            if(placementService.PlacementMode != MenuPlacementMode.Adjustment) {
                 targetMenuObject.GetComponent<BoxCollider>().enabled = false;
             }            
         }
@@ -95,9 +95,9 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
 
         public void SwitchVariant() {
-            if(placementService.PreviousMode == MenuPlacementService.MenuPlacementServiceMode.Manual) {
+            if(placementService.PreviousMode == MenuPlacementMode.Manual) {
                 handler.ExitManualMode();
-                if (handler.compact) {
+                if (handler.VariantType == VariantType.Compact) {
                     message.switchType = PlacementMessage.SwitchType.CompactToFloating;
                 }
                 else {
@@ -117,14 +117,14 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
 
         public void OnSliderValueUpdate() {            
-            if(placementService.PlacementMode == MenuPlacementService.MenuPlacementServiceMode.Adjustment && slider.activeSelf) {
+            if(placementService.PlacementMode == MenuPlacementMode.Adjustment && slider.activeSelf) {
                 targetMenuObject.GetComponent<FinalPlacementOptimizer>().TargetViewPercentV = slider.GetComponent<PinchSlider>().SliderValue;
                 targetMenuObject.transform.localScale = StartScale * (slider.GetComponent<PinchSlider>().SliderValue / StartSliderValue);
             }
         }
 
         public void SwitchReferenceType() {
-            if (placementService.PreviousMode == MenuPlacementService.MenuPlacementServiceMode.Manual) {
+            if (placementService.PreviousMode == MenuPlacementMode.Manual) {
                 // Set to user-referenced (lock)
                 if (targetMenuObject.transform.parent == null) {
                     targetMenuObject.transform.parent = CameraCache.Main.transform;
@@ -153,10 +153,10 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
 
         public void OnAdjustment() {
-            if(placementService.PreviousMode == MenuPlacementService.MenuPlacementServiceMode.Manual) {
+            if(placementService.PreviousMode == MenuPlacementMode.Manual) {
                 targetMenuObject.GetComponent<BoundsControl>().ScaleHandlesConfig.ShowScaleHandles = true;
             }
-            if (handler.ConstantViewSizeEnabled && placementService.PreviousMode == MenuPlacementService.MenuPlacementServiceMode.Automatic) {
+            if (handler.ConstantViewSizeEnabled && placementService.PreviousMode == MenuPlacementMode.Automatic) {
                 slider.SetActive(true);
             }
             targetMenuObject.GetComponent<ObjectManipulator>().enabled = true;            
@@ -169,7 +169,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         public void AdjustmentEnd() {
             slider.SetActive(false);
             targetMenuObject.GetComponent<ObjectManipulator>().enabled = false;
-            if (placementService.PreviousMode == MenuPlacementService.MenuPlacementServiceMode.Manual) {
+            if (placementService.PreviousMode == MenuPlacementMode.Manual) {
                 targetMenuObject.GetComponent<BoundsControl>().ScaleHandlesConfig.ShowScaleHandles = false;
             }
             if (StartPosition != targetMenuObject.transform.position || StartRotation != targetMenuObject.transform.rotation || StartScale != targetMenuObject.transform.localScale) {
