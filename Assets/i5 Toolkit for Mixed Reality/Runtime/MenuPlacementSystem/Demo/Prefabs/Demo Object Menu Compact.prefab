@@ -3863,7 +3863,7 @@ MonoBehaviour:
   inactivityTimeThreshold: 10
   suggestionTimeInterval: 10
   retrieveBufferSize: 5
-  maxFloatingDistance: 0.8
+  maxFloatingDistance: 0.6
   minFloatingDistance: 0.4
   defaultFloatingDistance: 0
   defaultTargetViewPercentV: 0.5

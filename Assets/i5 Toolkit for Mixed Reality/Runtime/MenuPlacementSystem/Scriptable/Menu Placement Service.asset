@@ -24,9 +24,11 @@ MonoBehaviour:
       type: 3}
   systemControlPanel: {fileID: 2165366043894834530, guid: 75efd258d3f31dc468ee0ff89c1be45a,
     type: 3}
-  appBar: {fileID: 5211060661677171915, guid: cf561da546e09f941a517fd3bf0ca092, type: 3}
   suggestionPanel: {fileID: 3426602376893313686, guid: 8d43e7921459d0d489c1c75a5574bbf2,
     type: 3}
+  advancedOptionPanel: {fileID: 6749502142559504436, guid: f4e436a66f0f0e8419d4fc80034c17e1,
+    type: 3}
+  appBar: {fileID: 5211060661677171915, guid: cf561da546e09f941a517fd3bf0ca092, type: 3}
   defaultPlacementMode: 0
   spatialAwarenessLayer:
     serializedVersion: 2
@@ -38,3 +40,6 @@ MonoBehaviour:
   runtimeMenuLayer:
     serializedVersion: 2
     m_Bits: 512
+  runtimeMenuConfigurePanel: {fileID: 5058060486435515585, guid: ee2d84de0ea05cc4784fd4e7f958ff88,
+    type: 3}
+  savedOffsets: []

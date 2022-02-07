@@ -3748,7 +3748,7 @@ Transform:
   m_GameObject: {fileID: 7185013629003528802}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.0966, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2468653231300424893}
   - {fileID: 8393024592851717669}
@@ -3866,7 +3866,7 @@ MonoBehaviour:
   menuID: 1
   menuType: 0
   variantType: 1
-  menuOrientationType: 0
+  orientationType: 2
   boundingBoxType: 0
   dominantHand: 1
   inactivityDetectionEnabled: 0
@@ -3876,7 +3876,7 @@ MonoBehaviour:
   inactivityTimeThreshold: 10
   suggestionTimeInterval: 10
   retrieveBufferSize: 5
-  maxFloatingDistance: 0.8
+  maxFloatingDistance: 0.6
   minFloatingDistance: 0.4
   defaultFloatingDistance: 0
   defaultTargetViewPercentV: 0.5

@@ -3079,7 +3079,7 @@ MonoBehaviour:
   menuID: 0
   menuType: 0
   variantType: 0
-  orientationType: 0
+  orientationType: 2
   boundingBoxType: 0
   dominantHand: 1
   inactivityDetectionEnabled: 0
@@ -3089,10 +3089,10 @@ MonoBehaviour:
   inactivityTimeThreshold: 10
   suggestionTimeInterval: 10
   retrieveBufferSize: 5
-  maxFloatingDistance: 0.8
+  maxFloatingDistance: 0.6
   minFloatingDistance: 0.4
   defaultFloatingDistance: 0
-  defaultTargetViewPercentV: 0.201
+  defaultTargetViewPercentV: 0.3
   minScale: 0.01
   maxScale: 100
   followOffset: {x: 0, y: 0, z: 0}

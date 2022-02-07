@@ -12,7 +12,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
     /// This script extends the functionalities of the App Bar from VIAProMa
     /// If more functionalities are required, it is recommanded to write another script inherits this script or an additional script added on the App Bar object.
     /// </summary>
-    public class AppBarControllerMPS : MonoBehaviour {
+    public class AppBarController : MonoBehaviour {
 
         //The menu object
         private GameObject targetMenuObject;

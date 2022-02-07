@@ -84,10 +84,13 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         [Header("User Interface Components")]
         [Tooltip("The Menu Controller enables the manipulation of created menus and interaction with the system.")]
         [SerializeField] private GameObject systemControlPanel;
-        [Tooltip("The app bar for manipulation of menus")]
-        [SerializeField] private GameObject appBar;
         [Tooltip("The dialog prefab for suggestions in manual mode")]
         [SerializeField] private GameObject suggestionPanel;
+        [Tooltip("The panel that contains advanced options.")]
+        [SerializeField] private GameObject advancedOptionPanel;
+        [Tooltip("The app bar for manipulation of menus")]
+        [SerializeField] private GameObject appBar;
+
         [Tooltip("The default placement mode")]
         [SerializeField] private DefaultMode defaultPlacementMode = DefaultMode.Automatic;
 
@@ -102,6 +105,8 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         [SerializeField] private bool addingRuntimeMenuEnabled = false;
         [Tooltip("The layer of menus to be added as runtime menu.")]
         [SerializeField] private LayerMask runtimeMenuLayer = 1 << 9;
+        [Tooltip("The panel to configure runtime menus.")]
+        [SerializeField] private GameObject runtimeMenuConfigurePanel;
         #endregion
 
         #region Non-serializable Fields
@@ -152,10 +157,14 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         private GameObject inBetweenTarget;
         private MenuPlacementMode placementMode;
-        // A counter for the current expanded app bars.
+        //A counter for the current expanded app bars.
         private int adjustmentModeSemaphore = 0;
-        // The maximum MenuID of all menus.
+        //The maximum MenuID of all menus, used for determining the MenuID of runtime menus.
         private int maximumMenuID = 0;
+        //The reference to the instantiated panels in the runtime.
+        private GameObject openedAdvancedOptionPanel;
+        private GameObject openedRuntimeMenuConfigurePanel;
+
         #endregion
 
         #region Properties
@@ -635,6 +644,9 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             }
         }
 
+        /// <summary>
+        /// Enter the manual mode.
+        /// </summary>
         public void EnterManualMode() {
             placementMode = MenuPlacementMode.Manual;
         }
@@ -668,9 +680,147 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         }
 
         /// <summary>
+        /// Save the offsets if any, so that the manipulation offsets will remain for the next start. Note that OneToOne offsets will not be saved.
+        /// </summary>
+        public void SaveOffsets() {
+            //All Menus except compact main menus have an orbital offset, so we just iterate over the orbital offsets here.
+            foreach (KeyValuePair<int, Tuple<Vector3, Quaternion, Vector3, float>> kvp in currentOneToAllOffsetOrbital) {
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalPositionOffsetX", kvp.Value.Item1.x);
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalPositionOffsetY", kvp.Value.Item1.y);
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalPositionOffsetZ", kvp.Value.Item1.z);
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalRotationOffsetX", kvp.Value.Item2.x);
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalRotationOffsetY", kvp.Value.Item2.y);
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalRotationOffsetZ", kvp.Value.Item2.z);
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalRotationOffsetW", kvp.Value.Item2.w);
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalScaleOffsetX", kvp.Value.Item3.x);
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalScaleOffsetY", kvp.Value.Item3.y);
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalScaleOffsetZ", kvp.Value.Item3.z);
+                PlayerPrefs.SetFloat(kvp.Key + "OrbitalTargetPercentV", kvp.Value.Item4);
+                if (currentOneToAllOffsetInBetween.ContainsKey(kvp.Key)) {
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenPositionOffsetX", currentOneToAllOffsetInBetween[kvp.Key].Item1.x);
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenPositionOffsetY", currentOneToAllOffsetInBetween[kvp.Key].Item1.y);
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenPositionOffsetZ", currentOneToAllOffsetInBetween[kvp.Key].Item1.z);
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenRotationOffsetX", currentOneToAllOffsetInBetween[kvp.Key].Item2.x);
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenRotationOffsetY", currentOneToAllOffsetInBetween[kvp.Key].Item2.y);
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenRotationOffsetZ", currentOneToAllOffsetInBetween[kvp.Key].Item2.z);
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenRotationOffsetW", currentOneToAllOffsetInBetween[kvp.Key].Item2.w);
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenScaleOffsetX", currentOneToAllOffsetInBetween[kvp.Key].Item3.x);
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenScaleOffsetY", currentOneToAllOffsetInBetween[kvp.Key].Item3.y);
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenScaleOffsetZ", currentOneToAllOffsetInBetween[kvp.Key].Item3.z);
+                    PlayerPrefs.SetFloat(kvp.Key + "InBetweenTargetPercentV", currentOneToAllOffsetInBetween[kvp.Key].Item4);
+                }
+                if (currentOneToAllOffsetHandConstraint.ContainsKey(kvp.Key)) {
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintPositionOffsetX", currentOneToAllOffsetHandConstraint[kvp.Key].Item1.x);
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintPositionOffsetY", currentOneToAllOffsetHandConstraint[kvp.Key].Item1.y);
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintPositionOffsetZ", currentOneToAllOffsetHandConstraint[kvp.Key].Item1.z);
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintRotationOffsetX", currentOneToAllOffsetHandConstraint[kvp.Key].Item2.x);
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintRotationOffsetY", currentOneToAllOffsetHandConstraint[kvp.Key].Item2.y);
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintRotationOffsetZ", currentOneToAllOffsetHandConstraint[kvp.Key].Item2.z);
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintRotationOffsetW", currentOneToAllOffsetHandConstraint[kvp.Key].Item2.w);
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintScaleOffsetX", currentOneToAllOffsetHandConstraint[kvp.Key].Item3.x);
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintScaleOffsetY", currentOneToAllOffsetHandConstraint[kvp.Key].Item3.y);
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintScaleOffsetZ", currentOneToAllOffsetHandConstraint[kvp.Key].Item3.z);
+                    PlayerPrefs.SetFloat(kvp.Key + "HandConstraintTargetPercentV", currentOneToAllOffsetHandConstraint[kvp.Key].Item4);
+                }
+            }
+            //Add the one for the compact main menu.
+            int compactMenuID = mainMenu.compactMenu.GetComponent<MenuHandler>().MenuID;
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintPositionOffsetX", currentOneToAllOffsetHandConstraint[compactMenuID].Item1.x);
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintPositionOffsetY", currentOneToAllOffsetHandConstraint[compactMenuID].Item1.y);
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintPositionOffsetZ", currentOneToAllOffsetHandConstraint[compactMenuID].Item1.z);
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintRotationOffsetX", currentOneToAllOffsetHandConstraint[compactMenuID].Item2.x);
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintRotationOffsetY", currentOneToAllOffsetHandConstraint[compactMenuID].Item2.y);
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintRotationOffsetZ", currentOneToAllOffsetHandConstraint[compactMenuID].Item2.z);
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintRotationOffsetW", currentOneToAllOffsetHandConstraint[compactMenuID].Item2.w);
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintScaleOffsetX", currentOneToAllOffsetHandConstraint[compactMenuID].Item3.x);
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintScaleOffsetY", currentOneToAllOffsetHandConstraint[compactMenuID].Item3.y);
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintScaleOffsetZ", currentOneToAllOffsetHandConstraint[compactMenuID].Item3.z);
+            PlayerPrefs.SetFloat(compactMenuID + "HandConstraintTargetPercentV", currentOneToAllOffsetHandConstraint[compactMenuID].Item4);
+        }
+
+        /// <summary>
+        /// Load the saved Offsets.
+        /// </summary>
+        public void LoadOffsets() {
+            //Floating Main Menu
+            if (mainMenu.floatingMenu != null) {               
+                int menuID = mainMenu.floatingMenu.GetComponent<MenuHandler>().MenuID;
+                //Use one entry to test if there are saved offsets.
+                if(PlayerPrefs.HasKey(menuID + "OrbitalPositionOffsetX")) {
+                    Vector3 positionOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "OrbitalPositionOffsetX"), PlayerPrefs.GetFloat(menuID + "OrbitalPositionOffsetY"), PlayerPrefs.GetFloat(menuID + "OrbitalPositionOffsetZ"));
+                    Quaternion rotationOffset = new Quaternion(PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetX"), PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetY"), PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetZ"), PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetW"));
+                    Vector3 scaleOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "OrbitalScaleOffsetX"), PlayerPrefs.GetFloat(menuID + "OrbitalScaleOffsetY"), PlayerPrefs.GetFloat(menuID + "OrbitalScaleOffsetZ"));
+                    float TargetViewPercentV = PlayerPrefs.GetFloat(menuID + "OrbitalTargetPercentV");
+                    currentOneToAllOffsetOrbital[menuID] = new Tuple<Vector3, Quaternion, Vector3, float>(positionOffset, rotationOffset, scaleOffset, TargetViewPercentV);
+                }
+            }
+            //Compact Main Menu
+            if (mainMenu.compactMenu != null) {
+
+                int menuID = mainMenu.compactMenu.GetComponent<MenuHandler>().MenuID;
+                if (PlayerPrefs.HasKey(menuID + "HandConstraintPositionOffsetX")) {
+                    Vector3 positionOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "HandConstraintPositionOffsetX"), PlayerPrefs.GetFloat(menuID + "HandConstraintPositionOffsetY"), PlayerPrefs.GetFloat(menuID + "HandConstraintPositionOffsetZ"));
+                    Quaternion rotationOffset = new Quaternion(PlayerPrefs.GetFloat(menuID + "HandConstraintRotationOffsetX"), PlayerPrefs.GetFloat(menuID + "HandConstraintRotationOffsetY"), PlayerPrefs.GetFloat(menuID + "HandConstraintRotationOffsetZ"), PlayerPrefs.GetFloat(menuID + "HandConstraintRotationOffsetW"));
+                    Vector3 scaleOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "HandConstraintScaleOffsetX"), PlayerPrefs.GetFloat(menuID + "HandConstraintScaleOffsetY"), PlayerPrefs.GetFloat(menuID + "HandConstraintScaleOffsetZ"));
+                    float TargetViewPercentV = PlayerPrefs.GetFloat(menuID + "HandConstraintTargetPercentV");
+                    currentOneToAllOffsetHandConstraint[menuID] = new Tuple<Vector3, Quaternion, Vector3, float>(positionOffset, rotationOffset, scaleOffset, TargetViewPercentV);
+                }
+            }
+            //Object Menus
+            foreach(MenuVariants v in objectMenus) {
+                if(v.floatingMenu != null) {
+                    int menuID = v.floatingMenu.GetComponent<MenuHandler>().MenuID;
+                    if(PlayerPrefs.HasKey(menuID + "OrbitalPositionOffsetX")) {
+                        Vector3 positionOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "OrbitalPositionOffsetX"), PlayerPrefs.GetFloat(menuID + "OrbitalPositionOffsetY"), PlayerPrefs.GetFloat(menuID + "OrbitalPositionOffsetZ"));
+                        Quaternion rotationOffset = new Quaternion(PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetX"), PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetY"), PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetZ"), PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetW"));
+                        Vector3 scaleOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "OrbitalScaleOffsetX"), PlayerPrefs.GetFloat(menuID + "OrbitalScaleOffsetY"), PlayerPrefs.GetFloat(menuID + "OrbitalScaleOffsetZ"));
+                        float TargetViewPercentV = PlayerPrefs.GetFloat(menuID + "OrbitalTargetPercentV");
+                        currentOneToAllOffsetOrbital[menuID] = new Tuple<Vector3, Quaternion, Vector3, float>(positionOffset, rotationOffset, scaleOffset, TargetViewPercentV);
+
+                        menuID = v.floatingMenu.GetComponent<MenuHandler>().MenuID;
+                        positionOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "InBetweenPositionOffsetX"), PlayerPrefs.GetFloat(menuID + "InBetweenPositionOffsetY"), PlayerPrefs.GetFloat(menuID + "InBetweenPositionOffsetZ"));
+                        rotationOffset = new Quaternion(PlayerPrefs.GetFloat(menuID + "InBetweenRotationOffsetX"), PlayerPrefs.GetFloat(menuID + "InBetweenRotationOffsetY"), PlayerPrefs.GetFloat(menuID + "InBetweenRotationOffsetZ"), PlayerPrefs.GetFloat(menuID + "InBetweenRotationOffsetW"));
+                        scaleOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "InBetweenScaleOffsetX"), PlayerPrefs.GetFloat(menuID + "InBetweenScaleOffsetY"), PlayerPrefs.GetFloat(menuID + "InBetweenScaleOffsetZ"));
+                        TargetViewPercentV = PlayerPrefs.GetFloat(menuID + "InBetweenTargetPercentV");
+                        currentOneToAllOffsetInBetween[menuID] = new Tuple<Vector3, Quaternion, Vector3, float>(positionOffset, rotationOffset, scaleOffset, TargetViewPercentV);
+                    }
+                }
+                if (v.compactMenu != null) {
+
+                    int menuID = v.compactMenu.GetComponent<MenuHandler>().MenuID;
+                    if (PlayerPrefs.HasKey(menuID + "OrbitalPositionOffsetX")) {
+                        Vector3 positionOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "OrbitalPositionOffsetX"), PlayerPrefs.GetFloat(menuID + "OrbitalPositionOffsetY"), PlayerPrefs.GetFloat(menuID + "OrbitalPositionOffsetZ"));
+                        Quaternion rotationOffset = new Quaternion(PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetX"), PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetY"), PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetZ"), PlayerPrefs.GetFloat(menuID + "OrbitalRotationOffsetW"));
+                        Vector3 scaleOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "OrbitalScaleOffsetX"), PlayerPrefs.GetFloat(menuID + "OrbitalScaleOffsetY"), PlayerPrefs.GetFloat(menuID + "OrbitalScaleOffsetZ"));
+                        float TargetViewPercentV = PlayerPrefs.GetFloat(menuID + "OrbitalTargetPercentV");
+                        currentOneToAllOffsetOrbital[menuID] = new Tuple<Vector3, Quaternion, Vector3, float>(positionOffset, rotationOffset, scaleOffset, TargetViewPercentV);
+
+                        menuID = v.compactMenu.GetComponent<MenuHandler>().MenuID;
+                        positionOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "HandConstraintPositionOffsetX"), PlayerPrefs.GetFloat(menuID + "HandConstraintPositionOffsetY"), PlayerPrefs.GetFloat(menuID + "HandConstraintPositionOffsetZ"));
+                        rotationOffset = new Quaternion(PlayerPrefs.GetFloat(menuID + "HandConstraintRotationOffsetX"), PlayerPrefs.GetFloat(menuID + "HandConstraintRotationOffsetY"), PlayerPrefs.GetFloat(menuID + "HandConstraintRotationOffsetZ"), PlayerPrefs.GetFloat(menuID + "HandConstraintRotationOffsetW"));
+                        scaleOffset = new Vector3(PlayerPrefs.GetFloat(menuID + "HandConstraintScaleOffsetX"), PlayerPrefs.GetFloat(menuID + "HandConstraintScaleOffsetY"), PlayerPrefs.GetFloat(menuID + "HandConstraintScaleOffsetZ"));
+                        TargetViewPercentV = PlayerPrefs.GetFloat(menuID + "HandConstraintTargetPercentV");
+                        currentOneToAllOffsetHandConstraint[menuID] = new Tuple<Vector3, Quaternion, Vector3, float>(positionOffset, rotationOffset, scaleOffset, TargetViewPercentV);
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Clear all current and saved offsets.
+        /// </summary>
+        public void ResetOffsets() {
+            PlayerPrefs.DeleteAll();
+            currentOneToAllOffsetInBetween = new Dictionary<int, Tuple<Vector3, Quaternion, Vector3, float>>();
+            currentOneToAllOffsetOrbital = new Dictionary<int, Tuple<Vector3, Quaternion, Vector3, float>>();
+            currentOneToAllOffsetHandConstraint = new Dictionary<int, Tuple<Vector3, Quaternion, Vector3, float>>();
+            InitializeCurrentOneToAllOffsets();
+        }
+
+        /// <summary>
         /// Recognize an object as a menu (main or object) and add it to the system during the runtime. This method also add a MenuHandler component to the given object.
-        /// All properties except 'MenuType' are not modifiable, and will have their default values.
-        /// It is only for some special purposes which ask developers to add a menu during the runtime, e.g. the mockup-editor:
+        /// All properties except 'MenuType' and 'VariantType' are not modifiable, and will have their default values.
+        /// It is considered only for some special purposes which ask developers to add a menu during the runtime, e.g. the mockup-editor:
         /// https://github.com/rwth-acis/VIAProMa/wiki/Mockup-Editor
         /// </summary>
         /// <param name="variants">The floating and/or the compact variant that should be recogized as a menu</param>
@@ -691,7 +841,40 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
 
         }
 
+        /// <summary>
+        /// Open the "Advanced Option Panel" by instatiating a new object.
+        /// </summary>
+        public void OpenAdvancedOptionPanel() {
+            if (openedAdvancedOptionPanel) {
+                openedAdvancedOptionPanel.SetActive(true);
+            }
+            else {
+                openedAdvancedOptionPanel = Instantiate(advancedOptionPanel);
+                if (!addingRuntimeMenuEnabled) {
+                    openedAdvancedOptionPanel.transform.Find("Scrolling Object Collection/Container/Buttons/Add Runtime Menu Button").gameObject.SetActive(false);
+                }
+                else {
+                    if (openedAdvancedOptionPanel.transform.Find("Scrolling Object Collection/Container/Buttons/Add Runtime Menu Button")) {
+                        openedAdvancedOptionPanel.transform.Find("Scrolling Object Collection/Container/Buttons/Add Runtime Menu Button").gameObject.SetActive(true);
+                    }
+                }
+                openedAdvancedOptionPanel.transform.position = CameraCache.Main.transform.position;
+                openedAdvancedOptionPanel.transform.Find("Scrolling Object Collection/Container/Buttons").gameObject.GetComponent<GridObjectCollection>().UpdateCollection();
+            }
 
+        }
+
+        /// <summary>
+        /// Open the "Runtime Menu Configuration Panel".
+        /// </summary>
+        public void OpenRuntimeMenuConfigurationPanel() {
+            if (openedRuntimeMenuConfigurePanel) {
+                openedRuntimeMenuConfigurePanel.SetActive(true);
+            }
+            else {
+                Instantiate(runtimeMenuConfigurePanel);
+            }
+        }
 
         /// <summary>
         /// Fetch a menu object from the ObjectPool of the origin menu
@@ -987,22 +1170,22 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 return new Vector3();
             }*/
             /*else {*/
-                if (handler.MenuType == MenuType.MainMenu) {
-                    if (handler.VariantType == VariantType.Compact) {
-                        return mainMenu.floatingMenu ? mainMenu.floatingMenu.GetComponent<MenuHandler>().OrbitalOffset : new Vector3();
-                    }
-                    else {
-                        return mainMenu.compactMenu ? mainMenu.compactMenu.GetComponent<MenuHandler>().OrbitalOffset : new Vector3();
-                    }
+            if (handler.MenuType == MenuType.MainMenu) {
+                if (handler.VariantType == VariantType.Compact) {
+                    return mainMenu.floatingMenu ? mainMenu.floatingMenu.GetComponent<MenuHandler>().OrbitalOffset : new Vector3();
                 }
                 else {
-                    if (handler.VariantType == VariantType.Compact) {
-                        return SwitchToFloating(GetObjectMenuWithID(handler.MenuID)).GetComponent<MenuHandler>().OrbitalOffset;
-                    }
-                    else {
-                        return SwitchToCompact(GetObjectMenuWithID(handler.MenuID)).GetComponent<MenuHandler>().OrbitalOffset;
-                    }
+                    return mainMenu.compactMenu ? mainMenu.compactMenu.GetComponent<MenuHandler>().OrbitalOffset : new Vector3();
                 }
+            }
+            else {
+                if (handler.VariantType == VariantType.Compact) {
+                    return SwitchToFloating(GetObjectMenuWithID(handler.MenuID)).GetComponent<MenuHandler>().OrbitalOffset;
+                }
+                else {
+                    return SwitchToCompact(GetObjectMenuWithID(handler.MenuID)).GetComponent<MenuHandler>().OrbitalOffset;
+                }
+            }
             //}
         }
         #endregion Public Methods
@@ -1167,17 +1350,6 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                 maximumMenuID = maximumMenuID < v.floatingMenu.GetComponent<MenuHandler>().MenuID ? v.floatingMenu.GetComponent<MenuHandler>().MenuID : maximumMenuID;
                 maximumMenuID = maximumMenuID < v.compactMenu.GetComponent<MenuHandler>().MenuID ? v.compactMenu.GetComponent<MenuHandler>().MenuID : maximumMenuID;
             }
-            if (!addingRuntimeMenuEnabled) {
-                if(systemControlPanel.transform.Find("Advanced Option Panel/Scrolling Object Collection/Container/Buttons/Add Runtime Menu Button")) {
-                    systemControlPanel.transform.Find("Advanced Option Panel/Scrolling Object Collection/Container/Buttons/Add Runtime Menu Button").gameObject.SetActive(false);
-                }
-            }
-            else {
-                if (systemControlPanel.transform.Find("Advanced Option Panel/Scrolling Object Collection/Container/Buttons/Add Runtime Menu Button")) {
-                    systemControlPanel.transform.Find("Advanced Option Panel/Scrolling Object Collection/Container/Buttons/Add Runtime Menu Button").gameObject.SetActive(true);
-                }
-            }
-            systemControlPanel.transform.Find("Advanced Option Panel/Scrolling Object Collection/Container/Buttons").gameObject.GetComponent<GridObjectCollection>().UpdateCollection();
         }
 
         private void InitializeMainMenuBuffers() {
@@ -1214,16 +1386,20 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
                     if(v.floatingMenu.GetComponent<MenuHandler>().ManipulationLogic == ManipulationLogic.OneToAll) {
                         currentOneToAllOffsetInBetween.Add(v.floatingMenu.GetComponent<MenuHandler>().MenuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.floatingMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
                         currentOneToAllOffsetOrbital.Add(v.floatingMenu.GetComponent<MenuHandler>().MenuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.floatingMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
-                        currentOneToAllOffsetHandConstraint.Add(v.floatingMenu.GetComponent<MenuHandler>().MenuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.floatingMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
                     }
                 }
                 if (v.compactMenu != null) {
                     if (v.compactMenu.GetComponent<MenuHandler>().ManipulationLogic == ManipulationLogic.OneToAll) {
-                        currentOneToAllOffsetInBetween.Add(v.compactMenu.GetComponent<MenuHandler>().MenuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.compactMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
                         currentOneToAllOffsetOrbital.Add(v.compactMenu.GetComponent<MenuHandler>().MenuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.compactMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
                         currentOneToAllOffsetHandConstraint.Add(v.compactMenu.GetComponent<MenuHandler>().MenuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, v.compactMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
                     }
                 }
+            }
+            if (mainMenu.floatingMenu) {
+                currentOneToAllOffsetOrbital.Add(mainMenu.floatingMenu.GetComponent<MenuHandler>().MenuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, mainMenu.floatingMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
+            }
+            if (mainMenu.compactMenu) {
+                currentOneToAllOffsetHandConstraint.Add(mainMenu.compactMenu.GetComponent<MenuHandler>().MenuID, new Tuple<Vector3, Quaternion, Vector3, float>(Vector3.zero, Quaternion.identity, Vector3.one, mainMenu.compactMenu.GetComponent<MenuHandler>().DefaultTargetViewPercentV));
             }
         }
 

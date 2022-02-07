@@ -30,7 +30,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
         private Phase currentPhase;
         private bool inSelectingProcess;
         private MenuPlacementService placementService;
-        // fileds for components
+        // fileds for UI components
         private Interactable typeSwitchButton;
         private Interactable variantSwitchButton;
         private Interactable checkBoxBothVariant;
@@ -294,6 +294,9 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             currentPhase = Phase.End;
         }
 
+        /// <summary>
+        /// Add the selected object (whose bounding box is highlighted) to the cached MenuVariant
+        /// </summary>
         public void OnPointerClicked(MixedRealityPointerEventData eventData) {
             if (focusedObject) {
                 switch (currentPhase) {
@@ -400,6 +403,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             highlighter.GetComponent<LineRenderer>().positionCount = 0;
         }
 
+        //Set points for LineRenderer
         private void RenderBound(LineRenderer renderer, Bounds bound) {
             List<Vector3> vertices = new List<Vector3>();
             // draw the bottom
@@ -422,7 +426,6 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             vertices.Add(new Vector3(bound.min.x, bound.max.y, bound.min.z));
             renderer.positionCount = vertices.Count;
             renderer.SetPositions(vertices.ToArray());
-
         }
 
         //calculate bounds based on renderers

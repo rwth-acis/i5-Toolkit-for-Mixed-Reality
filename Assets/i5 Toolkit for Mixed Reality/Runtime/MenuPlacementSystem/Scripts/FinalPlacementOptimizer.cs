@@ -111,7 +111,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             set { scaleOffset = value; }
         }
 
-        private void Start() {
+        protected override void Start() {
             base.Start();
             RecalculateBounds();
             head = CameraCache.Main;
