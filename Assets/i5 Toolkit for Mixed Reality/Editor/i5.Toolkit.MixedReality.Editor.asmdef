@@ -1,7 +1,9 @@
 {
     "name": "i5.Toolkit.MixedReality.Editor",
-    "references": [],
-    "optionalUnityReferences": [],
+    "rootNamespace": "",
+    "references": [
+        "i5.Toolkit.MixedReality.Runtime"
+    ],
     "includePlatforms": [
         "Editor"
     ],
@@ -10,5 +12,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -1,17 +1,21 @@
 {
     "name": "i5.Toolkit.MixedReality.Runtime",
+    "rootNamespace": "",
     "references": [
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
-        "i5.Toolkit.Core.Runtime"
+        "i5.Toolkit.Core.Runtime",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Unity.TextMeshPro"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b6594c9babf43645a38445382b9406a, type: 3}
+  m_Name: Menu Placement Service
+  m_EditorClassIdentifier: 
+  mainMenu:
+    floatingMenu: {fileID: 7750482789387478941, guid: 79374de9a1d88504bb9e1796542f0042,
+      type: 3}
+    compactMenu: {fileID: 7185013629003528802, guid: 69218484d7386d1488a80eb54a1b6168,
+      type: 3}
+  objectMenus:
+  - floatingMenu: {fileID: 165315280745840132, guid: 740fa5c6866adc54eb333ab9af260a7c,
+      type: 3}
+    compactMenu: {fileID: 8430153530993931033, guid: 6ad4ca78720a08941b2cc3a36590b197,
+      type: 3}
+  systemControlPanel: {fileID: 2165366043894834530, guid: 75efd258d3f31dc468ee0ff89c1be45a,
+    type: 3}
+  suggestionPanel: {fileID: 3426602376893313686, guid: 8d43e7921459d0d489c1c75a5574bbf2,
+    type: 3}
+  advancedOptionPanel: {fileID: 6749502142559504436, guid: f4e436a66f0f0e8419d4fc80034c17e1,
+    type: 3}
+  appBar: {fileID: 5211060661677171915, guid: cf561da546e09f941a517fd3bf0ca092, type: 3}
+  defaultPlacementMode: 0
+  spatialAwarenessLayer:
+    serializedVersion: 2
+    m_Bits: 2147483648
+  menuLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  addingRuntimeMenuEnabled: 1
+  runtimeMenuLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  runtimeMenuConfigurePanel: {fileID: 5058060486435515585, guid: ee2d84de0ea05cc4784fd4e7f958ff88,
+    type: 3}
+  savedOffsets: []
