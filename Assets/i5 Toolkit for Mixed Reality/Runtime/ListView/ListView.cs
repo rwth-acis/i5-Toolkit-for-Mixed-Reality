@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class ListView<T> : MonoBehaviour
 {
+    [SerializeField] private GameObject listContainerPrefab;
+
     private ScrollingObjectCollection scrollingObjectCollection;
     private ScrollingObjectCollectionExtension scrollEvents;
     private GridObjectCollection gridCollection;
@@ -37,24 +39,64 @@ public class ListView<T> : MonoBehaviour
         scrollingObjectCollection = GetComponent<ScrollingObjectCollection>();
         scrollEvents = GetComponent<ScrollingObjectCollectionExtension>();
         gridCollection = GetComponentInChildren<GridObjectCollection>();
-        itemContainers = GetComponentsInChildren<ListItem<T>>(true);
 
-        limiterObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        limiterObject.transform.localScale = 0.01f * Vector3.one;
-        limiterObject.transform.parent = gridCollection.transform.parent;
-        limiterObject.transform.localPosition = new Vector3(0, -500, 0);
+        InitializeContainers();
+        InitializeLimiter();
     }
 
     private void Start()
     {
         scrollEvents.OnScrollingUpdate.AddListener(OnScrollingUpdate);
         gridCollection.transform.localPosition = new Vector3(0, scrollingObjectCollection.CellHeight, 0);
-        InitializeItems();
+        PopulateContainers();
         gridCollection.UpdateCollection();
         scrollingObjectCollection.UpdateContent();
     }
 
-    private void InitializeItems()
+    private void InitializeContainers()
+    {
+        ListItem<T>[] foundContainers = GetComponentsInChildren<ListItem<T>>(true);
+
+        int targetSize = scrollingObjectCollection.CellsPerTier * (scrollingObjectCollection.TiersPerPage + 2);
+        // if there are already enough containers created manually by the developer
+        if (foundContainers.Length >= targetSize)
+        {
+            itemContainers = foundContainers;
+
+            // remove excess containers
+            for (int i = targetSize; i < foundContainers.Length; i++)
+            {
+                Destroy(foundContainers[i]);
+            }
+        }
+        // else: add containers since there are not enough
+        else
+        {
+            itemContainers = new ListItem<T>[targetSize];
+            for (int i = 0; i < targetSize; i++)
+            {
+                if (i < foundContainers.Length)
+                {
+                    itemContainers[i] = foundContainers[i];
+                }
+                else
+                {
+                    GameObject container = Instantiate(listContainerPrefab, gridCollection.transform);
+                    itemContainers[i] = container.GetComponent<ListItem<T>>();
+                }
+            }
+        }
+    }
+
+    private void InitializeLimiter()
+    {
+        limiterObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        limiterObject.transform.localScale = 0.01f * Vector3.one;
+        limiterObject.transform.parent = gridCollection.transform.parent;
+        limiterObject.transform.localPosition = new Vector3(0, -500, 0);
+    }
+
+    private void PopulateContainers()
     {
         for (int i = 0; i < itemContainers.Length; i++)
         {
@@ -68,7 +110,7 @@ public class ListView<T> : MonoBehaviour
     private void ResetCollection()
     {
         scrollingObjectCollection.MoveToIndex(0, false);
-        InitializeItems();
+        PopulateContainers();
     }
 
     private void UpdateLimiter()
@@ -138,7 +180,6 @@ public class ListView<T> : MonoBehaviour
 
         gridCollection.UpdateCollection();
         scrollingObjectCollection.UpdateContent();
-        Debug.Log(scrollingObjectCollection.GetType().GetProperty("MaxY", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(scrollingObjectCollection));
     }
 
     private void SetLimiter(int index)
