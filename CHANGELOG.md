@@ -9,3 +9,4 @@ This document keeps track of the changes between versions of the toolkit.
 ## Added
 
 - Web content loader which is based on the MRTK's Rest client implementation
+- Mixed reality app console
