@@ -6,8 +6,8 @@
   "unity": "2018.4",
   "unityRelease": "15f1",
   "dependencies": {
-    "com.i5.toolkit.core": "1.2.1",
-    "com.microsoft.mixedreality.toolkit.foundation": "2.6.1",
+    "com.i5.toolkit.core": "1.7.0",
+    "com.microsoft.mixedreality.toolkit.foundation": "2.7.3",
     "com.unity.textmeshpro": "1.5.1"
   },
   "keywords": [

@@ -73,3 +73,5 @@ crashlytics-build.properties
 /**/obj/
 reference
 /Documentation/api
+/Assets/Oculus
+/Assets/Oculus.meta
