@@ -17,6 +17,7 @@
     }
   ],
   "dependencies": {
+    "com.i5.spatial_ui_converter": "https://github.com/rwth-acis/Spatial-UI-Converter.git#v1.0.0",
     "com.i5.toolkit.core": "1.7.0",
     "com.microsoft.mixedreality.toolkit.examples": "2.7.3",
     "com.microsoft.mixedreality.toolkit.foundation": "2.7.3",

@@ -184,11 +184,11 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             get => suggestionPanel;
         }
 
-        public bool SuggestionPanelOn { get; set; }
+        public bool SuggestionPanelOn { get; internal set; }
         /// <summary>
         /// The previous mode. Should only be called in adjustment mode.
         /// </summary>
-        public MenuPlacementMode PreviousMode { get; set; }
+        public MenuPlacementMode PreviousMode { get; internal set; }
 
         /// <summary>
         /// If the current running platform supports articulated hand (HoloLens 2)

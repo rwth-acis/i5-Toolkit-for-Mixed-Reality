@@ -42,7 +42,7 @@ namespace i5.Toolkit.MixedReality.MenuPlacementSystem {
             handler = targetMenuObject.GetComponent<MenuHandler>();
             placementService = ServiceManager.GetService<MenuPlacementService>();
             (targetMenuObject.GetComponent<ObjectManipulator>() ?? targetMenuObject.AddComponent<ObjectManipulator>()).enabled = false;
-            //targetMenuObject.GetComponent<ObjectManipulator>().OnManipulationStarted.AddListener(delegate () { targetMenuObject.GetComponent<BoundsControl>().HighlightWires; });          
+            //targetMenuObject.GetComponent<ObjectManipulator>().OnManipulationStarted.AddListener(evt => targetMenuObject.GetComponent<BoundsControl>().HighlightWires);          
             if (!targetMenuObject.GetComponent<NearInteractionGrabbable>()) {
                 targetMenuObject.AddComponent<NearInteractionGrabbable>();
             }
